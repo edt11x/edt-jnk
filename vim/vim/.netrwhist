@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/edt/Documents/Backups/Address Book - 7:7:07.abbu'
+let g:netrw_dirhist_2='/Users/edt/.ssh'
+let g:netrw_dirhist_3='/Users/edt/bin'
+let g:netrw_dirhist_4='/Users/edt/jnk'
+let g:netrw_dirhist_5='/Users/edt/jnk/vim'
+let g:netrw_dirhist_6='/Users/edt/jnk/vim/packages'

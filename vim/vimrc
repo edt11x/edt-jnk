@@ -116,8 +116,9 @@ let color = "true"
 " set makeprg=/tmphome/edt/dev/rosetta/c3/doit
 "
 set efm=\|\|\ \"%f\"\,\ line\ %l:\ warning\ %m,\|\|\ \"%f\"\,\ line\ %l:\ error\ %m
-let errorSearch = '\c\(error\|fail\w*\|fatal\|\(de\)\@<!faults*\|not found\|unknown\|disabled\|undervoltage\|overcurrent\|unusually\|under threshold\|bad packet\|time out\|is not\|not valid\|not allowed\|warning\|possible occurrence\|never\|incompatible\|might not\|without\|detected\|could not\|invalid\|already\|skippped\)'
-let essSearch = '\C\(pppp\)\@!\(\S*f\s\|\S*f$\|fail\>\|failed\|FAIL\|fault\|error\S*\|Error\S*\|\<Err\>\|repeated\|damaged\|already\|mismatch\|disabled\|Disabled\|Loss\|Under\|bad packet\|Bad Packet\|time out\|timeout\|invalid\|skippped\|power cycle\|RS-422 Errors\|4294967295|\<[pf][pf][pf][pf]\>\)'
+let errorSearch = '\c\(\<error\|fail\w*\|fatal\|flagged\|\(de\)\@<!faults*\|not found\|not ok\|has not\|unknown\|disabled\|undervoltage\|overcurrent\|unusually\|threshold\|inactive\|\<bad\>\|time out\|is not\|not valid\|not allowed\|warning\|possible occurrence\|never\|incompatible\|might not\|without\|detected\|could not\|invalid\|already\|skippped\|declared\|mismatch\|address miss\|more data\|timeout\|repeated\|damaged\|Err\>\|fell below\|fifo full\|exceeds\|was not\|uncommanded\|4294967295\)'
+let essSearch = '\C\(pppp\)\@!\(\S*f\s\|\S*f$\|\S*f\r\|fail\>\|failed\|FAIL\|fault\|error\S*\|Error\S*\|\<Err\>\|repeated\|damaged\|already\|mismatch\|disabled\|Disabled\|Loss\|Under\|bad packet\|Bad Packet\|time out\|timeout\|invalid\|skippped\|power cycle\|exceeds\|RS-422 Errors\|Framing\|Parity\|Time Out\|Uncommanded\|unusually\|4294967295|\<[pf][pf][pf][pf]\>\)'
+let mushySearch = '\c\(could\|might\|tbd\|\<too\>\)'
 let faultReformat = 's/\(\s*\S\+\),\s*\(\S\+\)U, \(\S\+\)U, \(".*"\), 0U, \(\S\+U\), 0LL, \(\S\+\) },/\1 => { word => \2 , bit => \3, msg => \4, threshold => "\5", maxrate => "\6" } ,/'
 
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>

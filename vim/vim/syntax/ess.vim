@@ -18,7 +18,12 @@ syn case ignore
 
 "
 syn match   essError    "\sFAIL\s"
-syn match   essError    "\(\S*f \|\S*f$\|429\d\d\d\d\d\d\d\|\(pppp\)\@![pf][pf][pf][pf]\)"
+syn match   essError    "^>>>.*"
+syn match   essError    "^\s*\(EU\|DP\)\s\(CBIT\|POST\)\s.*"
+syn match   essError    "^\s*GP\d.*"
+syn match   essError    "^\s*GP\s\d.*"
+syn match   essError    "\C\(\S*f \|\S*f$\|\S*f\r\|429\d\d\d\d\d\d\d\|\(pppp\)\@![pf][pf][pf][pf]\)"
+syn match   essError    "\C\(pppp\)\@!\(\S*f\s\|\S*f$\|\S*f\r\|fail\>\|failed\|ailure\|FAIL\|fault\|error\S*\|Error\S*\|\<Err\>\|repeated\|damaged\|already\|mismatch\|disabled\|Disabled\|Loss\|Under\|bad packet\|Bad Packet\|time out\|timeout\|invalid\|skippped\|power cycle\|exceeds\|RS-422 Errors\|Framing\|Parity\|Time Out\|Uncommanded\|unusually\|4294967295|\<[pf][pf][pf][pf]\>\)"
 syn match   PowerCycle  "Power Cycle"
 
 " Define the default highlighting.

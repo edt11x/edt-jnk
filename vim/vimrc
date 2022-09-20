@@ -9,39 +9,18 @@ set nocompatible    " enabled when (g)vimrc is found
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" " alternatively, pass a path where Vundle should install plugins
-" "call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'sjl/badwolf'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'dracula/vim'
-Plugin 'junegunn/vim-easy-align'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#begin()
+Plug 'VundleVim/Vundle.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'
+Plug 'sjl/badwolf'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'dracula/vim'
+Plug 'junegunn/vim-easy-align'
+call plug#end()            " required
 filetype plugin indent on    " required
-" " To ignore plugin indent changes, instead use:
-" "filetype plugin on
-" "
-" " Brief help
-" " :PluginList       - lists configured plugins
-" " :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" " :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" " :PluginClean      - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-" "
-" " see :h vundle for more details or wiki for FAQ
-" " Put your non-Plugin stuff after this line
 
 if has("terminfo") 
         set t_Co=16 
@@ -152,6 +131,7 @@ endif
 " set guifont=consolas:h16
 set gfn=Menlo:h14"
 set guifont=Menlo:h14"
+set guifont=DejaVu\ Sans\ Mono\ 14
 "
 " Colo(u)red or not colo(u)red
 " If you want color you should set this to true
@@ -181,7 +161,7 @@ let fooSearch = '^\d\+\s\+([01]\+_[01]\{4})\s\S\+[^A-Z]\+'
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-let g:notes_directories = ['/home/edt/Documents/Notes']
+let g:notes_directories = ['/home/user/Documents/Notes']
 
 let g:LookOfDisapprovalTabThreshold=5
 let g:LookOfDisapprovalSpaceThreshold=(&tabstop*5)

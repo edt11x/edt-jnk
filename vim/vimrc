@@ -19,6 +19,7 @@ Plug 'sjl/badwolf'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dracula/vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'morhetz/gruvbox'
 call plug#end()            " required
 filetype plugin indent on    " required
 
@@ -123,6 +124,8 @@ endif
 " colorscheme zenburn
 " colorscheme darkblue
 " colorscheme ir_black
+colorscheme gruvbox
+colorscheme badwolf
 
 " set gfn=-schumacher-clean-medium-r-normal-*-*-130-*-*-c-*-iso646.1991-irv
 " set gfn=-adobe-courier-medium-r-normal-*-*-120-*-*-m-*-iso10646-1

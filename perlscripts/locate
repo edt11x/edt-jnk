@@ -1,0 +1,227 @@
+#!/usr/bin/perl
+
+#--------------------------------------------------------------------#
+# Perl Locate
+#    A slightly modified perl port of the Linux locate command
+#
+#       Date Written:   5-Jun-2001 04:28:21 PM
+#       Last Modified:  19-Jul-2001 08:09:38 AM
+#       Author:    Kurt Kincaid
+#       Copyright (c) 2001, Kurt Kincaid
+#           All Rights Reserved
+#
+# NOTICE: This code is free software; you can redistribute it and/or 
+#         modify it under the same terms as Perl itself, though it 
+#         would be greatly appreciated if the original author 
+#         information remains intact.
+#--------------------------------------------------------------------#
+
+use Getopt::Std;
+use File::Find();
+use Date::Manip;
+
+$|  = 1;
+chomp @ARGV;
+$count = 0;
+$VERSION       = "2.01";
+$LAST_MODIFIED = "Thursday, July 19 2001 08:09:38 PM";
+
+#--------------------------------------------------------------------#
+# Start User Customize Section
+#--------------------------------------------------------------------#
+$TZ = "US/Central";
+$databaseName = "files.idx";
+$databaseDir  = "/kurt/files";
+#--------------------------------------------------------------------#
+# End User Customize Section
+#--------------------------------------------------------------------#
+
+getopts("uUvVihScl:");
+
+if ( $opt_u || $opt_U ) {
+    Update();
+}
+
+if ( $opt_S ) {
+    $mod  = ( stat("$databaseDir/$databaseName" . "\.pag" ) )[9];
+    $date = localtime( $mod );
+    OpenDB();
+    @files = keys %Files;
+    $count = @files;
+    CloseDB();
+    $Count = Commas( $count );
+    print ("Last Update: $date\n");
+    print ("Files in Database: $Count\n");
+    exit;
+}
+
+if ( $opt_V ) {
+    Version();
+}
+
+if ( $opt_h || $ARGV[0] eq "" ) {
+    Usage();
+}
+
+#--------------------------------------------------------------------#
+# Begin Main Routine
+#--------------------------------------------------------------------#
+OpenDB();
+
+if ( $opt_i ) {
+    @files = grep { /$ARGV[0]/i } keys %Files;
+} else {
+    @files = grep { /$ARGV[0]/ } keys %Files;
+}
+
+foreach $file ( @files ) {
+    $count++;
+    if ( $opt_c ) {    next }
+        
+    if ( $opt_l ) {
+        if ( $count <= $opt_l ) {
+            Show();
+        } else {
+        last;
+        }
+    } else {
+        Show();
+    }
+}
+
+if ( $opt_c ) {
+    print $count, "\n";
+}
+
+CloseDB();
+exit;
+#--------------------------------------------------------------------#
+# End Main Routine
+#--------------------------------------------------------------------#
+
+sub Version {
+    print <<END;
+Locate v$VERSION by Kurt Kincaid (sifukurt\@yahoo.com)
+A perl port of the Linux locate command, with minor modifications.
+Last Modified:  $LAST_MODIFIED
+END
+    exit;
+}
+
+sub Update {
+    OpenDB();
+    use vars qw/*name *dir *prune/;
+    *name  = *File::Find::name;
+    *dir   = *File::Find::dir;
+    *prune = *File::Find::prune;
+
+    File::Find::find( { wanted => \&Wanted }, '/' );
+
+    if ( $opt_U ) {
+        $Count = Commas( $count );
+        $mess = "Files Processed: $Count";
+        print "\r$mess" . ( " " x ( 75 - length $mess ) );
+    }
+        
+    foreach $file ( keys %Files ) {
+        unless ( -e $file ) {
+            $deleted++;
+            delete $Files{$file};
+        }
+    }
+
+    if ( $opt_U ) {
+        $deleted = Commas( $deleted );
+        if ( $deleted eq "" ) { $deleted = "0" }
+        print ("\nDeleted Database Entries: $deleted\n");
+    }
+
+    CloseDB();
+    exit;
+}
+
+sub Usage {
+    print <<END;
+locate [-chilSuUvV] pattern
+  -c\tSuppress normal output; instead print a count of matching file names.
+  -h\tPrint this screen.
+  -i\tIgnore case distinctions in both the pattern and the database.
+  -l number
+  \tLimit output to number of file names and exit.
+  -S\tShow date of last database update and number of files in database.
+  -u\tUpdate file database. (This may take several minutes.)
+  -U\tSame as -u, only with verbose output.
+  -v\tVerbose output. Includes file size and time of last modification.
+  -V\tPrint version information.
+END
+    exit;
+}
+
+sub Wanted {
+    $file = $mtime = $kb = undef;
+
+    if ( -d $name ) { next }
+    
+    #--------------------------------------------------------------------#
+    # I included the following two lines for use on my Win32
+    # system. I didn't see a need to index temporary files. Leave
+    # them commented or uncomment them as you see fit.
+    #--------------------------------------------------------------------#
+    #if ( $name =~ /temporary internet/i ) { next }
+    #if ( $name =~ /\.tmp/i ) { next }
+
+    $count++;
+        
+    if ( $opt_U ) {
+        $Count = Commas( $count );
+        $mod = $count % 10;
+        if ( $mod == 0 ) {
+            $mess = "Files Processed: $Count";
+            print "\r$mess" . ( " " x ( 75 - length $mess ) );
+        }
+    }
+
+    $size = ( stat($name) )[7];
+    $mod = localtime( ( stat($name) )[9] );
+
+    if ( $size > 1024 ) {
+        $size = sprintf( "%.2f", $size / 1024 ) . "KB";
+    } else {
+        $size .= " bytes";
+    }
+
+    if ( defined $Files{$name} ) {
+        ( $mtime, $kb ) = split( /\|/,$Files{$name} );
+    }
+
+    if ( $mtime ne $mod ) {
+    $Files{$name} = "$mod\|$size";
+    } else {
+        next;
+    }
+}
+
+sub Commas {
+    local $_ = shift;
+    1 while s/^(-?\d+)(\d{3})/$1,$2/;
+    return $_;
+}
+
+sub Show {
+    if ( $opt_v ) {
+    ( $mod, $size ) = split( /\|/,$Files{$file} );
+        $date = UnixDate( $mod, "%e\-%b\-%Y %T" );
+        print("$file ($size) $date\n");
+    } else {
+        print $file, "\n";
+    }
+}
+
+sub OpenDB {
+    dbmopen( %Files, "$databaseDir/$databaseName", 0666 );
+}
+
+sub CloseDB {
+    dbmclose ( %Files );
+}
+

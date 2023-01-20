@@ -1,0 +1,1 @@
+$thisMsg = sprintf("%c%s%c", 2, "0019320100 000HANDSHAKE", 10);

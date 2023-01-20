@@ -1,0 +1,1 @@
+glActiveTexture shall select the texture unit that subsequent texture calls affect.

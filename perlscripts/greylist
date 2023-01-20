@@ -1,0 +1,1109 @@
+#!/usr/bin/perl -w
+use strict;
+
+# Copyright (c) 2003 Jon Atkins http://www.jonatkins.com/
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+
+my $version = "0.3";
+
+
+# TODO: alternative logging options, instead of syslog?
+
+use Sys::Syslog;
+use Socket;
+
+
+openlog "greylist", "pid", "mail";
+
+
+# syslog "level", "%s", "message"
+# level is one of emerg, alert, crit, err, warning, notice, info, debug
+
+
+$| = 1;
+
+# if set, log connecting IP addresses...
+my $verbose = 1;
+
+# for more detailed debugging messages...
+my $debugmsg = 1;
+
+
+# location of qmail control files (for smtpgreeting or me)
+my $control = "/var/qmail/control";
+
+# domain name: used in smtp greetings, etc
+my $domain = "custommicronics.com";
+if ( open DOM, "$control/smtpgreeting" or open DOM, "$control/me" )
+{
+	$domain = <DOM>;
+	chomp $domain;
+
+	close DOM;
+}
+
+
+# location for ip files - must be writable by the relevent id (qmaild probably)
+my $base = "/var/qmail/greylist";
+
+# location for whitelist files (eg. yahoo groups - they don't retry!)
+my $whitelist = "/var/qmail/whitelist";
+
+
+
+# how long, after 1st seening an ip address, is it kept on the greylist
+# (a minute or two is good enough - a few spammers retry within 30 seconds
+#  or so, then never again. the others that do retry will do so for long enough
+#  to bypass any sensible value for this)
+my $greytime = 2 * 60;
+
+# how long, after seeing an ip address once, before is it forgotten about
+# (this needs to be high enough to allow for retry intervals of the
+#  most overloaded mail server, but low enough to avoid a 2nd spam from
+#  the same IP address) 
+my $maxageonce = 24 * 60 * 60;
+
+# how long, after seeing an ip address several times, before it is forgotten about
+# (this should be high enough that messages from weekly, if not monthly,
+#  mail lists do not expire from the list)
+# my $maxagegood = 32 * 24 * 60 * 60;
+my $maxagegood = 10 * 24 * 60 * 60;
+
+# how often to run IP address expiry (a minimum - this is only checked when mail arrives)
+# (when this runs the script does a stat() on every IP address file,
+#  but it does need to be small enough that the $maxage* values work)
+my $cleanupinterval = 15 * 60;
+
+# timeout to use waiting for smtp commands
+# (rfc2821 recommends at least 5 minutes for most commands)
+my $smtptimeout = 5 * 60;
+
+# greylist against entire class-c (/24) networks rather than IP addresses
+# if set to 1, greylist entire class-c networks rather than single IP addresses
+# this should help with clusters of mailservers which connect from separate
+# IP addresses with each delivery attempt (eg. yahoo groups)
+my $greylistclassc = 1;
+
+sub set_mtime
+{
+	my ( $file ) = @_;
+
+# TODO: error check this...
+	open FILE, "> $file" and close FILE;
+
+# now make sure that the mtime (and atime) is set to now
+	my $now = time;
+
+	utime $now, $now, $file;
+}
+
+sub set_blacklist_mtime
+{
+	my ( $file ) = @_;
+
+# TODO: error check this...
+	open FILE, "> $file" and close FILE;
+
+# now make sure that the mtime (and atime) is set to now
+	my $now = time + 60 * 60;
+
+	utime $now, $now, $file;
+}
+
+sub set_atime
+{
+	my ( $file ) = @_;
+
+# set the atime to now, but leave the mtime alone
+	my $now = time;
+	my $mtime = (stat $file)[9];
+
+	utime $now, $mtime, $file;
+}
+
+sub get_atime_mtime
+{
+	my ( $file ) = @_;
+
+	return (stat $file)[8,9];
+}
+
+# check the ip file, or a network file matching the ip, exists
+# and return the atime + mtime of the file
+sub check_ip
+{
+	my ( $dir, $ip ) = @_;
+
+	return () unless $ip =~ m{^(\d+)\.(\d+)\.(\d+)\.(\d+)$};
+	my ( $a, $b, $c, $d ) = ( $1, $2, $3, $4 );
+
+	my @stat = get_atime_mtime "$dir/$a.$b.$c.$d";
+	return @stat if ( @stat );
+
+	@stat = get_atime_mtime "$dir/$a.$b.$c.";
+	return @stat if ( @stat );
+
+	@stat = get_atime_mtime "$dir/$a.$b.";
+	return @stat if ( @stat );
+
+	return ();
+}
+
+sub run_next_stage
+{
+#	syslog "debug", "%s", "starting ".(join ' ', @ARGV) if $debugmsg;
+
+	exec @ARGV or print "450 temporary problem - failed to start next process\r\n";
+
+	syslog "err", "failed to run next stage!";
+	exit;
+}
+
+# option 1: return a 450 error immediately
+#sub smtp_temp_fail
+#{
+#	my ( $message ) = ( @_ );
+#
+#	syslog "debug", "SMTP error: 450 %s", $message if $debugmsg;
+#	print "450 $message\r\n";
+#	exit;
+#}
+
+# option 2: perform a basic smtp responder
+# Why? See rfc2821 - 4.3.2 - it only mentions 220 and 521 as codes to be
+# expected on a new connection. some buggy MTAs may see an initial 4xx code
+# as a permanent error.
+# Another advantage of delayed rejection of messages is that we can log
+# the envelope information. This can be useful for debugging and/or monitoring.
+sub smtp_temp_fail
+{
+	my ( $message, $checkfile ) = ( @_ );
+
+	my %commands =
+	(
+		'HELO' => "250 hello",
+		'EHLO' => "250 hello",
+		'MAIL' => "250 Mail from <>",
+		'RCPT' => "450 Rcpt to <> - $message",
+		'DATA' => "451 $message",
+		'RSET' => "250 ready",
+		'VRFY' => "502 not implemented",
+		'EXPN' => "502 not implemented",
+		'HELP' => "502 not implemented",
+		'NOOP' => "250 noop",
+		'QUIT' => "221 $domain Bye",
+	);
+
+    my @friendsOfCarlotta = 
+    (
+'roberthuston@mac.com',
+'roberthuston@columbus.rr.com',
+'rshuston@gmail.com',
+'edt11x@gmail.com',
+'ethompson11x@mac.com',
+'fadertr@aol.com'
+    );
+
+	my @spamtraps = 
+	(
+'0E616375-1B20-4E5A-8E82-5528BFC379B3@custommicronics.com',
+'187EF7D1-1868-4281-B439-856CD679C8F4@custommicronics.com',
+'3F6EBBAB-EBCA-4DDB-A351-14A7073401D1@custommicronics.com',
+'4015CCCB-986C-4C9E-AFFB-A820363A95AD@custommicronics.com',
+'43966c148b71@custommicronics.com',
+'444NOTNED7@custommicronics.com',
+'69BFC115-413A-488D-AF23-95079F208ECE@custommicronics.com',
+'Abrhaam_Ketterer@custommicronics.com',
+'AdaPodesta@custommicronics.com',
+'Adrianastaggs@custommicronics.com',
+'Adrie@custommicronics.com',
+'Ainsley@custommicronics.com',
+'AlekseyStones@custommicronics.com',
+'AlisiaLamminen@custommicronics.com',
+'Allie786@custommicronics.com',
+'Alpha@custommicronics.com',
+'Amber@custommicronics.com',
+'Anitamahmoud@custommicronics.com',
+'ArletteRomanko@custommicronics.com',
+'Arlington.Schellenger@custommicronics.com',
+'Artin337@custommicronics.com',
+'AshlieRafanan@custommicronics.com',
+'Avery.Guimond@custommicronics.com',
+'Aviv631@custommicronics.com',
+'BC2DBCB1-9773-4D4F-B5FB-7CC89EE89335@custommicronics.com',
+'BarringtonNeckar@custommicronics.com',
+'Bassim141@custommicronics.com',
+'Beh.perkin@custommicronics.com',
+'Benga651@custommicronics.com',
+'Bernardus.Paoli@custommicronics.com',
+'BernardusMoles@custommicronics.com',
+'Billy.puzzy@custommicronics.com',
+'Blake_gedenek@custommicronics.com',
+'Boby116@custommicronics.com',
+'Bouke.Drye@custommicronics.com',
+'BozenaSew@custommicronics.com',
+'Branden@custommicronics.com',
+'Brenner_Runyon@custommicronics.com',
+'Butch_Hunte@custommicronics.com',
+'CasanderKibler@custommicronics.com',
+'Cassidyramjattan@custommicronics.com',
+'CayceLARZABAL@custommicronics.com',
+'Cecilia728@custommicronics.com',
+'Chaz_Kuiken@custommicronics.com',
+'Cherly_Machniak@custommicronics.com',
+'ChheangKuan@custommicronics.com',
+'Chirag.Figa@custommicronics.com',
+'Christiane.delay@custommicronics.com',
+'Chriz@custommicronics.com',
+'CodiDaneri@custommicronics.com',
+'Coty672@custommicronics.com',
+'Crissundaram@custommicronics.com',
+'Cyre@custommicronics.com',
+'DEUCE298@custommicronics.com',
+'Dagon_Hameline@custommicronics.com',
+'DainRansom@custommicronics.com',
+'Dayle@custommicronics.com',
+'DeAngelisupsm@custommicronics.com',
+'DeRosiergwk@custommicronics.com',
+'Deanika581@custommicronics.com',
+'Debi@custommicronics.com',
+'Deenomfnz@custommicronics.com',
+'Denis@custommicronics.com',
+'Derry@custommicronics.com',
+'Dervos@custommicronics.com',
+'Devin@custommicronics.com',
+'Dexhater@custommicronics.com',
+'Dichjdoy@custommicronics.com',
+'Dittrich@custommicronics.com',
+'Dodge@custommicronics.com',
+'DominickDuek@custommicronics.com',
+'Dominion805@custommicronics.com',
+'Dominique@custommicronics.com',
+'Donica934@custommicronics.com',
+'Douwe844@custommicronics.com',
+'Douwemichaluk@custommicronics.com',
+'Dreitzler@custommicronics.com',
+'Dunhamsnjav@custommicronics.com',
+'E1F9D9AF-B545-44FF-AC57-50FC916E9C2F@custommicronics.com',
+'EgilPartanen@custommicronics.com',
+'Eliesel@custommicronics.com',
+'Elsoniinj@custommicronics.com',
+'Eltontarver@custommicronics.com',
+'Erickzon.Lambert@custommicronics.com',
+'Erkka893@custommicronics.com',
+'Eun@custommicronics.com',
+'EvalonShadday@custommicronics.com',
+'EvangelineSpell@custommicronics.com',
+'EvelynDaughenbaugh@custommicronics.com',
+'Ezana.Hietanen@custommicronics.com',
+'Falcoimoez@custommicronics.com',
+'Farrellyaozcf@custommicronics.com',
+'Fecto@custommicronics.com',
+'FedonPetrosyan@custommicronics.com',
+'Finneganudfl@custommicronics.com',
+'FlipNair@custommicronics.com',
+'Foad252@custommicronics.com',
+'Frederik861@custommicronics.com',
+'GER@custommicronics.com',
+'Galanisnjnn@custommicronics.com',
+'Galikasbxwv@custommicronics.com',
+'Gardeliuskuvrr@custommicronics.com',
+'Gaspar@custommicronics.com',
+'Gayla@custommicronics.com',
+'Geoffrey@custommicronics.com',
+'Germaine_diament@custommicronics.com',
+'GezaSchuler@custommicronics.com',
+'GhimMaagdeleyn@custommicronics.com',
+'Goncharenkojeseu@custommicronics.com',
+'Goveiafpyrt@custommicronics.com',
+'Greg@custommicronics.com',
+'Greissiab@custommicronics.com',
+'Grubbslic@custommicronics.com',
+'Guffey@custommicronics.com',
+'Guzman@custommicronics.com',
+'Hagenahmfka@custommicronics.com',
+'Hal236@custommicronics.com',
+'Hales@custommicronics.com',
+'Hammerschmidtiat@custommicronics.com',
+'Hannamakw@custommicronics.com',
+'Harjajkafu@custommicronics.com',
+'Haydee@custommicronics.com',
+'Heejin.Hannemann@custommicronics.com',
+'Hemingwimn@custommicronics.com',
+'Herak@custommicronics.com',
+'Hisashi.finkle@custommicronics.com',
+'Horacio527@custommicronics.com',
+'Horst433@custommicronics.com',
+'Hosam.shear@custommicronics.com',
+'Hruby@custommicronics.com',
+'Hui.Mehes@custommicronics.com',
+'Hui_Mertes@custommicronics.com',
+'Hulcoop@custommicronics.com',
+'Huntentkf@custommicronics.com',
+'Huntington.Reiling@custommicronics.com',
+'HweeHerre@custommicronics.com',
+'Hynek.Heskey@custommicronics.com',
+'HyonMOSER@custommicronics.com',
+'IMANIMLAS9@custommicronics.com',
+'Iftode.slavin@custommicronics.com',
+'Igors335@custommicronics.com',
+'InessaGlasscock@custommicronics.com',
+'Iskrafdo@custommicronics.com',
+'Ismailov@custommicronics.com',
+'Issac.Schulmerich@custommicronics.com',
+'IvanSchlau@custommicronics.com',
+'Ivancevicumrth@custommicronics.com',
+'JaemeNo@custommicronics.com',
+'Jakovicegd@custommicronics.com',
+'Jangdayjb@custommicronics.com',
+'Janos@custommicronics.com',
+'Jas_Sanak@custommicronics.com',
+'Jasperszxcmf@custommicronics.com',
+'Jenceizx@custommicronics.com',
+'Jenessa_Myerchin@custommicronics.com',
+'Jian_Dervos@custommicronics.com',
+'JissangMikula@custommicronics.com',
+'Jonas@custommicronics.com',
+'Jordano@custommicronics.com',
+'Justeen.larosa@custommicronics.com',
+'Justensutter@custommicronics.com',
+'KEEWOOK.Strahan@custommicronics.com',
+'Kaan354@custommicronics.com',
+'Kaastrawelyh@custommicronics.com',
+'Kandace.Sode@custommicronics.com',
+'Karwallvqw@custommicronics.com',
+'Karyna@custommicronics.com',
+'Kathi232@custommicronics.com',
+'Kenbond@custommicronics.com',
+'Kennell@custommicronics.com',
+'KevinKutschinski@custommicronics.com',
+'Khotsombathlir@custommicronics.com',
+'Kiernanqgqlw@custommicronics.com',
+'Kingman.Maljevac@custommicronics.com',
+'Kitts@custommicronics.com',
+'KojiNourse@custommicronics.com',
+'Koketorlkge@custommicronics.com',
+'Kolonitskiy.defago@custommicronics.com',
+'Kononindrkv@custommicronics.com',
+'Konts@custommicronics.com',
+'Kourkouloseysky@custommicronics.com',
+'Kretzerhog@custommicronics.com',
+'Kukkkyevu@custommicronics.com',
+'Kum448@custommicronics.com',
+'Kuus@custommicronics.com',
+'LEEOTIS234@custommicronics.com',
+'LEXTONoscvv@custommicronics.com',
+'LJiljana@custommicronics.com',
+'Laanemetsiimh@custommicronics.com',
+'Lahjat111@custommicronics.com',
+'Lananh529@custommicronics.com',
+'LathuiliereHeldman@custommicronics.com',
+'Leach@custommicronics.com',
+'Lennard.Klapper@custommicronics.com',
+'Libewztga@custommicronics.com',
+'Limin735@custommicronics.com',
+'LindseyLyga@custommicronics.com',
+'Lingholtwgjdx@custommicronics.com',
+'Ludwig868@custommicronics.com',
+'Lukas_MATKO@custommicronics.com',
+'MULITALO.Lancaster@custommicronics.com',
+'MacMullinruib@custommicronics.com',
+'Maicel765@custommicronics.com',
+'Maitlandperkins@custommicronics.com',
+'Majtrr@custommicronics.com',
+'Makhijarbtd@custommicronics.com',
+'Marcus877@custommicronics.com',
+'Maretta@custommicronics.com',
+'MaribelKula@custommicronics.com',
+'Marlos.Gaynor@custommicronics.com',
+'Marquis@custommicronics.com',
+'Marynessoroko@custommicronics.com',
+'Mateusz_Hochstetler@custommicronics.com',
+'McCredymwyby@custommicronics.com',
+'McMichaelmcc@custommicronics.com',
+'Mertiffnqthk@custommicronics.com',
+'Micke@custommicronics.com',
+'Milne@custommicronics.com',
+'Mirko_Deduu@custommicronics.com',
+'Miszczyszynfjr@custommicronics.com',
+'Miu204@custommicronics.com',
+'Moos@custommicronics.com',
+'Morandieuve@custommicronics.com',
+'Mustakmccrank@custommicronics.com',
+'Myungeng@custommicronics.com',
+'Nahidlucido@custommicronics.com',
+'Nazir@custommicronics.com',
+'Nello.Trevino@custommicronics.com',
+'NenusTompkins@custommicronics.com',
+'Nguyelbm@custommicronics.com',
+'NilsShyman@custommicronics.com',
+'Nirosan@custommicronics.com',
+'ORINOlry@custommicronics.com',
+'Ohtonen@custommicronics.com',
+'Oishejih@custommicronics.com',
+'Oivind184@custommicronics.com',
+'Oranneira@custommicronics.com',
+'PHIA.Gauvin@custommicronics.com',
+'Pamidi@custommicronics.com',
+'Parshleydwo@custommicronics.com',
+'Paulie@custommicronics.com',
+'Petersson@custommicronics.com',
+'Phuc816@custommicronics.com',
+'Picketthtqpl@custommicronics.com',
+'Pistellouckxw@custommicronics.com',
+'Plutov@custommicronics.com',
+'Preece@custommicronics.com',
+'Price.Tarjanyi@custommicronics.com',
+'Purdey.dilly@custommicronics.com',
+'Quevada@custommicronics.com',
+'REISS@custommicronics.com',
+'RLRuby@custommicronics.com',
+'Rachelle735@custommicronics.com',
+'Rakdee@custommicronics.com',
+'Rallo@custommicronics.com',
+'Randfisher@custommicronics.com',
+'Rasornajg@custommicronics.com',
+'Ratovmed@custommicronics.com',
+'Ratovxfin@custommicronics.com',
+'Renee.Moschella@custommicronics.com',
+'Ricahrddio@custommicronics.com',
+'RordanGoldenberg@custommicronics.com',
+'RowanSlowey@custommicronics.com',
+'SCHRIMSHERjsmau@custommicronics.com',
+'SIARHEIsad@custommicronics.com',
+'Saelieovuhky@custommicronics.com',
+'Saffron840@custommicronics.com',
+'SaophongPires@custommicronics.com',
+'SasoOjalehto@custommicronics.com',
+'Sassy875@custommicronics.com',
+'Schlaufemwa@custommicronics.com',
+'Seawellyhc@custommicronics.com',
+'Seidllfer@custommicronics.com',
+'Semibratovshxo@custommicronics.com',
+'ShaoqiDaoust@custommicronics.com',
+'Sharpe@custommicronics.com',
+'Shawn980@custommicronics.com',
+'Sheerjrbj@custommicronics.com',
+'Shiya840@custommicronics.com',
+'Shree@custommicronics.com',
+'ShuaifengRainer@custommicronics.com',
+'Sigmund@custommicronics.com',
+'SiweiMANEY@custommicronics.com',
+'Slotema@custommicronics.com',
+'Slutzky@custommicronics.com',
+'Soderlingiozv@custommicronics.com',
+'Sorokinaryh@custommicronics.com',
+'Stackgnpiu@custommicronics.com',
+'Streifellau@custommicronics.com',
+'SuzannSuominen@custommicronics.com',
+'Switzer@custommicronics.com',
+'Szilagyijrqf@custommicronics.com',
+'Takatafwzn@custommicronics.com',
+'Teihola@custommicronics.com',
+'Teristrugnell@custommicronics.com',
+'Terry@custommicronics.com',
+'Theron693@custommicronics.com',
+'Timkoeas@custommicronics.com',
+'Timotheos.Derocher@custommicronics.com',
+'Tjoen437@custommicronics.com',
+'Tompqq@custommicronics.com',
+'Vadik978@custommicronics.com',
+'Vishnu@custommicronics.com',
+'Von267@custommicronics.com',
+'WondellKalvig@custommicronics.com',
+'XINFENG_glaze@custommicronics.com',
+'XiangRuc@custommicronics.com',
+'Xiaohu.tay@custommicronics.com',
+'Xqwer.Humiston@custommicronics.com',
+'Youngmi_Koikkalainen@custommicronics.com',
+'ZhiJunReif@custommicronics.com',
+'a1aaa1azzzz1zaaaaa@custommicronics.com',
+'ade.Rieb@custommicronics.com',
+'admin@custommicronics.com',
+'ahmedwotk@custommicronics.com',
+'ahmedyfisi@custommicronics.com',
+'ahmedzuw@custommicronics.com',
+'ajmalSolerti@custommicronics.com',
+'aleksninRajvaidya@custommicronics.com',
+'alenn454@custommicronics.com',
+'alennKurki@custommicronics.com',
+'anthoney_Karan@custommicronics.com',
+'arien.Garrick@custommicronics.com',
+'arien@custommicronics.com',
+'atd@custommicronics.com',
+'aune.dedeco@custommicronics.com',
+'auzie.roode@custommicronics.com',
+'avumf@custommicronics.com',
+'awesomeboy2000@custommicronics.com',
+'bdhm@custommicronics.com',
+'beata.sorin@custommicronics.com',
+'bettiy312@custommicronics.com',
+'bgtlgxu@custommicronics.com',
+'bobheenan@custommicronics.com',
+'bpws@custommicronics.com',
+'c@custommicronics.com',
+'catalinalessani@custommicronics.com',
+'catchthismail@custommicronics.com',
+'cathleen817@custommicronics.com',
+'cgkwv@custommicronics.com',
+'chet291@custommicronics.com',
+'cindy@custommicronics.com',
+'connor.Newstetter@custommicronics.com',
+'contact@custommicronics.com',
+'corralie_Dauphinais@custommicronics.com',
+'cvohl@custommicronics.com',
+'d@custommicronics.com',
+'daesjjea@custommicronics.com',
+'dasdfGermovsek@custommicronics.com',
+'davor578@custommicronics.com',
+'dcaehbg@custommicronics.com',
+'deadDriss@custommicronics.com',
+'dfssdf@custommicronics.com',
+'dgi@custommicronics.com',
+'dhlf@custommicronics.com',
+'diverslg@custommicronics.com',
+'dj@custommicronics.com',
+'dmxgirl74@custommicronics.com',
+'dpfiwqi@custommicronics.com',
+'dsadLaugherty@custommicronics.com',
+'dssd@custommicronics.com',
+'dssdd@custommicronics.com',
+'dt@custommicronics.com',
+'dtn@custommicronics.com',
+'dtnn@custommicronics.com',
+'duric812@custommicronics.com',
+'dwaryrmkkb@custommicronics.com',
+'dzeima@custommicronics.com',
+'edtd@custommicronics.com',
+'edtdd@custommicronics.com',
+'eiscde@custommicronics.com',
+'eisingarqk@custommicronics.com',
+'elumirdrqtk@custommicronics.com',
+'enzoLourenco@custommicronics.com',
+'eo@custommicronics.com',
+'esquivel@custommicronics.com',
+'eugenefioretti@custommicronics.com',
+'ewingyoiak@custommicronics.com',
+'fbpvgy@custommicronics.com',
+'fdm@custommicronics.com',
+'felejafcoo@custommicronics.com',
+'fennandoFeezell@custommicronics.com',
+'ferit_Minato@custommicronics.com',
+'ferony@custommicronics.com',
+'fgjklfq@custommicronics.com',
+'fiwnydm@custommicronics.com',
+'frmjqmj@custommicronics.com',
+'fty@custommicronics.com',
+'furgatchpormz@custommicronics.com',
+'g@custommicronics.com',
+'gcymo@custommicronics.com',
+'geers@custommicronics.com',
+'ghjgh@custommicronics.com',
+'giang.decato@custommicronics.com',
+'godoywbqs@custommicronics.com',
+'graillat704@custommicronics.com',
+'grsjb@custommicronics.com',
+'haighcpbgg@custommicronics.com',
+'haiw@custommicronics.com',
+'hasmet.Dobberteen@custommicronics.com',
+'hatcherhygwz@custommicronics.com',
+'hayruzen@custommicronics.com',
+'helgesson@custommicronics.com',
+'hendershotpurv@custommicronics.com',
+'hezametkuvt@custommicronics.com',
+'hiua@custommicronics.com',
+'hobjgrd@custommicronics.com',
+'hongkyu582@custommicronics.com',
+'hosea_kresak@custommicronics.com',
+'hostickfcw@custommicronics.com',
+'hxxcw@custommicronics.com',
+'icikdpw@custommicronics.com',
+'ictx@custommicronics.com',
+'ieorhp@custommicronics.com',
+'imad933@custommicronics.com',
+'info@custommicronics.com',
+'inolfe@custommicronics.com',
+'iroebi@custommicronics.com',
+'isidoroKleyman@custommicronics.com',
+'isidorotonolli@custommicronics.com',
+'iudhuu@custommicronics.com',
+'iw@custommicronics.com',
+'jaffar@custommicronics.com',
+'jannah604@custommicronics.com',
+'jarnopalminkoski@custommicronics.com',
+'jek@custommicronics.com',
+'jennica278@custommicronics.com',
+'jerrod.halford@custommicronics.com',
+'jesus_scheer@custommicronics.com',
+'jfdab@custommicronics.com',
+'jhdsjkeyqpz@custommicronics.com',
+'jiefadfdas@custommicronics.com',
+'jklMowatt@custommicronics.com',
+'jlkhosa@custommicronics.com',
+'jn@custommicronics.com',
+'joleeMarcello@custommicronics.com',
+'jordyhergaa@custommicronics.com',
+'joslynjbg@custommicronics.com',
+'joyceeSzwed@custommicronics.com',
+'juice.loveridge@custommicronics.com',
+'k@custommicronics.com',
+'kabuikuudthq@custommicronics.com',
+'kakoli378@custommicronics.com',
+'kale838@custommicronics.com',
+'kalialajoie@custommicronics.com',
+'katalinatmy@custommicronics.com',
+'kdvvie@custommicronics.com',
+'kedzierskiknfca@custommicronics.com',
+'kerri.frappa@custommicronics.com',
+'kevanKoubsky@custommicronics.com',
+'khibqnr@custommicronics.com',
+'kiethSkelly@custommicronics.com',
+'kingdmxgirl74@custommicronics.com',
+'kk@custommicronics.com',
+'kloppersMcSchooler@custommicronics.com',
+'kotsakistessj@custommicronics.com',
+'koyeorbt@custommicronics.com',
+'kvistmfps@custommicronics.com',
+'lab@custommicronics.com',
+'laduner@custommicronics.com',
+'lakishaPortwood@custommicronics.com',
+'lary.neikov@custommicronics.com',
+'lejmi@custommicronics.com',
+'lfjgee@custommicronics.com',
+'linderwnfw@custommicronics.com',
+'logcheck@custommicronics.com',
+'lt@custommicronics.com',
+'ltca@custommicronics.com',
+'ltvul@custommicronics.com',
+'luciaaiazo@custommicronics.com',
+'lyonmtv@custommicronics.com',
+'m@custommicronics.com',
+'maatoukSiris@custommicronics.com',
+'mandarich@custommicronics.com',
+'marchelle794@custommicronics.com',
+'mardi@custommicronics.com',
+'markos504@custommicronics.com',
+'marley276@custommicronics.com',
+'marshia@custommicronics.com',
+'marthawrh@custommicronics.com',
+'matheaw679@custommicronics.com',
+'mcavq@custommicronics.com',
+'mckay.sauve@custommicronics.com',
+'mdpugms@custommicronics.com',
+'melanie.Thevamanoharan@custommicronics.com',
+'mfuikv@custommicronics.com',
+'michialSmartschan@custommicronics.com',
+'milewskidfcu@custommicronics.com',
+'misselhornbxyih@custommicronics.com',
+'moeizhager@custommicronics.com',
+'moezqm@custommicronics.com',
+'moises405@custommicronics.com',
+'moronijbeh@custommicronics.com',
+'mosehJustice@custommicronics.com',
+'moutaz608@custommicronics.com',
+'msibsxu@custommicronics.com',
+'msika299@custommicronics.com',
+'murnikovasqxv@custommicronics.com',
+'mutks@custommicronics.com',
+'n@custommicronics.com',
+'nally@custommicronics.com',
+'nathen@custommicronics.com',
+'neikov@custommicronics.com',
+'newberggffh@custommicronics.com',
+'nizar415@custommicronics.com',
+'nmaxior@custommicronics.com',
+'noreply@custommicronics.com',
+'northrkc@custommicronics.com',
+'ns@custommicronics.com',
+'nvn@custommicronics.com',
+'nyree@custommicronics.com',
+'ob@custommicronics.com',
+'ocxcnab@custommicronics.com',
+'ofjno@custommicronics.com',
+'olagueryhsu@custommicronics.com',
+'opxvp@custommicronics.com',
+'orlino@custommicronics.com',
+'ot@custommicronics.com',
+'ottawayKhazanov@custommicronics.com',
+'p@custommicronics.com',
+'pansy851@custommicronics.com',
+'pascualMike@custommicronics.com',
+'pavan@custommicronics.com',
+'pelekis222@custommicronics.com',
+'pelekis@custommicronics.com',
+'pemd@custommicronics.com',
+'pemdd@custommicronics.com',
+'pemon@custommicronics.com',
+'pemr@custommicronics.com',
+'perseverance_Haapaniemi@custommicronics.com',
+'petgord34truew@custommicronics.com',
+'pfnvxx@custommicronics.com',
+'pietro.Klusendorf@custommicronics.com',
+'pktd@custommicronics.com',
+'pnvrs@custommicronics.com',
+'polycarp504@custommicronics.com',
+'ptmql@custommicronics.com',
+'pwcququ@custommicronics.com',
+'pxjsae@custommicronics.com',
+'qdge@custommicronics.com',
+'qjbhwq@custommicronics.com',
+'qkabydh@custommicronics.com',
+'qrby@custommicronics.com',
+'r@custommicronics.com',
+'radoslaw336@custommicronics.com',
+'ramon@custommicronics.com',
+'rashmi699@custommicronics.com',
+'rauf989@custommicronics.com',
+'rd719@custommicronics.com',
+'reecectaje@custommicronics.com',
+'relay.scotland.net-1186163875-testing@custommicronics.com',
+'rennie@custommicronics.com',
+'ricardo@custommicronics.com',
+'riccardoDEPRIEST@custommicronics.com',
+'rnl@custommicronics.com',
+'roope.Maiden@custommicronics.com',
+'rosendalndruh@custommicronics.com',
+'rpdvnpi@custommicronics.com',
+'rpkh@custommicronics.com',
+'rsc@custommicronics.com',
+'rykr@custommicronics.com',
+'sakka@custommicronics.com',
+'salangsangevv@custommicronics.com',
+'sales@custommicronics.com',
+'salkeldscrnz@custommicronics.com',
+'sampang.hardisty@custommicronics.com',
+'saranildejm@custommicronics.com',
+'schiffleryvzp@custommicronics.com',
+'se@custommicronics.com',
+'senior@custommicronics.com',
+'sheehanqnn@custommicronics.com',
+'sherwin709@custommicronics.com',
+'smihtnzr@custommicronics.com',
+'smith@custommicronics.com',
+'solomon@custommicronics.com',
+'solomonlhgst@custommicronics.com',
+'sondej@custommicronics.com',
+'ss@custommicronics.com',
+'starksbmhi@custommicronics.com',
+'stefanie_thuot@custommicronics.com',
+'steinkepidnp@custommicronics.com',
+'stibor@custommicronics.com',
+'stogrincaGetzinger@custommicronics.com',
+'stvmi@custommicronics.com',
+'sue@custommicronics.com',
+'sutter@custommicronics.com',
+'svcll@custommicronics.com',
+'sxlar@custommicronics.com',
+'syn.Lioy@custommicronics.com',
+'t@custommicronics.com',
+'tabbithamacgillivray@custommicronics.com',
+'takeuchinagzt@custommicronics.com',
+'tayfun922@custommicronics.com',
+'tiesmeyerqafrs@custommicronics.com',
+'tiger@custommicronics.com',
+'tigerlalla@custommicronics.com',
+'tomek.johns@custommicronics.com',
+'ts@custommicronics.com',
+'ttf@custommicronics.com',
+'tuac@custommicronics.com',
+'tvsjnop@custommicronics.com',
+'u@custommicronics.com',
+'umv@custommicronics.com',
+'uw@custommicronics.com',
+'v@custommicronics.com',
+'vftm@custommicronics.com',
+'vgcre@custommicronics.com',
+'vickie@custommicronics.com',
+'vja@custommicronics.com',
+'vlkwxd@custommicronics.com',
+'vvvStrain@custommicronics.com',
+'wallaceHoltan@custommicronics.com',
+'wasa@custommicronics.com',
+'webmasterd@custommicronics.com',
+'webmasterdd@custommicronics.com',
+'wilson.joo@custommicronics.com',
+'wlock.Lukacik@custommicronics.com',
+'wnqb@custommicronics.com',
+'wo@custommicronics.com',
+'wttk@custommicronics.com',
+'wxmacc@custommicronics.com',
+'xqgfa@custommicronics.com',
+'xqieira@custommicronics.com',
+'xs@custommicronics.com',
+'xu994@custommicronics.com',
+'yastqpe@custommicronics.com',
+'yitziJunanka@custommicronics.com',
+'yqbinvl@custommicronics.com',
+'zacherypongo@custommicronics.com',
+'zoe798@custommicronics.com',
+'zxlo@custommicronics.com'
+	);
+
+	my $i = 0;
+	my $thisAddr = "";
+    my $thisIsAFriend = 0;
+
+# you may want to change the greeting to something else...
+	print "220 $domain qgreylist $version\r\n";
+
+
+	$SIG{ALRM} = sub
+	{
+		syslog "debug", "SMTP: timeout: connection closed" if $debugmsg;
+
+		print "421 $domain timeout\r\n";
+		exit;
+	};
+
+
+	alarm $smtptimeout;
+	while ( my $line = <STDIN> )
+	{
+		alarm 0;
+
+		sleep 1;	# brief delay, to annoy spammers
+
+		alarm $smtptimeout;
+
+
+		$line =~ s/\r?\n?$//;
+
+		syslog "debug", "SMTP debug: >>> %s", $line if $debugmsg;
+
+		my ( $command, $parms ) = split / +/, $line, 2;
+
+		$command = uc $command;
+
+		if ( defined $commands{$command} )
+		{
+			my $reply = $commands{$command};
+
+			if ( $reply =~ m/<>/ )
+			{
+				my $addr = $parms || "?";
+				$addr =~ s/^(from|to):? *//i;
+
+				$reply =~ s/<>/$addr/;
+                $thisIsAFriend = 0;
+                foreach $i (@friendsOfCarlotta)
+                {
+					syslog "debug", "Friend check addr -%s-, i -%s-", $addr, $i;
+					$thisAddr = '<' . $i . '>';
+					if ( $addr eq $thisAddr )
+					{
+						syslog "info", "WHITELIST FRIEND  %s %s", $addr, "$whitelist/$ENV{TCPREMOTEIP}";
+                        set_mtime "$whitelist/$ENV{TCPREMOTEIP}";
+                        $thisIsAFriend = 1;
+					}
+                }
+				foreach $i (@spamtraps)
+				{
+					# syslog "debug", "addr -%s-, i -%s-", $addr, $i;
+					$thisAddr = '<' . $i . '>';
+					if ( $addr eq $thisAddr )
+					{
+						syslog "info", "SPAMTRAP %s %s", $addr, $checkfile;
+						set_blacklist_mtime $checkfile;
+					}
+				}
+			}
+
+			syslog "info", "SMTP: %s: %s", $command, $reply if $debugmsg;
+			print "$reply\r\n";
+		}
+		else
+		{
+			print "500 $command not known\r\n";
+		}
+
+		last if $command eq 'QUIT';
+	}
+
+	syslog "info", "SMTP: connection closed" if $debugmsg;
+	exit;
+}
+
+
+sub isotime
+{
+	my ( $time ) = @_;
+
+	my ( $sec, $min, $hour, $mday, $mon, $year, undef, undef, undef ) = localtime $time;
+
+	my $isotime = sprintf "%04d-%02d-%02d %02d:%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec;
+
+	return $isotime;
+}
+
+sub cleanup
+{
+	my $time = time;
+
+	foreach my $file ( <$base/*> )
+	{
+		# changed to allow for partial IP addresses, to allow for
+		# matching against class-b and class-c networks
+#		if ( $file =~ m{/([0-9]+\.[0-9]+\.(?:[0-9]+\.(?:[0-9]+)))$} )
+		if ( $file =~ m{/([0-9.]+)$} )
+		{
+			my $ip = $1;
+
+			my ( $atime, $mtime ) = (stat $file)[8,9];
+
+			# if the stat failed, we've probably got two separate processes cleaning at the same time...
+			next unless defined $atime and defined $mtime;
+
+			if ( $atime == $mtime )
+			{
+				if ( $atime < $time - $maxageonce )
+				{
+					syslog "info", "forgetting %s (seen once at %s)", $ip, isotime $atime if $verbose;
+
+					unlink $file or syslog "err", "failed to unlink $file";
+				}
+			}
+			else
+			{
+				if ( $atime < $time - $maxagegood )
+				{
+					syslog "info", "forgetting %s (first seen %s, last %s)", $ip, (isotime $mtime), (isotime $atime) if $verbose;
+
+					unlink $file or syslog "err", "failed to unlink $file";
+				}
+			}
+
+		}
+		# else not an IP address...
+	}
+}
+
+
+sub cleanup_maybe
+{
+	my $lastclean = -M "$base/.lastcleanup";
+
+	# avoid doing this on every smtp connection
+	if ( !defined $lastclean or $lastclean > $cleanupinterval / (24*60*60) )
+	{
+		syslog "debug", "running cleanup" if $debugmsg;
+
+		set_mtime "$base/.lastcleanup";
+		cleanup;
+	}
+}
+
+
+
+# ------------------------------------------------------------
+# main code starts here......
+
+# clean up old IPs from the greylist folder...
+cleanup_maybe;
+
+
+# TODO: change to an immediate error here..?
+unless ( defined $ENV{TCPREMOTEIP} )
+{
+	syslog "err", "ENV{TCPREMOEIP} not set!";
+	smtp_temp_fail "Cannot find remote IP";
+}
+
+# now this should never happen...
+unless ( $ENV{TCPREMOTEIP} =~ m{^(\d+\.\d+\.\d+\.\d+)$} )
+{
+	syslog "err", "ENV{TCPREMOEIP} = $ENV{TCPREMOTEIP} - bad format!";
+	smtp_temp_fail "Bad format for remote IP";
+}
+
+my $remoteip = $1;
+
+
+# IPs we relay for don't get greylisted...
+if ( defined $ENV{RELAYCLIENT} )
+{
+	syslog "debug", "Local IP accepted" if $debugmsg;
+	run_next_stage;
+}
+
+
+# ok - whitelisted IPs
+if ( check_ip $whitelist, $remoteip )
+{
+	syslog "debug", "IP $remoteip whitelisted" if $debugmsg;
+	run_next_stage;
+}
+
+# ok - now check to see if we should greylist this ip address...
+
+my $checkfile;
+if ( $greylistclassc )
+{
+	$remoteip =~ m{^(\d+\.\d+\.\d+\.)\d+$};
+	$checkfile = $base."/".$1;
+}
+else
+{
+	$checkfile = $base."/".$remoteip;}
+
+#my $mtime = -M $checkfile;
+
+my ( $atime, $mtime ) = check_ip $base, $remoteip;
+my $remotename  = "";
+my $remoteiaddr = "";
+my $remotemsg   = "";
+
+$remoteiaddr = inet_aton($remoteip);
+$remotename  = gethostbyaddr($remoteiaddr, AF_INET);
+$remotemsg   = $remotename . " " . $remoteip;
+
+if ( ! defined $mtime )
+{
+	# we don't know of this IP address - return a temporary error
+
+	syslog "info", "IP %s new - temp error, we do not know this IP", $remotemsg if $verbose;
+
+	# touch the file so we remember this IP for next time
+	set_mtime $checkfile;
+
+	smtp_temp_fail "Temporary local problem - try later", $checkfile;
+}
+#elsif ( $mtime < ( $greytime / (60*60*24) ) )	# NOTE: scale from seconds to days as returned by -M
+elsif ( (time - $mtime) < $greytime )
+{
+	# we already knew of the ip, but very recently - temp error again
+
+	syslog "info", "IP %s back too soon - temp error again, we do not know this IP", $remotemsg if $verbose;
+
+##	set_atime $checkfile;
+
+	smtp_temp_fail "Temporary local problem - I said try later", $checkfile;
+}
+
+# ok - we already knew and more than a few minutes ago
+
+syslog "info", "IP %s OK - accepting", $remotemsg if $verbose;
+
+# access the check file as it's a good IP
+set_atime $checkfile;
+
+# then launch qmail-smtpd or whatever...
+run_next_stage;
+

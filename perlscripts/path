@@ -1,0 +1,11 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Env;
+
+if ($^O eq "MSWin32") {
+    print join($/, split(/;/, $PATH)), "\n";
+} else {
+    print join($/, split(/:/, $PATH)), "\n";
+}
+

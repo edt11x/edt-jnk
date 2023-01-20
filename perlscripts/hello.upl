@@ -1,0 +1,16 @@
+
+use Understand;
+
+print "Opening\n";
+($db, $status) = Understand::open("c:\\work\\edt\\jsf\\udc2.udb");
+my $count = 0;
+die "Error status: ",$status,"\n" if $status;
+print "Starting loop\n";
+foreach $ent ($db->ents("File")) {
+    print "Entity : ",++$count,"\n";
+    print $ent->name(),"  [",$ent->kindname(),"]\n";
+}
+print "Closing DB\n";
+$db->close();
+
+

@@ -1,0 +1,99 @@
+===============================================================================
+
+Problems with : http://www.amex.com/
+The text returned was:
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><HTML><HEAD>
+<meta http-equiv="refresh" content="0;url=http://www.amex.com/cgi-bin/WebObjects/AmexWeb">
+
+<script>
+<!-- JM's antiframing recursion -- stealthy
+	if (self.parent.frames.length != 0) self.parent.location="http://www.amex.com/";
+// -->
+</script>
+
+<META  NAME="Description" CONTENT="The American Stock Exchange">
+<META  NAME="Keywords" CONTENT="stock,stocks,investing,invest,exchange,stock exchange,options,options exchange,options and derivatives,derivatives,spiders,spdrs,diamonds,dia,spy,mdy,auction market,public companies,public company,trading,trades">
+
+<!-- meta http-equiv="refresh" content="0;URL=http://www.amex.com/diamonds/" -->
+
+</HEAD><body bgcolor="#000033"></BODY></HTML>
+
+
+===============================================================================
+
+Problems with : http://www.cris.com/~jdholley/wcc/
+The text returned was:
+<HTML>
+<HEAD>
+<TITLE>WebCam Central has moved</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=#00C8FF TEXT=#000000>
+
+
+<CENTER><IMG SRC="bin/Truckin.gif"></CENTER>
+
+<CENTER><TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR>
+  <TD ROWSPAN=3><IMG SRC="bin/left.gif"></TD>
+  <TD VALIGN=TOP><IMG SRC="bin/top.gif"></TD>
+  <TD ROWSPAN=3><IMG SRC="bin/right.gif"></TD>
+  
+</TR>
+
+<TR>
+  <TD>
+<CENTER>
+<IMG SRC="bin/wcc_logo.gif" WIDTH=341 HEIGHT=65 ALT="WebCam Central has moved"><BR>
+<FONT SIZE=+3 COLOR=BLUE><B>has moved!</B></FONT>
+<P>
+<H2>We are now located at<BR>
+<A HREF="http://www.camcentral.com"><B>http://www.camcentral.com</B></A>
+<P>
+<H2>See you there!
+<P>
+Please update your bookmarks<BR>
+This page will not be here much longer
+</TD></TR>
+<TR><TD VALIGN=BOTTOM><IMG SRC="bin/bottom.gif"></TD></TR>
+</TABLE></CENTER>
+
+
+</BODY>
+</HTML>
+
+<!-- Concentric Network Corporation provides this web directory as
+a service to its customers and is not responsible for its content. -->
+
+===============================================================================
+
+Problems with : http://www.cs.umd.edu/users/cml/invest-faq
+The text returned was:
+<HTML>
+<HEAD>
+<TITLE>
+An Error Occurred
+</TITLE>
+</HEAD>
+<BODY>
+<H1>An Error Occurred</h1>
+404 - Not Found
+</BODY>
+</HTML>
+
+
+===============================================================================
+
+Problems with : http://www.nyse.com/
+The text returned was:
+<!DOCTYPE HTML PUBLIC "-//SQ//DTD HTML 2.0 + all extensions//EN" "hmpro3.dtd">
+<HTML>
+<HEAD>
+<TITLE></TITLE></HEAD>
+<FRAMESET COLS="138,*" frameborder="0" framespacing="0" border=0 marginheight="0" columwidth="0">
+<FRAME SRC="public/fl.htm" NAME="left" border="0" marginwidth="0" marginheight="0" scrolling="no" noresize="noresize">
+<FRAME
+SRC="main.htm" NAME="main" border ="0" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLLING="auto" noresize="noresize" >
+<NOFRAMES><BODY></BODY></NOFRAMES></FRAMESET></HTML>
+
+

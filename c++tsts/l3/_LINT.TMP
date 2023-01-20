@@ -1,0 +1,1352 @@
+
+--- Module:   FXStringTst.cpp 
+                                     _
+   #define       INT_SIZE            32
+mscStdCompl.h(66) : Note 1923: macro 'INT_SIZE' could become const variable --
+    Effective C++ #1
+                    _
+    #define FALSE   0
+mscStdTypes.h(113) : Note 1923: macro 'FALSE' could become const variable --
+    Effective C++ #1
+                    _
+    #define TRUE    1
+mscStdTypes.h(114) : Note 1923: macro 'TRUE' could become const variable --
+    Effective C++ #1
+                    _
+    #define NULL    0
+mscStdTypes.h(115) : Note 1923: macro 'NULL' could become const variable --
+    Effective C++ #1
+                                      _
+      #define     NO                  0
+StdDefs.h(69) : Note 1923: macro 'NO' could become const variable -- Effective
+    C++ #1
+                                      _
+      #define     YES                 1
+StdDefs.h(70) : Note 1923: macro 'YES' could become const variable -- Effective
+    C++ #1
+                                         _
+      #define     DONT_KNOW           (-1)
+StdDefs.h(71) : Note 1923: macro 'DONT_KNOW' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_00              (0x01U)
+StdDefs.h(95) : Note 1923: macro 'BIT_00' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_01              (0x02U)
+StdDefs.h(96) : Note 1923: macro 'BIT_01' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_02              (0x04U)
+StdDefs.h(97) : Note 1923: macro 'BIT_02' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_03              (0x08U)
+StdDefs.h(98) : Note 1923: macro 'BIT_03' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_04              (0x10U)
+StdDefs.h(99) : Note 1923: macro 'BIT_04' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_05              (0x20U)
+StdDefs.h(100) : Note 1923: macro 'BIT_05' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_06              (0x40U)
+StdDefs.h(101) : Note 1923: macro 'BIT_06' could become const variable --
+    Effective C++ #1
+                                         _
+   #define     BIT_07              (0x80U)
+StdDefs.h(102) : Note 1923: macro 'BIT_07' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_08              (0x0100U)
+StdDefs.h(103) : Note 1923: macro 'BIT_08' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_09              (0x0200U)
+StdDefs.h(104) : Note 1923: macro 'BIT_09' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_10              (0x0400U)
+StdDefs.h(105) : Note 1923: macro 'BIT_10' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_11              (0x0800U)
+StdDefs.h(106) : Note 1923: macro 'BIT_11' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_12              (0x1000U)
+StdDefs.h(107) : Note 1923: macro 'BIT_12' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_13              (0x2000U)
+StdDefs.h(108) : Note 1923: macro 'BIT_13' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_14              (0x4000U)
+StdDefs.h(109) : Note 1923: macro 'BIT_14' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     BIT_15              (0x8000U)
+StdDefs.h(110) : Note 1923: macro 'BIT_15' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_16              (0x00010000UL)
+StdDefs.h(111) : Note 1923: macro 'BIT_16' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_17              (0x00020000UL)
+StdDefs.h(112) : Note 1923: macro 'BIT_17' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_18              (0x00040000UL)
+StdDefs.h(113) : Note 1923: macro 'BIT_18' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_19              (0x00080000UL)
+StdDefs.h(114) : Note 1923: macro 'BIT_19' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_20              (0x00100000UL)
+StdDefs.h(115) : Note 1923: macro 'BIT_20' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_21              (0x00200000UL)
+StdDefs.h(116) : Note 1923: macro 'BIT_21' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_22              (0x00400000UL)
+StdDefs.h(117) : Note 1923: macro 'BIT_22' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_23              (0x00800000UL)
+StdDefs.h(118) : Note 1923: macro 'BIT_23' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_24              (0x01000000UL)
+StdDefs.h(119) : Note 1923: macro 'BIT_24' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_25              (0x02000000UL)
+StdDefs.h(120) : Note 1923: macro 'BIT_25' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_26              (0x04000000UL)
+StdDefs.h(121) : Note 1923: macro 'BIT_26' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_27              (0x08000000UL)
+StdDefs.h(122) : Note 1923: macro 'BIT_27' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_28              (0x10000000UL)
+StdDefs.h(123) : Note 1923: macro 'BIT_28' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_29              (0x20000000UL)
+StdDefs.h(124) : Note 1923: macro 'BIT_29' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_30              (0x40000000UL)
+StdDefs.h(125) : Note 1923: macro 'BIT_30' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     BIT_31              (0x80000000UL)
+StdDefs.h(126) : Note 1923: macro 'BIT_31' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_1K               (0x0400U)
+StdDefs.h(133) : Note 1923: macro 'CS_1K' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_2K               (0x0800U)
+StdDefs.h(134) : Note 1923: macro 'CS_2K' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_4K               (0x1000U)
+StdDefs.h(135) : Note 1923: macro 'CS_4K' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_8K               (0x2000U)
+StdDefs.h(136) : Note 1923: macro 'CS_8K' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_16K              (0x4000U)
+StdDefs.h(137) : Note 1923: macro 'CS_16K' could become const variable --
+    Effective C++ #1
+                                           _
+   #define     CS_32K              (0x8000U)
+StdDefs.h(138) : Note 1923: macro 'CS_32K' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_64K              (0x00010000UL)
+StdDefs.h(139) : Note 1923: macro 'CS_64K' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_128K             (0x00020000UL)
+StdDefs.h(140) : Note 1923: macro 'CS_128K' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_256K             (0x00040000UL)
+StdDefs.h(141) : Note 1923: macro 'CS_256K' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_512K             (0x00080000UL)
+StdDefs.h(142) : Note 1923: macro 'CS_512K' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_1M               (0x00100000UL)
+StdDefs.h(143) : Note 1923: macro 'CS_1M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_2M               (0x00200000UL)
+StdDefs.h(144) : Note 1923: macro 'CS_2M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_4M               (0x00400000UL)
+StdDefs.h(145) : Note 1923: macro 'CS_4M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_8M               (0x00800000UL)
+StdDefs.h(146) : Note 1923: macro 'CS_8M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_16M              (0x01000000UL)
+StdDefs.h(147) : Note 1923: macro 'CS_16M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_32M              (0x02000000UL)
+StdDefs.h(148) : Note 1923: macro 'CS_32M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_64M              (0x04000000UL)
+StdDefs.h(149) : Note 1923: macro 'CS_64M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_128M             (0x08000000UL)
+StdDefs.h(150) : Note 1923: macro 'CS_128M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_256M             (0x10000000UL)
+StdDefs.h(151) : Note 1923: macro 'CS_256M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_512M             (0x20000000UL)
+StdDefs.h(152) : Note 1923: macro 'CS_512M' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_1G               (0x40000000UL)
+StdDefs.h(153) : Note 1923: macro 'CS_1G' could become const variable --
+    Effective C++ #1
+                                                _
+   #define     CS_2G               (0x80000000UL)
+StdDefs.h(154) : Note 1923: macro 'CS_2G' could become const variable --
+    Effective C++ #1
+                                      _
+     #define   SECONDS_PER_MINUTE  (60)
+StdDefs.h(162) : Note 1923: macro 'SECONDS_PER_MINUTE' could become const
+    variable -- Effective C++ #1
+                                        _
+     #define   SECONDS_PER_HOUR    (3600)
+StdDefs.h(166) : Note 1923: macro 'SECONDS_PER_HOUR' could become const
+    variable -- Effective C++ #1
+                                         _
+     #define   SECONDS_PER_DAY     (86400)
+StdDefs.h(170) : Note 1923: macro 'SECONDS_PER_DAY' could become const variable
+    -- Effective C++ #1
+                                          _
+     #define   SECONDS_PER_WEEK    (604800)
+StdDefs.h(174) : Note 1923: macro 'SECONDS_PER_WEEK' could become const
+    variable -- Effective C++ #1
+                          _
+         #define NULL   (0)
+StdDefs.h(190) : Note 1923: macro 'NULL' could become const variable --
+    Effective C++ #1
+                                      _
+   #define STRINGS_IDENTICAL  ( 0 )   /* strcmp() value returned when test strings are the same */
+StdDefs.h(210) : Note 1923: macro 'STRINGS_IDENTICAL' could become const
+    variable -- Effective C++ #1
+                                  _
+   #define STRING_MATCH_FOUND ( 0 )
+StdDefs.h(211) : Note 1923: macro 'STRING_MATCH_FOUND' could become const
+    variable -- Effective C++ #1
+                                    _
+   #define MAX_STRING_25      (  25 )
+StdDefs.h(213) : Note 1923: macro 'MAX_STRING_25' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_50      (  50 )
+StdDefs.h(214) : Note 1923: macro 'MAX_STRING_50' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_55      (  55 )
+StdDefs.h(215) : Note 1923: macro 'MAX_STRING_55' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_70      (  70 )
+StdDefs.h(216) : Note 1923: macro 'MAX_STRING_70' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_80      (  80 )
+StdDefs.h(217) : Note 1923: macro 'MAX_STRING_80' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_100     ( 100 )
+StdDefs.h(218) : Note 1923: macro 'MAX_STRING_100' could become const variable
+    -- Effective C++ #1
+                                    _
+   #define MAX_STRING_255     ( 255 )
+StdDefs.h(219) : Note 1923: macro 'MAX_STRING_255' could become const variable
+    -- Effective C++ #1
+                                               _
+   #define MAX_CHARS_LINE     ( MAX_STRING_255 )
+StdDefs.h(220) : Note 1923: macro 'MAX_CHARS_LINE' could become const variable
+    -- Effective C++ #1
+                                              _
+   #define MAX_CHARS_WORD     ( MAX_STRING_80 )
+StdDefs.h(221) : Note 1923: macro 'MAX_CHARS_WORD' could become const variable
+    -- Effective C++ #1
+                                                 _
+   #define MAX_PATH_LENGTH    ( MAX_STRING_255 ) /* Max length of path string */
+StdDefs.h(223) : Note 1923: macro 'MAX_PATH_LENGTH' could become const variable
+    -- Effective C++ #1
+                                              _
+   #define FILE_NAME_LENGTH   ( MAX_STRING_80 )
+StdDefs.h(224) : Note 1923: macro 'FILE_NAME_LENGTH' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define VGA_WIDTH_PIXELS   (  640 )
+StdDefs.h(228) : Note 1923: macro 'VGA_WIDTH_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define VGA_HEIGHT_PIXELS  (  480 )
+StdDefs.h(229) : Note 1923: macro 'VGA_HEIGHT_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define SVGA_WIDTH_PIXELS  (  800 )
+StdDefs.h(230) : Note 1923: macro 'SVGA_WIDTH_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define SVGA_HEIGHT_PIXELS (  600 )
+StdDefs.h(231) : Note 1923: macro 'SVGA_HEIGHT_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define XGA_WIDTH_PIXELS   ( 1024 )
+StdDefs.h(232) : Note 1923: macro 'XGA_WIDTH_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define XGA_HEIGHT_PIXELS  (  768 )
+StdDefs.h(233) : Note 1923: macro 'XGA_HEIGHT_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define SXGA_WIDTH_PIXELS  ( 1280 )
+StdDefs.h(234) : Note 1923: macro 'SXGA_WIDTH_PIXELS' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define SXGA_HEIGHT_PIXELS ( 1024 )
+StdDefs.h(235) : Note 1923: macro 'SXGA_HEIGHT_PIXELS' could become const
+    variable -- Effective C++ #1
+                              _
+   #define MAX_WIDTH_PIXELS   SVGA_WIDTH_PIXELS
+StdDefs.h(237) : Note 1923: macro 'MAX_WIDTH_PIXELS' could become const
+    variable -- Effective C++ #1
+                              _
+   #define MAX_HEIGHT_PIXELS  SVGA_HEIGHT_PIXELS
+StdDefs.h(238) : Note 1923: macro 'MAX_HEIGHT_PIXELS' could become const
+    variable -- Effective C++ #1
+                                                       _
+   #define STR_NULL           "\0"                     /*  ( char )NULL?  */
+StdDefs.h(241) : Note 1923: macro 'STR_NULL' could become const variable --
+    Effective C++ #1
+                                                       _
+   #define CHAR_NULL          '\0'                     /*  ( char )NULL?  */
+StdDefs.h(242) : Note 1923: macro 'CHAR_NULL' could become const variable --
+    Effective C++ #1
+                                     _
+   #define WRITE_SMB_TIMEOUT    20   /* Timeout in milliseconds for copy to shared memory */
+StdDefs.h(244) : Note 1923: macro 'WRITE_SMB_TIMEOUT' could become const
+    variable -- Effective C++ #1
+                                     _
+   #define READ_SMB_TIMEOUT      5   /* Timeout in milliseconds for get from shared memory */
+StdDefs.h(245) : Note 1923: macro 'READ_SMB_TIMEOUT' could become const
+    variable -- Effective C++ #1
+                               _
+   #define IO_PROCESSOR        0
+StdDefs.h(248) : Note 1923: macro 'IO_PROCESSOR' could become const variable --
+    Effective C++ #1
+                               _
+   #define DISPLAY_PROCESSOR   1
+StdDefs.h(249) : Note 1923: macro 'DISPLAY_PROCESSOR' could become const
+    variable -- Effective C++ #1
+                                                                                                         _
+        ( (double)( (int)( ( number * pow( 10.0, (double)digits) ) - 0.5 ) / pow( 10.0, (double)digits )))
+StdMacros.h(71) : Info 773: Expression-like macro 'ROUND' not parenthesized
+         _
+#include "StdIncl.h"
+FXString20.h(55) : Warning 537: Repeated include file 'StdIncl.h'
+         _
+#include "StdIncl.h"
+FXString.h(58) : Warning 537: Repeated include file 'StdIncl.h'
+                                _
+#define EFXS_EXCEEDS_MAX_LENGTH 1
+FXString.h(67) : Note 1923: macro 'EFXS_EXCEEDS_MAX_LENGTH' could become const
+    variable -- Effective C++ #1
+                                _
+#define EFXS_NULL_POINTER       2
+FXString.h(68) : Note 1923: macro 'EFXS_NULL_POINTER' could become const
+    variable -- Effective C++ #1
+                                _
+#define EFXS_NULL_CHARACTER     3
+FXString.h(69) : Note 1923: macro 'EFXS_NULL_CHARACTER' could become const
+    variable -- Effective C++ #1
+                                                                _
+      tStdReturn setDouble( double dValue, char *pszFormat = "" );
+FXString.h(158) : Info 1776: Converting a string literal to char * is not const
+    safe (initialization)
+                                                          _
+      tStdReturn setHex( int iValue, char *pszFormat = "" );
+FXString.h(159) : Info 1776: Converting a string literal to char * is not const
+    safe (initialization)
+                                                          _
+      tStdReturn setInt( int iValue, char *pszFormat = "" );
+FXString.h(160) : Info 1776: Converting a string literal to char * is not const
+    safe (initialization)
+                          _
+#define FXSTRING20_SIZE   20
+FXString20.h(61) : Note 1923: macro 'FXSTRING20_SIZE' could become const
+    variable -- Effective C++ #1
+_
+{
+FXString20.h(71) : Note 1932: Base class 'FXString' is not abstract -- More
+    Effective C++ #33
+                           _
+      static char *pszVCSId;               /**< Source ID Track Number */
+FXString20.h(78) : Warning 1516: Data member hides inherited member
+    'FXString::pszVCSId' (line 86, file FXString.h)
+FXString.h(86) : Info 830: Location cited in prior message
+                                       _
+      FXString20(const char *pszString);
+FXString20.h(87) : Note 1931: Constructor 'FXString20::FXString20(const char
+    *)' can be used for implicit conversions -- More Effective C++ #5
+                  _
+     ~FXString20();
+FXString20.h(90) : Warning 1509: base class destructor for class 'FXString' is
+    not virtual -- Effective C++ #14
+                            _
+    MyFooClass(FXString20 z);
+FXStringTst.cpp(14) : Note 1931: Constructor 'MyFooClass::MyFooClass(FXString20)'
+    can be used for implicit conversions -- More Effective C++ #5
+                   _
+    FXString20 & _z;
+FXStringTst.cpp(17) : Info 1725: class member 'MyFooClass::_z' is a reference
+_
+};
+FXStringTst.cpp(18) : Info 1712: default constructor not defined for class
+    'MyFooClass'
+
+--- Global Wrap-up
+
+Info 756: global typedef 'uint16Record' (line 120, file StdTypes.h) not
+    referenced
+StdTypes.h(120) : Info 830: Location cited in prior message
+Info 756: global typedef 'uint32Record' (line 126, file StdTypes.h) not
+    referenced
+StdTypes.h(126) : Info 830: Location cited in prior message
+Info 756: global typedef 'uint64Record' (line 132, file StdTypes.h) not
+    referenced
+StdTypes.h(132) : Info 830: Location cited in prior message
+Info 756: global typedef 'uint8Record' (line 114, file StdTypes.h) not
+    referenced
+StdTypes.h(114) : Info 830: Location cited in prior message
+Info 756: global typedef 'xreal' (line 86, file mscStdTypes.h) not referenced
+mscStdTypes.h(86) : Info 830: Location cited in prior message
+Info 756: global typedef 'int64Record' (line 157, file StdTypes.h) not
+    referenced
+StdTypes.h(157) : Info 830: Location cited in prior message
+Info 756: global typedef 'voidPtr' (line 63, file StdTypes.h) not referenced
+StdTypes.h(63) : Info 830: Location cited in prior message
+Info 756: global typedef 'int8Record' (line 139, file StdTypes.h) not
+    referenced
+StdTypes.h(139) : Info 830: Location cited in prior message
+Info 756: global typedef 'bytePtr' (line 64, file StdTypes.h) not referenced
+StdTypes.h(64) : Info 830: Location cited in prior message
+Info 756: global typedef 'real32Record' (line 95, file StdTypes.h) not
+    referenced
+StdTypes.h(95) : Info 830: Location cited in prior message
+Info 756: global typedef 'real64Record' (line 101, file StdTypes.h) not
+    referenced
+StdTypes.h(101) : Info 830: Location cited in prior message
+Info 756: global typedef 'realPtr' (line 70, file StdTypes.h) not referenced
+StdTypes.h(70) : Info 830: Location cited in prior message
+Info 756: global typedef 'real80Record' (line 107, file StdTypes.h) not
+    referenced
+StdTypes.h(107) : Info 830: Location cited in prior message
+Info 756: global typedef 'ubytePtr' (line 65, file StdTypes.h) not referenced
+StdTypes.h(65) : Info 830: Location cited in prior message
+Info 756: global typedef 'qword' (line 65, file mscStdTypes.h) not referenced
+mscStdTypes.h(65) : Info 830: Location cited in prior message
+Info 756: global typedef 'boolRecord' (line 89, file StdTypes.h) not referenced
+StdTypes.h(89) : Info 830: Location cited in prior message
+Info 756: global typedef 'booleanPtr' (line 73, file StdTypes.h) not referenced
+StdTypes.h(73) : Info 830: Location cited in prior message
+Info 756: global typedef 'drealPtr' (line 71, file StdTypes.h) not referenced
+StdTypes.h(71) : Info 830: Location cited in prior message
+Info 756: global typedef 'dwordPtr' (line 68, file StdTypes.h) not referenced
+StdTypes.h(68) : Info 830: Location cited in prior message
+Info 756: global typedef 'int16Record' (line 145, file StdTypes.h) not
+    referenced
+StdTypes.h(145) : Info 830: Location cited in prior message
+Info 756: global typedef 'uqword' (line 71, file mscStdTypes.h) not referenced
+mscStdTypes.h(71) : Info 830: Location cited in prior message
+Info 756: global typedef 'wordPtr' (line 66, file StdTypes.h) not referenced
+StdTypes.h(66) : Info 830: Location cited in prior message
+Info 756: global typedef 'erealPtr' (line 72, file StdTypes.h) not referenced
+StdTypes.h(72) : Info 830: Location cited in prior message
+Info 756: global typedef 'uwordPtr' (line 67, file StdTypes.h) not referenced
+StdTypes.h(67) : Info 830: Location cited in prior message
+Info 756: global typedef 'charRecord' (line 83, file StdTypes.h) not referenced
+StdTypes.h(83) : Info 830: Location cited in prior message
+Info 756: global typedef 'int32Record' (line 151, file StdTypes.h) not
+    referenced
+StdTypes.h(151) : Info 830: Location cited in prior message
+Info 756: global typedef 'udwordPtr' (line 69, file StdTypes.h) not referenced
+StdTypes.h(69) : Info 830: Location cited in prior message
+Warning 1512: destructor for base class 'FXString' (line 77, file FXString.h)
+    is not virtual
+FXString.h(77) : Info 830: Location cited in prior message
+Info 755: global macro 'DISPLAY_PROCESSOR' (line 249, file StdDefs.h) not
+    referenced
+StdDefs.h(249) : Info 830: Location cited in prior message
+Info 755: global macro 'FILE_NAME_LENGTH' (line 224, file StdDefs.h) not
+    referenced
+StdDefs.h(224) : Info 830: Location cited in prior message
+Info 755: global macro 'KTS_2_FPS' (line 97, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(97) : Info 830: Location cited in prior message
+Info 755: global macro 'PID4' (line 57, file StdMathConstants.h) not referenced
+StdMathConstants.h(57) : Info 830: Location cited in prior message
+Info 755: global macro 'SVGA_WIDTH_PIXELS' (line 230, file StdDefs.h) not
+    referenced
+StdDefs.h(230) : Info 830: Location cited in prior message
+Info 755: global macro 'SVGA_HEIGHT_PIXELS' (line 231, file StdDefs.h) not
+    referenced
+StdDefs.h(231) : Info 830: Location cited in prior message
+Info 755: global macro 'SM_2_FEET' (line 76, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(76) : Info 830: Location cited in prior message
+Info 755: global macro 'SM_2_NM' (line 88, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(88) : Info 830: Location cited in prior message
+Info 755: global macro 'SM_2_KM' (line 90, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(90) : Info 830: Location cited in prior message
+Info 755: global macro 'ANGLE360' (line 62, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(62) : Info 830: Location cited in prior message
+Info 755: global macro 'ANGLE180' (line 63, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(63) : Info 830: Location cited in prior message
+Info 755: global macro 'INCHES_2_FEET' (line 70, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(70) : Info 830: Location cited in prior message
+Info 755: global macro 'STRINGS_IDENTICAL' (line 210, file StdDefs.h) not
+    referenced
+StdDefs.h(210) : Info 830: Location cited in prior message
+Info 755: global macro 'STRING_MATCH_FOUND' (line 211, file StdDefs.h) not
+    referenced
+StdDefs.h(211) : Info 830: Location cited in prior message
+Info 755: global macro 'SXGA_WIDTH_PIXELS' (line 234, file StdDefs.h) not
+    referenced
+StdDefs.h(234) : Info 830: Location cited in prior message
+Info 755: global macro 'SXGA_HEIGHT_PIXELS' (line 235, file StdDefs.h) not
+    referenced
+StdDefs.h(235) : Info 830: Location cited in prior message
+Info 755: global macro '_NEAR' (line 68, file mscStdCompl.h) not referenced
+mscStdCompl.h(68) : Info 830: Location cited in prior message
+Info 755: global macro '_PACKED' (line 74, file mscStdCompl.h) not referenced
+mscStdCompl.h(74) : Info 830: Location cited in prior message
+Info 755: global macro 'ROUND10' (line 67, file StdMacros.h) not referenced
+StdMacros.h(67) : Info 830: Location cited in prior message
+Info 755: global macro 'ROUND' (line 71, file StdMacros.h) not referenced
+StdMacros.h(71) : Info 830: Location cited in prior message
+Info 755: global macro 'FEET_2_INCHES' (line 69, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(69) : Info 830: Location cited in prior message
+Info 755: global macro 'FEET_2_KM' (line 77, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(77) : Info 830: Location cited in prior message
+Info 755: global macro 'FEET_2_METERS' (line 71, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(71) : Info 830: Location cited in prior message
+Info 755: global macro 'FEET_2_NM' (line 73, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(73) : Info 830: Location cited in prior message
+Info 755: global macro 'FEET_2_SM' (line 75, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(75) : Info 830: Location cited in prior message
+Info 755: global macro 'LATSEC_2_METERS' (line 82, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(82) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_100' (line 218, file StdDefs.h) not
+    referenced
+StdDefs.h(218) : Info 830: Location cited in prior message
+Info 755: global macro 'LATDEG_2_FEET' (line 83, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(83) : Info 830: Location cited in prior message
+Info 755: global macro 'LATDEG_2_METERS' (line 81, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(81) : Info 830: Location cited in prior message
+Info 755: global macro 'LATDEG_2_NM' (line 84, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(84) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_CHARS_WORD' (line 221, file StdDefs.h) not
+    referenced
+StdDefs.h(221) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_PATH_LENGTH' (line 223, file StdDefs.h) not
+    referenced
+StdDefs.h(223) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_HEIGHT_PIXELS' (line 238, file StdDefs.h) not
+    referenced
+StdDefs.h(238) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_25' (line 213, file StdDefs.h) not
+    referenced
+StdDefs.h(213) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_50' (line 214, file StdDefs.h) not
+    referenced
+StdDefs.h(214) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_55' (line 215, file StdDefs.h) not
+    referenced
+StdDefs.h(215) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_70' (line 216, file StdDefs.h) not
+    referenced
+StdDefs.h(216) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_STRING_80' (line 217, file StdDefs.h) not
+    referenced
+StdDefs.h(217) : Info 830: Location cited in prior message
+Info 755: global macro 'MAX_WIDTH_PIXELS' (line 237, file StdDefs.h) not
+    referenced
+StdDefs.h(237) : Info 830: Location cited in prior message
+Info 755: global macro 'ABS' (line 57, file StdMacros.h) not referenced
+StdMacros.h(57) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_128K' (line 140, file StdDefs.h) not referenced
+StdDefs.h(140) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_128M' (line 150, file StdDefs.h) not referenced
+StdDefs.h(150) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_16K' (line 137, file StdDefs.h) not referenced
+StdDefs.h(137) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_16M' (line 147, file StdDefs.h) not referenced
+StdDefs.h(147) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_1G' (line 153, file StdDefs.h) not referenced
+StdDefs.h(153) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_1K' (line 133, file StdDefs.h) not referenced
+StdDefs.h(133) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_1M' (line 143, file StdDefs.h) not referenced
+StdDefs.h(143) : Info 830: Location cited in prior message
+Info 755: global macro 'EFXS_EXCEEDS_MAX_LENGTH' (line 67, file FXString.h) not
+    referenced
+FXString.h(67) : Info 830: Location cited in prior message
+Info 755: global macro 'EFXS_NULL_POINTER' (line 68, file FXString.h) not
+    referenced
+FXString.h(68) : Info 830: Location cited in prior message
+Info 755: global macro 'EFXS_NULL_CHARACTER' (line 69, file FXString.h) not
+    referenced
+FXString.h(69) : Info 830: Location cited in prior message
+Info 755: global macro 'WRITE_SMB_TIMEOUT' (line 244, file StdDefs.h) not
+    referenced
+StdDefs.h(244) : Info 830: Location cited in prior message
+Info 755: global macro 'IPID180' (line 59, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(59) : Info 830: Location cited in prior message
+Info 755: global macro 'RAD_2_DEG' (line 61, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(61) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_256K' (line 141, file StdDefs.h) not referenced
+StdDefs.h(141) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_256M' (line 151, file StdDefs.h) not referenced
+StdDefs.h(151) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_2G' (line 154, file StdDefs.h) not referenced
+StdDefs.h(154) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_2K' (line 134, file StdDefs.h) not referenced
+StdDefs.h(134) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_2M' (line 144, file StdDefs.h) not referenced
+StdDefs.h(144) : Info 830: Location cited in prior message
+Info 755: global macro 'IO_PROCESSOR' (line 248, file StdDefs.h) not referenced
+StdDefs.h(248) : Info 830: Location cited in prior message
+Info 755: global macro 'G' (line 66, file StdMathConstants.h) not referenced
+StdMathConstants.h(66) : Info 830: Location cited in prior message
+Info 755: global macro 'FLATTENING_FACTOR' (line 113, file StdMathConstants.h)
+    not referenced
+StdMathConstants.h(113) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_32K' (line 138, file StdDefs.h) not referenced
+StdDefs.h(138) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_32M' (line 148, file StdDefs.h) not referenced
+StdDefs.h(148) : Info 830: Location cited in prior message
+Info 755: global macro 'FPS_2_KTS' (line 98, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(98) : Info 830: Location cited in prior message
+Info 755: global macro 'MSEC_2_SEC' (line 102, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(102) : Info 830: Location cited in prior message
+Info 755: global macro 'STR_NULL' (line 241, file StdDefs.h) not referenced
+StdDefs.h(241) : Info 830: Location cited in prior message
+Info 755: global macro '_FAR' (line 69, file mscStdCompl.h) not referenced
+mscStdCompl.h(69) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_4K' (line 135, file StdDefs.h) not referenced
+StdDefs.h(135) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_4M' (line 145, file StdDefs.h) not referenced
+StdDefs.h(145) : Info 830: Location cited in prior message
+Info 755: global macro 'KM_2_FEET' (line 78, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(78) : Info 830: Location cited in prior message
+Info 755: global macro 'KM_2_SM' (line 91, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(91) : Info 830: Location cited in prior message
+Info 755: global macro 'KM_2_NM' (line 93, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(93) : Info 830: Location cited in prior message
+Info 755: global macro 'PI' (line 54, file StdMathConstants.h) not referenced
+StdMathConstants.h(54) : Info 830: Location cited in prior message
+Info 755: global macro 'TWO_PI' (line 55, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(55) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_512K' (line 142, file StdDefs.h) not referenced
+StdDefs.h(142) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_512M' (line 152, file StdDefs.h) not referenced
+StdDefs.h(152) : Info 830: Location cited in prior message
+Info 755: global macro 'DABS' (line 55, file StdMacros.h) not referenced
+StdMacros.h(55) : Info 830: Location cited in prior message
+Info 755: global macro 'INT_SIZE' (line 66, file mscStdCompl.h) not referenced
+mscStdCompl.h(66) : Info 830: Location cited in prior message
+Info 755: global macro 'PERCENT' (line 65, file StdMacros.h) not referenced
+StdMacros.h(65) : Info 830: Location cited in prior message
+Info 755: global macro 'SEC_2_MSEC' (line 103, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(103) : Info 830: Location cited in prior message
+Info 755: global macro 'SQRT2' (line 122, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(122) : Info 830: Location cited in prior message
+Info 755: global macro 'SQUARE' (line 53, file StdMacros.h) not referenced
+StdMacros.h(53) : Info 830: Location cited in prior message
+Info 755: global macro 'STD_DAY_TEMP' (line 108, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(108) : Info 830: Location cited in prior message
+Info 755: global macro 'STD_DAY_PRESS' (line 109, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(109) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_64K' (line 139, file StdDefs.h) not referenced
+StdDefs.h(139) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_64M' (line 149, file StdDefs.h) not referenced
+StdDefs.h(149) : Info 830: Location cited in prior message
+Info 755: global macro 'LIMIT' (line 59, file StdMacros.h) not referenced
+StdMacros.h(59) : Info 830: Location cited in prior message
+Info 755: global macro 'METERS_2_FEET' (line 72, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(72) : Info 830: Location cited in prior message
+Info 755: global macro 'EARTH_ECCENTRICITY' (line 116, file StdMathConstants.h)
+    not referenced
+StdMathConstants.h(116) : Info 830: Location cited in prior message
+Info 755: global macro 'EARTH_RADIUS_FEET' (line 119, file StdMathConstants.h)
+    not referenced
+StdMathConstants.h(119) : Info 830: Location cited in prior message
+Info 755: global macro 'EQUATORIAL_RADIUS_METERS' (line 120, file
+    StdMathConstants.h) not referenced
+StdMathConstants.h(120) : Info 830: Location cited in prior message
+Info 755: global macro 'INV_FLATTENING_FACTOR' (line 112, file
+    StdMathConstants.h) not referenced
+StdMathConstants.h(112) : Info 830: Location cited in prior message
+Info 755: global macro 'READ_SMB_TIMEOUT' (line 245, file StdDefs.h) not
+    referenced
+StdDefs.h(245) : Info 830: Location cited in prior message
+Info 755: global macro 'NM_2_FEET' (line 74, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(74) : Info 830: Location cited in prior message
+Info 755: global macro 'NM_2_SM' (line 89, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(89) : Info 830: Location cited in prior message
+Info 755: global macro 'NM_2_KM' (line 92, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(92) : Info 830: Location cited in prior message
+Info 755: global macro 'NM_2_METERS' (line 94, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(94) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_8K' (line 136, file StdDefs.h) not referenced
+StdDefs.h(136) : Info 830: Location cited in prior message
+Info 755: global macro 'CS_8M' (line 146, file StdDefs.h) not referenced
+StdDefs.h(146) : Info 830: Location cited in prior message
+Info 755: global macro 'LITTLE_ENDIAN' (line 64, file mscStdCompl.h) not
+    referenced
+mscStdCompl.h(64) : Info 830: Location cited in prior message
+Info 755: global macro 'MINIMUM' (line 63, file StdMacros.h) not referenced
+StdMacros.h(63) : Info 830: Location cited in prior message
+Info 755: global macro 'VGA_WIDTH_PIXELS' (line 228, file StdDefs.h) not
+    referenced
+StdDefs.h(228) : Info 830: Location cited in prior message
+Info 755: global macro 'VGA_HEIGHT_PIXELS' (line 229, file StdDefs.h) not
+    referenced
+StdDefs.h(229) : Info 830: Location cited in prior message
+Info 755: global macro 'ibCONVERT' (line 74, file StdMacros.h) not referenced
+StdMacros.h(74) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_00' (line 95, file StdDefs.h) not referenced
+StdDefs.h(95) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_01' (line 96, file StdDefs.h) not referenced
+StdDefs.h(96) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_02' (line 97, file StdDefs.h) not referenced
+StdDefs.h(97) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_03' (line 98, file StdDefs.h) not referenced
+StdDefs.h(98) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_04' (line 99, file StdDefs.h) not referenced
+StdDefs.h(99) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_05' (line 100, file StdDefs.h) not referenced
+StdDefs.h(100) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_06' (line 101, file StdDefs.h) not referenced
+StdDefs.h(101) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_07' (line 102, file StdDefs.h) not referenced
+StdDefs.h(102) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_08' (line 103, file StdDefs.h) not referenced
+StdDefs.h(103) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_09' (line 104, file StdDefs.h) not referenced
+StdDefs.h(104) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_10' (line 105, file StdDefs.h) not referenced
+StdDefs.h(105) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_11' (line 106, file StdDefs.h) not referenced
+StdDefs.h(106) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_12' (line 107, file StdDefs.h) not referenced
+StdDefs.h(107) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_13' (line 108, file StdDefs.h) not referenced
+StdDefs.h(108) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_14' (line 109, file StdDefs.h) not referenced
+StdDefs.h(109) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_15' (line 110, file StdDefs.h) not referenced
+StdDefs.h(110) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_16' (line 111, file StdDefs.h) not referenced
+StdDefs.h(111) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_17' (line 112, file StdDefs.h) not referenced
+StdDefs.h(112) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_18' (line 113, file StdDefs.h) not referenced
+StdDefs.h(113) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_19' (line 114, file StdDefs.h) not referenced
+StdDefs.h(114) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_20' (line 115, file StdDefs.h) not referenced
+StdDefs.h(115) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_21' (line 116, file StdDefs.h) not referenced
+StdDefs.h(116) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_22' (line 117, file StdDefs.h) not referenced
+StdDefs.h(117) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_23' (line 118, file StdDefs.h) not referenced
+StdDefs.h(118) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_24' (line 119, file StdDefs.h) not referenced
+StdDefs.h(119) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_25' (line 120, file StdDefs.h) not referenced
+StdDefs.h(120) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_26' (line 121, file StdDefs.h) not referenced
+StdDefs.h(121) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_27' (line 122, file StdDefs.h) not referenced
+StdDefs.h(122) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_28' (line 123, file StdDefs.h) not referenced
+StdDefs.h(123) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_29' (line 124, file StdDefs.h) not referenced
+StdDefs.h(124) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_30' (line 125, file StdDefs.h) not referenced
+StdDefs.h(125) : Info 830: Location cited in prior message
+Info 755: global macro 'BIT_31' (line 126, file StdDefs.h) not referenced
+StdDefs.h(126) : Info 830: Location cited in prior message
+Info 755: global macro 'CHAR_NULL' (line 242, file StdDefs.h) not referenced
+StdDefs.h(242) : Info 830: Location cited in prior message
+Info 755: global macro 'HOURS_2_SECONDS' (line 104, file StdMathConstants.h)
+    not referenced
+StdMathConstants.h(104) : Info 830: Location cited in prior message
+Info 755: global macro 'HOURS_2_MINUTES' (line 105, file StdMathConstants.h)
+    not referenced
+StdMathConstants.h(105) : Info 830: Location cited in prior message
+Info 755: global macro 'INTS_R_32_BITS' (line 65, file mscStdCompl.h) not
+    referenced
+mscStdCompl.h(65) : Info 830: Location cited in prior message
+Info 755: global macro 'PID180' (line 58, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(58) : Info 830: Location cited in prior message
+Info 755: global macro 'DEG_2_RAD' (line 60, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(60) : Info 830: Location cited in prior message
+Info 755: global macro 'DEG_2_ARCSEC' (line 85, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(85) : Info 830: Location cited in prior message
+Info 755: global macro 'ISQRT2' (line 123, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(123) : Info 830: Location cited in prior message
+Info 755: global macro 'MAXIMUM' (line 61, file StdMacros.h) not referenced
+StdMacros.h(61) : Info 830: Location cited in prior message
+Info 755: global macro 'PID2' (line 56, file StdMathConstants.h) not referenced
+StdMathConstants.h(56) : Info 830: Location cited in prior message
+Info 755: global macro 'MPS_2_KNOTS' (line 99, file StdMathConstants.h) not
+    referenced
+StdMathConstants.h(99) : Info 830: Location cited in prior message
+Info 755: global macro 'XGA_WIDTH_PIXELS' (line 232, file StdDefs.h) not
+    referenced
+StdDefs.h(232) : Info 830: Location cited in prior message
+Info 755: global macro 'XGA_HEIGHT_PIXELS' (line 233, file StdDefs.h) not
+    referenced
+StdDefs.h(233) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 81, file StdTypes.h) not
+    referenced
+StdTypes.h(81) : Info 830: Location cited in prior message
+Info 768: global struct member 'cData' (line 82, file StdTypes.h) not
+    referenced
+StdTypes.h(82) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 87, file StdTypes.h) not
+    referenced
+StdTypes.h(87) : Info 830: Location cited in prior message
+Info 768: global struct member 'bData' (line 88, file StdTypes.h) not
+    referenced
+StdTypes.h(88) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 93, file StdTypes.h) not
+    referenced
+StdTypes.h(93) : Info 830: Location cited in prior message
+Info 768: global struct member 'fData' (line 94, file StdTypes.h) not
+    referenced
+StdTypes.h(94) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 99, file StdTypes.h) not
+    referenced
+StdTypes.h(99) : Info 830: Location cited in prior message
+Info 768: global struct member 'dData' (line 100, file StdTypes.h) not
+    referenced
+StdTypes.h(100) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 105, file StdTypes.h) not
+    referenced
+StdTypes.h(105) : Info 830: Location cited in prior message
+Info 768: global struct member 'xData' (line 106, file StdTypes.h) not
+    referenced
+StdTypes.h(106) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 112, file StdTypes.h) not
+    referenced
+StdTypes.h(112) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Data' (line 113, file StdTypes.h) not
+    referenced
+StdTypes.h(113) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 118, file StdTypes.h) not
+    referenced
+StdTypes.h(118) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui2Data' (line 119, file StdTypes.h) not
+    referenced
+StdTypes.h(119) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 124, file StdTypes.h) not
+    referenced
+StdTypes.h(124) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui4Data' (line 125, file StdTypes.h) not
+    referenced
+StdTypes.h(125) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 130, file StdTypes.h) not
+    referenced
+StdTypes.h(130) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui8Data' (line 131, file StdTypes.h) not
+    referenced
+StdTypes.h(131) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 137, file StdTypes.h) not
+    referenced
+StdTypes.h(137) : Info 830: Location cited in prior message
+Info 768: global struct member 'i1Data' (line 138, file StdTypes.h) not
+    referenced
+StdTypes.h(138) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 143, file StdTypes.h) not
+    referenced
+StdTypes.h(143) : Info 830: Location cited in prior message
+Info 768: global struct member 'i2Data' (line 144, file StdTypes.h) not
+    referenced
+StdTypes.h(144) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 149, file StdTypes.h) not
+    referenced
+StdTypes.h(149) : Info 830: Location cited in prior message
+Info 768: global struct member 'i4Data' (line 150, file StdTypes.h) not
+    referenced
+StdTypes.h(150) : Info 830: Location cited in prior message
+Info 768: global struct member 'ui1Status' (line 155, file StdTypes.h) not
+    referenced
+StdTypes.h(155) : Info 830: Location cited in prior message
+Info 768: global struct member 'i8Data' (line 156, file StdTypes.h) not
+    referenced
+StdTypes.h(156) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::szComment' (line 84, file FXString.h)
+    not referenced
+FXString.h(84) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::pcCurToken' (line 85, file
+    FXString.h) not referenced
+FXString.h(85) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::pszVCSId' (line 86, file FXString.h)
+    not referenced
+FXString.h(86) : Info 830: Location cited in prior message
+Info 1715: static member 'FXString::pszVCSId' (line 86, file FXString.h) not
+    referenced
+FXString.h(86) : Info 830: Location cited in prior message
+Warning 1527: static member 'FXString::pszVCSId' (line 86, file FXString.h) not
+    defined
+FXString.h(86) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::pszBuffer' (line 89, file FXString.h)
+    not referenced
+FXString.h(89) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::ui2MaxLength' (line 90, file
+    FXString.h) not referenced
+FXString.h(90) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString::ui2Length' (line 91, file FXString.h)
+    not referenced
+FXString.h(91) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getBuffer(void) const' (line 98, file
+    FXString.h) not referenced
+FXString.h(98) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getBuffer(void) const' (line 98, file
+    FXString.h) not defined
+FXString.h(98) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getFixedLength(void) const' (line 99,
+    file FXString.h) not referenced
+FXString.h(99) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getFixedLength(void) const' (line 99,
+    file FXString.h) not defined
+FXString.h(99) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::length(void) const' (line 100, file
+    FXString.h) not referenced
+FXString.h(100) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::length(void) const' (line 100, file
+    FXString.h) not defined
+FXString.h(100) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::toUp(void)' (line 103, file FXString.h)
+    not referenced
+FXString.h(103) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::toUp(void)' (line 103, file
+    FXString.h) not defined
+FXString.h(103) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::toLow(void)' (line 104, file FXString.h)
+    not referenced
+FXString.h(104) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::toLow(void)' (line 104, file
+    FXString.h) not defined
+FXString.h(104) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::copy(const FXString &)' (line 107, file
+    FXString.h) not referenced
+FXString.h(107) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::copy(const FXString &)' (line 107,
+    file FXString.h) not defined
+FXString.h(107) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::copy(const char *)' (line 108, file
+    FXString.h) not referenced
+FXString.h(108) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::copy(const char *)' (line 108, file
+    FXString.h) not defined
+FXString.h(108) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::copy(char)' (line 109, file FXString.h)
+    not referenced
+FXString.h(109) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::copy(char)' (line 109, file
+    FXString.h) not defined
+FXString.h(109) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::copyN(const FXString &, short)' (line
+    110, file FXString.h) not referenced
+FXString.h(110) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::copyN(const FXString &, short)' (line
+    110, file FXString.h) not defined
+FXString.h(110) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::copyN(const char *, short)' (line 111,
+    file FXString.h) not referenced
+FXString.h(111) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::copyN(const char *, short)' (line 111,
+    file FXString.h) not defined
+FXString.h(111) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::concat(const FXString &)' (line 114, file
+    FXString.h) not referenced
+FXString.h(114) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::concat(const FXString &)' (line 114,
+    file FXString.h) not defined
+FXString.h(114) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::concat(const char *)' (line 115, file
+    FXString.h) not referenced
+FXString.h(115) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::concat(const char *)' (line 115, file
+    FXString.h) not defined
+FXString.h(115) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::concat(char)' (line 116, file FXString.h)
+    not referenced
+FXString.h(116) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::concat(char)' (line 116, file
+    FXString.h) not defined
+FXString.h(116) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::concatN(const FXString &, short)' (line
+    117, file FXString.h) not referenced
+FXString.h(117) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::concatN(const FXString &, short)'
+    (line 117, file FXString.h) not defined
+FXString.h(117) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::concatN(const char *, short)' (line 118,
+    file FXString.h) not referenced
+FXString.h(118) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::concatN(const char *, short)' (line
+    118, file FXString.h) not defined
+FXString.h(118) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compare(const FXString &) const' (line
+    121, file FXString.h) not referenced
+FXString.h(121) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compare(const FXString &) const' (line
+    121, file FXString.h) not defined
+FXString.h(121) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compare(const char *) const' (line 122,
+    file FXString.h) not referenced
+FXString.h(122) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compare(const char *) const' (line
+    122, file FXString.h) not defined
+FXString.h(122) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compare(char) const' (line 123, file
+    FXString.h) not referenced
+FXString.h(123) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compare(char) const' (line 123, file
+    FXString.h) not defined
+FXString.h(123) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareN(const FXString &, short) const'
+    (line 124, file FXString.h) not referenced
+FXString.h(124) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareN(const FXString &, short)
+    const' (line 124, file FXString.h) not defined
+FXString.h(124) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareN(const char *, short) const'
+    (line 125, file FXString.h) not referenced
+FXString.h(125) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareN(const char *, short) const'
+    (line 125, file FXString.h) not defined
+FXString.h(125) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareI(const FXString &) const' (line
+    128, file FXString.h) not referenced
+FXString.h(128) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareI(const FXString &) const'
+    (line 128, file FXString.h) not defined
+FXString.h(128) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareI(const char *) const' (line 129,
+    file FXString.h) not referenced
+FXString.h(129) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareI(const char *) const' (line
+    129, file FXString.h) not defined
+FXString.h(129) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareI(char) const' (line 130, file
+    FXString.h) not referenced
+FXString.h(130) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareI(char) const' (line 130, file
+    FXString.h) not defined
+FXString.h(130) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareNI(const FXString &, short) const'
+    (line 131, file FXString.h) not referenced
+FXString.h(131) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareNI(const FXString &, short)
+    const' (line 131, file FXString.h) not defined
+FXString.h(131) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::compareNI(const char *, short) const'
+    (line 132, file FXString.h) not referenced
+FXString.h(132) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::compareNI(const char *, short) const'
+    (line 132, file FXString.h) not defined
+FXString.h(132) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::inStr(const FXString &, unsigned short)
+    const' (line 135, file FXString.h) not referenced
+FXString.h(135) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::inStr(const FXString &, unsigned
+    short) const' (line 135, file FXString.h) not defined
+FXString.h(135) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::inStr(const char *, unsigned short)
+    const' (line 136, file FXString.h) not referenced
+FXString.h(136) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::inStr(const char *, unsigned short)
+    const' (line 136, file FXString.h) not defined
+FXString.h(136) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::inStr(char, unsigned short) const' (line
+    137, file FXString.h) not referenced
+FXString.h(137) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::inStr(char, unsigned short) const'
+    (line 137, file FXString.h) not defined
+FXString.h(137) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::left(unsigned short)' (line 140, file
+    FXString.h) not referenced
+FXString.h(140) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::left(unsigned short)' (line 140, file
+    FXString.h) not defined
+FXString.h(140) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::left(unsigned short, const char *)' (line
+    141, file FXString.h) not referenced
+FXString.h(141) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::left(unsigned short, const char *)'
+    (line 141, file FXString.h) not defined
+FXString.h(141) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::left(unsigned short, const FXString &)'
+    (line 142, file FXString.h) not referenced
+FXString.h(142) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::left(unsigned short, const FXString
+    &)' (line 142, file FXString.h) not defined
+FXString.h(142) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::right(unsigned short)' (line 143, file
+    FXString.h) not referenced
+FXString.h(143) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::right(unsigned short)' (line 143, file
+    FXString.h) not defined
+FXString.h(143) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::right(unsigned short, const char *)'
+    (line 144, file FXString.h) not referenced
+FXString.h(144) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::right(unsigned short, const char *)'
+    (line 144, file FXString.h) not defined
+FXString.h(144) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::right(unsigned short, const FXString &)'
+    (line 145, file FXString.h) not referenced
+FXString.h(145) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::right(unsigned short, const FXString
+    &)' (line 145, file FXString.h) not defined
+FXString.h(145) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::mid(unsigned short, unsigned short)'
+    (line 146, file FXString.h) not referenced
+FXString.h(146) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::mid(unsigned short, unsigned short)'
+    (line 146, file FXString.h) not defined
+FXString.h(146) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::mid(unsigned short, unsigned short, const
+    char *)' (line 147, file FXString.h) not referenced
+FXString.h(147) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::mid(unsigned short, unsigned short,
+    const char *)' (line 147, file FXString.h) not defined
+FXString.h(147) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::mid(unsigned short, unsigned short, const
+    FXString &)' (line 148, file FXString.h) not referenced
+FXString.h(148) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::mid(unsigned short, unsigned short,
+    const FXString &)' (line 148, file FXString.h) not defined
+FXString.h(148) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getBoolean(bool *) const' (line 151, file
+    FXString.h) not referenced
+FXString.h(151) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getBoolean(bool *) const' (line 151,
+    file FXString.h) not defined
+FXString.h(151) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getDouble(double *) const' (line 152,
+    file FXString.h) not referenced
+FXString.h(152) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getDouble(double *) const' (line 152,
+    file FXString.h) not defined
+FXString.h(152) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getHex(int *) const' (line 153, file
+    FXString.h) not referenced
+FXString.h(153) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getHex(int *) const' (line 153, file
+    FXString.h) not defined
+FXString.h(153) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getInt(int *) const' (line 154, file
+    FXString.h) not referenced
+FXString.h(154) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getInt(int *) const' (line 154, file
+    FXString.h) not defined
+FXString.h(154) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getLong(long *) const' (line 155, file
+    FXString.h) not referenced
+FXString.h(155) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getLong(long *) const' (line 155, file
+    FXString.h) not defined
+FXString.h(155) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setBoolean(bool)' (line 157, file
+    FXString.h) not referenced
+FXString.h(157) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setBoolean(bool)' (line 157, file
+    FXString.h) not defined
+FXString.h(157) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setDouble(double, char *)' (line 158,
+    file FXString.h) not referenced
+FXString.h(158) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setDouble(double, char *)' (line 158,
+    file FXString.h) not defined
+FXString.h(158) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setHex(int, char *)' (line 159, file
+    FXString.h) not referenced
+FXString.h(159) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setHex(int, char *)' (line 159, file
+    FXString.h) not defined
+FXString.h(159) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setInt(int, char *)' (line 160, file
+    FXString.h) not referenced
+FXString.h(160) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setInt(int, char *)' (line 160, file
+    FXString.h) not defined
+FXString.h(160) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setLong(long, char *)' (line 161, file
+    FXString.h) not referenced
+FXString.h(161) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setLong(long, char *)' (line 161, file
+    FXString.h) not defined
+FXString.h(161) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::strTok(char *, const char *)' (line 164,
+    file FXString.h) not referenced
+FXString.h(164) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::strTok(char *, const char *)' (line
+    164, file FXString.h) not defined
+FXString.h(164) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::resetTok(void)' (line 165, file
+    FXString.h) not referenced
+FXString.h(165) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::resetTok(void)' (line 165, file
+    FXString.h) not defined
+FXString.h(165) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::clearBuffer(void)' (line 168, file
+    FXString.h) not referenced
+FXString.h(168) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::clearBuffer(void)' (line 168, file
+    FXString.h) not defined
+FXString.h(168) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::reverse(void)' (line 169, file
+    FXString.h) not referenced
+FXString.h(169) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::reverse(void)' (line 169, file
+    FXString.h) not defined
+FXString.h(169) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::getAt(unsigned short) const' (line 170,
+    file FXString.h) not referenced
+FXString.h(170) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::getAt(unsigned short) const' (line
+    170, file FXString.h) not defined
+FXString.h(170) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::setAt(unsigned short, char)' (line 171,
+    file FXString.h) not referenced
+FXString.h(171) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::setAt(unsigned short, char)' (line
+    171, file FXString.h) not defined
+FXString.h(171) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::operator=(const FXString &)' (line 172,
+    file FXString.h) not referenced
+FXString.h(172) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::operator=(const FXString &)' (line
+    172, file FXString.h) not defined
+FXString.h(172) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::atoi(void) const' (line 175, file
+    FXString.h) not referenced
+FXString.h(175) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::atoi(void) const' (line 175, file
+    FXString.h) not defined
+FXString.h(175) : Info 830: Location cited in prior message
+Info 1714: Member function 'FXString::itoa(long)' (line 176, file FXString.h)
+    not referenced
+FXString.h(176) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::itoa(long)' (line 176, file
+    FXString.h) not defined
+FXString.h(176) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString::FXString(void)' (line 181, file
+    FXString.h) not defined
+FXString.h(181) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString20::szBuffer' (line 77, file
+    FXString20.h) not referenced
+FXString20.h(77) : Info 830: Location cited in prior message
+Info 768: global struct member 'FXString20::pszVCSId' (line 78, file
+    FXString20.h) not referenced
+FXString20.h(78) : Info 830: Location cited in prior message
+Info 1715: static member 'FXString20::pszVCSId' (line 78, file FXString20.h)
+    not referenced
+FXString20.h(78) : Info 830: Location cited in prior message
+Warning 1527: static member 'FXString20::pszVCSId' (line 78, file FXString20.h)
+    not defined
+FXString20.h(78) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString20::FXString20(void)' (line 85, file
+    FXString20.h) not defined
+FXString20.h(85) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString20::FXString20(const char *)' (line 87,
+    file FXString20.h) not defined
+FXString20.h(87) : Info 830: Location cited in prior message
+Warning 1526: Member function 'FXString20::FXString20(const FXString20 &)'
+    (line 88, file FXString20.h) not defined
+FXString20.h(88) : Info 830: Location cited in prior message

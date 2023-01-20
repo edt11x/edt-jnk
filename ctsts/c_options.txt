@@ -1,0 +1,55 @@
+C Compiler Options, C++, gcc, g++, clang, July 21, 2016
+
+These are my standard gcc/clang options:
+
+-std=c99 \
+-nostdinc \
+-W \
+-Wall \
+-Wbool-conversion \
+-Wcast-align \
+-Wcast-qual \
+-Wconversion \
+-Wctor-dtor-privacy \
+-Wdisabled-optimization \
+-Wempty-body \
+-Werror \
+-Wextra \
+-Wformat=2 \
+-Wheader-guard \
+-Wimplicit-fallthrough \
+-Winit-self \
+-Wlogical-not-parentheses \
+-Wlogical-op \
+-Wloop-analysis \
+-Wmissing-declarations \
+-Wmissing-include-dirs \
+-Wmissing-prototypes \
+-Wno-parentheses \
+-Wno-unused \
+-Wno-variadic-macros \
+-Wnoexcept \
+-Wold-style-cast \
+-Woverloaded-shift-op-parentheses \
+-Woverloaded-virtual \
+-Wpointer-arith \
+-Wredundant-decls \
+-Wshadow \
+-Wsign-promo \
+-Wsizeof-array-argument \
+-Wstrict-null-sentinel \
+-Wstrict-overflow=5 \
+-Wstrict-prototypes \
+-Wstring-conversion \
+-Wswitch \
+-Wundef \
+-Wuninitialized \
+-Wunique-enum \
+-Wunreachable-code \
+-Wunused-label \
+-Wwrite-strings \
+-fdiagnostics-show-option \
+-pedantic \
+-undef
+
+

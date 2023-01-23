@@ -1,0 +1,2 @@
+--type-set=ghs=.ghs,.bld,.gpj
+--type-set=log=.log

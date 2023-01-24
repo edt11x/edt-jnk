@@ -1,0 +1,62 @@
+// DXL generated on 23 January 2019 by Attribute DXL wizard, Version 1.0
+
+// The wizard will use the following comments on subsequent runs
+// to determine the selected options and attributes. It will not
+// take account of any manual changes in the body of the DXL code.
+
+// begin parameters (do not edit)
+// One attribute/property per line: true
+// Show attribute/property names: true
+// Include OLE objects in text: false
+// Attribute: LRIP 8 DMS Verification Evidence
+// Attribute: DXL for List of Test Cases
+// Attribute: LRIP 8 DMS Verification Event
+// end parameters (do not edit)
+
+Module m
+AttrDef ad
+AttrType at
+m = module obj
+ad = find(m,attrDXLName)
+if(!null ad && ad.object)
+{
+    at = ad.type
+    if(at.type == attrText)
+    {
+        bool hasFQT = false
+        bool hasVE = false
+        string fqt = "FQT"
+        Buffer val = create
+        Buffer temp = create
+
+        ad = find(m,"LRIP 8 DMS Verification Event")
+        if(!null ad)
+        {
+            probeRichAttr_(obj,"LRIP 8 DMS Verification Event", temp, false)
+            if (contains (temp, fqt, 0) != -1) {
+                hasFQT = true
+            }
+        }
+        ad = find(m,"LRIP 8 DMS Verification Evidence")
+        if(!null ad)
+        {
+            probeRichAttr_(obj,"LRIP 8 DMS Verification Evidence", temp, false)
+            val += tempStringOf temp
+            val = val  "\n\n\\pard " 
+            if (length(tempStringOf temp) > 1) {
+                hasVE = true
+            }
+        }
+        ad = find(m,"DXL for List of Test Cases")
+        if ((!null ad) && (hasFQT) && (hasVE))
+        {
+            probeRichAttr_(obj,"DXL for List of Test Cases", temp, false)
+            val += tempStringOf temp
+            val = val  "\n\\pard " 
+        }
+        obj.attrDXLName =  richText (tempStringOf val) 
+        delete val
+        delete temp
+    }
+}
+

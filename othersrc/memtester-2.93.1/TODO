@@ -1,0 +1,7 @@
+To Do:
+======
+
+-Document what each of the tests does, and explain some of the possible causes
+	for errors encountered.
+-Code cleanup and re-architecture to make more logical, modular.  This is a 
+	bigger project, so think v.3.00.

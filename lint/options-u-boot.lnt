@@ -1,0 +1,118 @@
+// Please note -- this is a representative set of error suppression
+//                options.  Please adjust to suit your own policies
+//                See  manual (chapter LIVING WITH LINT)
+//                for further details.
+// See Torture Testing Your Code
+// String constants are const char flag, assumes string constants are const char *
++fsc
+
+// Pointer parameter may be Null flag
++fpn
+
+// Make sure no foreign includes change the format or output option
++flm
+
+// Make sure we warn when trigraphs are used
+-ftg
+
+// Include files with a library includes without a full path
++fdi
+
+// Do not let -e<nnnn> options bleed to other source files
+-restore_at_end
+
+// Make sure we produce a summary
+-summary()
+
+// Do not wrap source lines in messages
+-width(0,0)
+
+// Allow symbol not defined, the compiler will catch this, but we want to
+// to allow symbols not defined so that we can lint a single source file.
+// This does not give the symbol a pass on not being declared.
+-e526
+
+// Warn on signed-unsigned mix divide
++e573
+
+// Allow symbol not referenced, so that we can lint individual source
+// files
+-e714
+
+// Warn on loss of sign
++e737
+
+// Allow unused enumeration constants so that we can lint individual
+// header files.
+-e749
+
+// Allow unused or unreferenced macros so that we can lint individual
+// header files.
+-e750
+
+// Allow unused or unreferenced typedefs so that we can lint individual
+// header files.
+-e751
+
+// Allow unused or unreferenced declarations so that we can lint individual
+// header files.
+-e752
+
+// Allow unused or unreferenced unions so that we lint individual
+// header files.
+-e754
+
+// Allow unused global macros
+-e755
+
+// Allow unused global typedefs, OTP defines a lot of these in global
+// files like otp_types.h, but they may not be used in specific C files.
+-e756
+
+// Allow unused global declarator, so that we can lint individual files.
+-e757
+
+// Allow global unused structure members
+-e768
+
+// Allow global unused enumeration constants
+-e769
+
+// Really can not do this on JSF because of the error return enumeration
+// The Return_type error return enumerates all possible returns, but most
+// switch structures will only have those errors we are interested in,
+// not all possible errors enumerated.
+-e788
+
+// ANSI limit of 6 characters in an external identifier has too many
+// violations in JSF
+-e793
+
+// Warning level set to the max, -w4 is the max
+-w3
+// -wlib(1) co.lnt already sets this
+
+// Allow // comments in regular C
+-e950
+
+// Warn about what could be declared const
++e952
+
+// Warn about padding to align on a boundary
+// +e958
+
+// Boolean expression required for operator
+-e961
+
+// Warn on convertsion from int to unsigned int
++e912
+
+// Allow undefined symbols so that we can lint individual source
+// files. Functions defined in other source files will be declared
+// (in the headers), but not defined in the source file under analysis.
+-e960
+
+-passes(3)
+
+-iR:\tools\XES-u-boot\u-boot\include\
+-iR:\tools\XES-u-boot\u-boot\board\xes\common\

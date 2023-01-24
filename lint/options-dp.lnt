@@ -1,0 +1,24 @@
+// Please note -- this is a representative set of error suppression
+//                options.  Please adjust to suit your own policies
+//                See  manual (chapter LIVING WITH LINT)
+//                for further details.
+-d__PROTOTYPES__
+-d__ppc
+-d__ppc7447
+-d__STDC_LIMIT_MACROS
+-d__CHAR_BIT=8
+-d__INT_BIT=32
+-d__SHRT_BIT=16
+-d__LONG_BIT=32
+-d__LLONG_BIT=64
+-d__LANGUAGE_C__
+-i.
+-iR:\development\Common\DP_FaultLog
+-iR:\development\Common\Types
+-iR:\development\Common\Marvell
+-iR:\development\Common\Pci
+-iR:\development\Common\Pciserver
+-iR:\platforms\EDM\LynxOSPrdnNew\usr\include
+-iR:\development\DisplayProcessor\EDM\DPL32\complementals\include
+-iR:\development\DisplayProcessor\EDM\DPL32\src
+-iR:\development\DisplayProcessor\EDM\MMAPlib

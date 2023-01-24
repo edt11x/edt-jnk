@@ -1,0 +1,413 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH MEMTEST 1 "memtest version 2.93.1" "20/Dec/1999" "memtester"
+.UC
+.if n .hy 0
+.if n .na
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+memtester \- userspace utility to test for faulty memory subsystem
+.SH "SYNOPSIS"
+\fBmemtest\ <mem<B|K|M|G>>\ [runs]\ [\-l\ |\ --log]\fR
+.SH "DESCRIPTION"
+\fBmemtest\fR is a userspace program to test for a faulty memory subsystem or
+faulty memory modules in Linux, or any Unix-like environment.
+.Sh "Invoking memtest"
+\fBmemtest\fR takes the first supplied argument as the amount of memory to test.
+The value \fB'all\*(R'\fR means to test all available memory.  A specific amount of
+memory can be supplied as a number, followed by a letter to indicate units:
+.Ip "\(bu" 4
+\fBB\fR or \fBb\fR \- bytes
+.Ip "\(bu" 4
+\fBK\fR or \fBk\fR \- kilobytes
+.Ip "\(bu" 4
+\fBM\fR or \fBm\fR \- megabytes
+.Ip "\(bu" 4
+\fBG\fR or \fBg\fR \- gigabytes
+.PP
+\fBmemtest\fR used to assume megabytes if no letter was supplied.  It now
+exits instead.
+.PP
+If \fBmemtest\fR cannot allocate the amount of memory specified, it will keep
+trying with smaller amounts until it succeeds.
+.PP
+If the option \fB\-l\fR (or \fB--log\fR) is given, \fBmemtest\fR will log to the file
+\fImemtest.log\fR in addition to stderr.  Any previous log will be overwritten.
+If \fBmemtest\fR fails to open its logfile it will abort.
+.PP
+\fBmemtest\fR will attempt to lock its pages into memory to increase the chances
+of testing a greater percentage of physical memory.  This typically requires
+the program to be run as root.  If it cannot lock its pages into memory due to
+a lack of permissions, it will issue a warning and continue with unlocked pages.
+If it fails to lock pages because there are insufficient pages of memory
+available to be locked, it will reduce its allocation and try again.
+.PP
+Note that if \fBmemtest\fR runs with unlocked pages, it may start swapping.
+Since \fBmemtest\fR spends virtually all of its time accessing memory, this will
+slow down its operation by several orders of magnitude.  The best way to
+run \fBmemtest\fR is to use the largest value of memory to test which will allow
+it to lock its pages into memory.
+.Sh "Building memtest"
+Simple -- just download, extract the tarball, and run make.  I've only tested
+it with the \fI\s-1GNU\s0\fR toolchain, but it may build with others as well.
+.SH "RETURN VALUE"
+0 if it runs to completion, or receives one of \fBSIGINT\fR, \fBSIGTERM\fR, or
+\fBSIGQUIT\fR.
+.PP
+-1 if it encounters an error and cannot run.
+.SH "ERRORS"
+\fBmemtest\fR will exit if it cannot allocate any memory, or if it attempts to
+log to a file and cannot open its logfile.
+.SH "EXAMPLES"
+.Ip "\(bu" 4
+\fBmemtest 16m 2\fR
+.Sp
+Test 16MB of memory, run all tests twice, and log only to stderr.
+.Ip "\(bu" 4
+\fBmemtest 2G --log\fR
+.Sp
+Test 2GB of memory, run until interrupted, and log to stderr and \fImemtest.log\fR.
+.Ip "\(bu" 4
+\fBmemtest 1g 4 --log\fR
+.Sp
+Test 1GB of memory, run all tests four times, and log to stderr and 
+\fImemtest.log\fR.
+.SH "FILES"
+\fImemtest.log\fR -- log file in current directory.
+.SH "NOTES"
+If the machine you are testing on is an x86 clone, and you can afford to
+take the machine down for an extended period, the program \fBmemtest86\fR may be
+another option to consider.  It is available at
+http://reality.sgi.com/cbrady_denver/memtest86/.
+.SH "CAVEATS"
+\fBmemtest\fR by design is hard on the memory subsystem of a machine.  This can
+make the machine quite sluggish; it would be a very poor idea to attempt to
+run \fBmemtest\fR on a heavily loaded or shared machine except for testing
+purposes, with small allocations of memory.
+.PP
+Testing memory can be slow.  Sample testing times for one complete run of
+tests follow.  If you have other examples, please send them to me.
+.Ip "\(bu" 4
+Pentium\ 90MHz\ testing\ 24MB:\ \ \ \ \ \ \ \ \ \ \ \ ~30\ minutes
+.Ip "\(bu" 4
+Sun\ UltraSparc\ 360MHz\ testing\ 1750MB:\ \ ~13\ hours
+.SH "DIAGNOSTICS"
+The program prints a small amount of information about how it was invoked
+before running tests:
+.PP
+\fBSuccessfully\ allocated\ 4194304\ bytes.
+Aligning\ memory...settling\ on\ 4190208\ bytes\ at\ 0x400b7000...
+Proceeding\ to\ lock\ pages...success.\ \ Starting\ tests...\fR
+.PP
+\fBmemtest\fR typically tests a slightly smaller amount of memory than is 
+specified on the commandline.  This is because it aligns its memory allocation
+to a page boundary before attempting to lock its pages into memory.  This is
+a requirement on some Unix systems.  With very small allocations of memory
+(typically only used during debugging of \fBmemtest\fR), it may fail to align to
+a page boundary with a message similar to this:
+.PP
+\fBAligning\ memory...allocation\ too\ small\ to\ align\ to\ pagesize\ of\ 4096\ bytes.
+Failed\ to\ get\ sufficient\ memory.\ \ Exiting...\fR
+.PP
+If not run as root, the memlock will fail as follows:
+.PP
+\fBProceeding\ to\ lock\ pages...mlock\ failed:\ \ only\ root\ can\ lock\ pages.
+Continuing\ with\ unlocked\ pages.\ \ Results\ are\ less\ reliable.\fR
+.PP
+Then, as the program runs through tests, it prints the current `run\*(R' (cycle of 
+tests) and test number and name.  It also prints status information on the 
+progress of the tests.  This will look like the following:
+.PP
+\fBRun\ \ \ \ 1:
+  Test\ \ 1:\ \ \ \ \ \ \ \ \ \ Random\ value:\ \ Setting...Testing...Passed.
+  Test\ \ 2:\ \ \ \ \ \ \ \ XOR\ comparison:\ \ Setting...Testing...Passed.\fR
+.PP
+If one of the tests finds an error in memory, a message like the following
+will be printed:
+.PP
+\fBFAILURE:\ 0x5aa0f5c5\ !=\ 0x5aa0f585\ at\ offset\ 0x0067f837.
+Skipping\ to\ next\ test...\fR
+.PP
+If the \fIStuck Address\fR test finds a failure, it outputs a slightly different
+message, to remind the user that other tests are unreliable if an
+addressing problem exists:
+.PP
+\fBFAILURE:\ possible\ bad\ address\ line\ at\ offset\ 0x004563f3.\fR
+.PP
+At the end of each `run\*(R' it will print a summary of that run as follows:
+.PP
+\fBRun\ \ \ \ 1\ completed\ in\ 114\ seconds\ (2\ tests\ showed\ errors).\fR
+.PP
+When the program completes (is interrupted by a signal, or finishes its last
+run, when a limit is specified on the commandline), it will print an overall
+summary:
+.PP
+\fB2\ runs\ completed.\ \ 2\ errors\ detected.\ \ Total\ runtime:\ \ 235\ seconds.
+Exiting...\fR
+.SH "BUGS"
+May or may not require GNU \fBmake\fR, \fBgcc\fR or equivalent, etc.  Please let me
+know if \fBmemtest\fR fails to build in your environment.
+.Sh "Known Bugs"
+The output examples in this manpage have fallen out of sync with the software
+in minor ways.
+.Sh "How To Report Bugs"
+Bugs should be reported to <memtest@discworld.dyndns.org>.
+.PP
+If your problem is that \fBmemtest\fR won't compile, please include some
+information about your system (basic hardware type, operating system type and
+version) and a log of the output of \*(L'\fBmake\ clean;\ make\ all\fR\*(R'.
+.PP
+If memtest builds and runs, but you feel it does not run properly, please
+include the output log from memtest generated by the \fB--log\fR option.
+.SH "RESTRICTIONS"
+\fBmemtest\fR, running in user space, cannot test all of physical memory.  The
+unswappable pages occupied by the kernel will not be tested.  \fBmemtest\fR will
+also be limited to whatever per-process/per-user limitations you have imposed
+in your system.
+.SH "AUTHORS"
+This software was written by Charles Cazabon
+<memtest@discworld.dyndns.org>, based on the version 1 sourcecode
+by Simon Kirby <sim@stormix.com>.
+.SH "HISTORY"
+See the file \fICHANGELOG\fR for details.
+
+.rn }` ''
+.IX Title "MEMTEST 1"
+.IX Name "memtester - userspace utility to test for faulty memory subsystem"
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Subsection "Invoking memtest"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Subsection "Building memtest"
+
+.IX Header "RETURN VALUE"
+
+.IX Header "ERRORS"
+
+.IX Header "EXAMPLES"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Header "FILES"
+
+.IX Header "NOTES"
+
+.IX Header "CAVEATS"
+
+.IX Item "\(bu"
+
+.IX Item "\(bu"
+
+.IX Header "DIAGNOSTICS"
+
+.IX Header "BUGS"
+
+.IX Subsection "Known Bugs"
+
+.IX Subsection "How To Report Bugs"
+
+.IX Header "RESTRICTIONS"
+
+.IX Header "AUTHORS"
+
+.IX Header "HISTORY"
+

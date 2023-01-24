@@ -1,0 +1,801 @@
+//#############################################################################
+//
+//  L-3 Communications Display Systems
+//  JSF PCD Software
+//
+//#############################################################################
+//
+/// @file memoryTests.c
+///       This function provides memory tests on various pieces of RAM in
+///       the PCD. Since we have a number of pieces of RAM, these routines
+///       can provide some sanity checks that they are setup correctly in the
+///       various bridges and system controllers.
+///
+///       In general these tests take the area of memory under test and divide
+///       them into two sections, arbitrarily named the left half and the right
+///       half. They perform the memory operations on those buffers and then
+///       verify that both halfs agree.
+///\n
+/// @note
+///       notes
+//
+//#############################################################################
+//
+//  Copyright (c), L-3DS - All rights reserved.
+//  This file contains proprietary information and shall not be duplicated,
+//  used, modified, or disclosed, in whole or in part outside the JSF program
+//  without the expressed written consent of L-3DS.
+//
+//#############################################################################
+
+//#############################################################################
+// Includes
+//#############################################################################
+#include <stdlib.h>
+
+
+//#############################################################################
+// Function definitions
+//#############################################################################
+
+//#############################################################################
+//
+//  Name  memTestCheckResults
+//
+/// @Description
+/// This checks the results of the memory tests by checking to make sure that
+/// the two sides of memory match.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestCheckResults(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+
+	for (i = 0; i < num32BitWords; i++, lh++, rh++)
+	{
+		if (*lh != *rh) // check the left half of the memory tests against the right half
+		{
+			return fail;
+		}
+	}
+	return success;
+}
+
+
+//#############################################################################
+//
+//  Name  memTestFillRandomValue
+//
+/// @Description
+/// This function generates a complete set of random numbers into the left
+/// half of the memory being tested and the same numbers into the right
+/// half of the memory being tested.
+///
+/// This test gives us our best chance at detecting address line mirroring,
+/// unless the address line mirror occurs at half of our buffer.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestFillRandomVal(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+
+	for (i = 0; i < num32BitWords; i++)
+	{
+	    // there is a problem with using rand() directly. It only wants to
+	    // generate random numbers from 0 to 2^31, since the result is
+	    // signed and we want a uniform distribution of bytes. So we do rand()
+	    // twice and shift one rand up.
+		*lh++ = *rh++ = ((UINT32) rand()) ^ (((UINT32) rand()) << 16);
+	}
+	return memTestCheckResults(leftHalf, rightHalf, num32BitWords);
+}
+
+
+//#############################################################################
+//
+//  Name  memTestFillSequentialValue
+//
+/// @Description
+/// This function fills both the left and right half of memory being tested
+/// with sequentially incrementing values.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestFillSequentialVal(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+	UINT32 randomVal = ((UINT32) rand()) ^ (((UINT32) rand()) << 16);
+
+	for (i = 0; i < num32BitWords; i++)
+	{
+		*lh++ = *rh++ = (i + randomVal);
+	}
+	return memTestCheckResults(leftHalf, rightHalf, num32BitWords);
+}
+
+//#############################################################################
+//
+//  Name  memTestMathOperation
+//
+/// @Description
+/// This function takes a set of two buffers with random values in them,
+/// generates a random value and uses that value to perform on of the
+/// math operations on every 32 bit word
+/// in both sets of buffers and then compares the results.
+///
+/// For this routine to work properly, you should run the memTestRandomVal()
+/// function first.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///\n
+/// <B>mathOp</B>
+///    The math operation to perform:
+///     0 - add
+///     1 - sub
+///     2 - mul
+///     3 - xor
+///     4 - or
+///     5 - and
+///     6 - div
+///     7 - assign
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static ReturnType memTestMathOperation(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords, UINT32 mathOp)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+	UINT32 randomVal = 0;
+
+    while (randomVal == 0)
+    {
+        // chose something other than 0
+	    randomVal = ((UINT32) rand()) ^ (((UINT32) rand()) << 16);
+	}
+
+
+	for (i = 0; i < num32BitWords; i++)
+	{
+	    switch (mathOp)
+	    {
+	        case 0:
+        		*lh++ += randomVal;
+        		*rh++ += randomVal;
+        		break;
+	        case 1:
+        		*lh++ -= randomVal;
+        		*rh++ -= randomVal;
+        		break;
+	        case 2:
+        		*lh++ *= randomVal;
+        		*rh++ *= randomVal;
+        		break;
+	        case 3:
+        		*lh++ ^= randomVal;
+        		*rh++ ^= randomVal;
+        		break;
+	        case 4:
+        		*lh++ |= randomVal;
+        		*rh++ |= randomVal;
+        		break;
+	        case 5:
+        		*lh++ &= randomVal;
+        		*rh++ &= randomVal;
+        		break;
+	        case 6:
+        		*lh++ /= randomVal;
+        		*rh++ /= randomVal;
+        		break;
+	        case 7:
+        		*lh++ = randomVal;
+        		*rh++ = randomVal;
+        		break;
+	        default:
+        		*lh++ ^= randomVal;
+        		*rh++ ^= randomVal;
+        		break;
+	}
+	return memTestCheckResults(leftHalf, rightHalf, num32BitWords);
+}
+
+
+//#############################################################################
+//
+//  Name  memTestStuckBits
+//
+/// @Description
+/// This function checks to see if there are bits that are stuck or sticky
+/// in one direction or another. This function writes alternating 32 bit
+/// words to the two buffers and compares them. It does
+/// this operation multiple times.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestStuckBits(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 val = 0;
+	UINT32 i = 0;
+	UITN32 j = 0;
+
+	for (j = 0; j < 32; j++)
+	{
+		switch (j & 7)
+		{
+		    case 0:
+		        val = 0;            // pattern will be 00000000 ffffffff 00000000 ffffffff
+		        break;
+		    case 1:
+		        val = 0xffffffffUL; // pattern will be ffffffff 00000000 ffffffff 00000000
+		        break;
+		    case 2:
+		        val = 0x55555555UL; // pattern will be 55555555 aaaaaaaa 55555555 aaaaaaaa
+		        break;
+		    case 3:
+		        val = 0xaaaaaaaaUL; // pattern will be aaaaaaaa 55555555 aaaaaaaa 55555555
+		        break;
+		    case 4:
+		        val = 0x00ff00ffUL; // pattern will be 00ff00ff ff00ff00 00ff00ff ff00ff00
+		        break;
+		    case 5:
+		        val = 0xff00ff00UL; // pattern will be ff00ff00 00ff00ff ff00ff00 00ff00ff
+		        break;
+		    case 6:
+		        val = 0x55aa55aaUL; // pattern will be 55aa55aa aa55aa55 55aa55aa aa55aa55
+		        break;
+		    case 7:
+		        val = 0xaa55aa55UL; // pattern will be aa55aa55 55aa55aa aa55aa55 55aa55aa
+		        break;
+		}
+		lh = (volatile UINT32 *) leftHalf;
+		rh = (volatile UINT32 *) rightHalf;
+		for (i = 0; i < num32BitWords; i++)
+		{
+			*lh++ = *rh++ = (i % 2) == 0 ? val : ~val;
+		}
+
+		if (memTestCheckResults(leftHalf, rightHalf, num32BitWords) == fail)
+		{
+		    return fail;
+		}
+
+	}
+	return success;
+}
+
+
+//#############################################################################
+//
+//  Name  memTestSequenceAllBytes
+//
+/// @Description
+/// In this function, we test to make sure that every bit pattern within each
+/// byte is possible: 0x00, 0x01, 0x02, ... 0xff. This test helps prove that
+/// there are no bits within a byte that are sympathetic to other bits. We
+/// would like to do this for all bits within a 32 bit word, but that would
+/// take too long. There would be 4 billion executions of the outer loop,
+/// rather than just 256.
+///
+/// This one is time consuming, you can probably just do memTestStuckBits()
+/// instead.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestSequenceAllBytes(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+	UINT32 j = 0;
+	UINT32 thisVal   = 0;
+
+	for (j = 0; j < 256; j++) // for each possible byte value
+	{
+		lh = (volatile UINT32 *) leftHalf;
+		rh = (volatile UINT32 *) rightHalf;
+	    thisVal = ((j <<  0) |
+	               (j <<  8) |
+	               (j << 16) |
+	               (j << 24));
+		for (i = 0; i < num32BitWords; i++)
+		{
+			*lh++ = *rh++ = thisVal;
+		}
+
+		if (memTestCheckResults(leftHalf, rightHalf, num32BitWords) == fail)
+		{
+		    return fail;
+		}
+
+	}
+	return success;
+}
+
+//#############################################################################
+//
+//  Name  memTestWalkBitsUpAndDown
+//
+/// @Description
+/// This function walks a one or a zero up and down through each 32 bit word.
+/// This makes sure that each individual bit within a 32 bit quantity can be
+/// set to the opposite value of the other bits.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestWalkBitsUpAndDown(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+	UINT32 j = 0;
+	UINT32 k = 0;
+
+    for (k = 0; k < 2; k++) // first loop with be walking ones, second loop will walk zeros
+    {
+        // having j loop through 64 bits accounts for walking the bit both up and down.
+	    for (j = 0; j < 64; j++)
+	    {
+		    lh = (volatile UINT32 *) leftHalf;
+		    rh = (volatile UINT32 *) rightHalf;
+		    for (i = 0; i < num32BitWords; i++)
+		    {
+			    if (j < 32)	// we are walking the bit, either a one or a zero up
+			    {
+				    *lh++ = *rh++ = (k == 0) ? 0x00000001 << j :
+					    					   0xFFFFFFFF ^ (0x00000001 << j);
+			    }
+			    else // we are walking the one or a zero down
+			    {
+				    *lh++ = *rh++ = (k == 0)
+					    ? 0x00000001 << (64 - j - 1)
+					    : 0xFFFFFFFF ^ (0x00000001 << (64 - j - 1));
+			    }
+		    }
+
+		    if (memTestCheckResults(leftHalf, rightHalf, num32BitWords) == fail)
+		    {
+		        return fail;
+		    }
+	    }
+	}
+	return success;
+}
+
+
+//#############################################################################
+//
+//  Name  memTestBitFlipTest
+//
+/// @Description
+/// This function walks a one up from 0 to the 31st bit, flipping
+/// the adjacent word of bits. This is similar to the operation of
+/// memTestStuckBits(), but more exhaustive, since it walks the bit up through
+/// each of the bits in the 32 bit word.
+///
+/// @Inputs
+/// <B>leftHalf</B>
+///    One half of the memory to compare.
+///\n
+/// <B>rightHalf</B>
+///    The other half of the memory to compare.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words in one half of the memory.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestBitFlipTest(UINT32 *leftHalf, UINT32 *rightHalf, UINT32 num32BitWords)
+{
+	volatile UINT32 *lh = (volatile UINT32 *) leftHalf;
+	volatile UINT32 *rh = (volatile UINT32 *) rightHalf;
+	UINT32 i = 0;
+	UINT32 j = 0;
+	UINT32 k = 0;
+	UINT32 val = 0;
+
+	for (k = 0; k < 32; k++) // For each possible bit
+	{
+		val = 0x00000001UL << k; // create a value with that bit set.
+
+		for (j = 0; j < 8; j++)
+		{
+			lh = (volatile UINT32 *) leftHalf;
+			rh = (volatile UINT32 *) rightHalf;
+			for (i = 0; i < num32BitWords; i++)
+			{
+				*lh++ = *rh++ = ((i+j) % 2) == 0 ? val : ~val;
+			}
+
+		    if (memTestCheckResults(leftHalf, rightHalf, num32BitWords) == fail)
+		    {
+		        return fail;
+		    }
+	    }
+	}
+	return success;
+}
+
+
+//#############################################################################
+//
+//  Name  memTestStuckAddressLineTest
+//
+/// @Description
+/// This function signs each word of memory with its own address (or the ones
+/// compliment of its address on odd passes) and then
+/// reads it back. This test is looking for any areas of memory that might
+/// be aliased to another area. Since we sign each memory location with its own
+/// address, each 32 bit word should be unique and only occur at one
+/// location in the memory under test.
+///
+/// @Inputs
+/// <B>mem</B>
+///    A pointer to the memory to test.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words of memory to test.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestStuckAddressLineTest(UINT32 *mem, UINT32 num32BitWords)
+{
+	volatile UINT32 *m = NULL;
+	UINT32 i = 0;
+	UINT32 j = 0;
+
+	for (j = 0; j < 16; j++)
+	{
+		m = (volatile UINT32 *) mem;
+		for (i = 0; i < num32BitWords; i++)
+		{
+			*m++ = (j % 2) == 0 ? (UINT32) m : ~((UINT32) m);
+		}
+		m = (volatile UINT32 *) leftHalf;
+		for (i = 0; i < num32BitWords; i++, m++)
+		{
+			if (*m != ((j % 2) == 0 ? (UINT32) m : ~((UINT32) m)))
+			{
+				return fail;
+			}
+		}
+	}
+	return success;
+}
+
+//#############################################################################
+//
+//  Name  memTestCachedTest
+//
+/// @Description
+/// Similar to memTestStuckAddressLineTest() this function signs each word of
+/// memory with its own address. It then reverses the read to take advantage
+/// of the fact that recent writes should still be in cache. Memory contents
+/// should still be unique for every location written whether read from
+/// cache or from memory.
+///
+/// This is not an exhaustive cache test and it assumes that caching
+/// is enabled.
+///
+/// @Inputs
+/// <B>mem</B>
+///    A pointer to the memory to test.
+///\n
+/// <B>num32BitWords</B>
+///    The number of 32 bit words of memory to test.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all went well, fail if there was a problem.
+//
+//#############################################################################
+static Return_type memTestCachedTest(UINT32 *mem, UINT32 num32BitWords)
+{
+	UINT32 *m = NULL;
+	UINT32 i = 0;
+	UINT32 j = 0;
+
+	for (j = 0; j < 8; j++)
+	{
+		m =  mem;
+		for (i = 0; i < num32BitWords; i++)
+		{
+			*m++ = (j % 2) == 0 ? (UINT32) m : ~((UINT32) m);
+		}
+		// since we have just written the last addresses, some portion of those
+		// should be in cache.
+		m = mem;
+		for (i = num32BitWords-1; i != 0; i--) // we wont test the last location
+		{
+			if (*(m+i) != ((j % 2) == 0 ? (UINT32) (m+i) : ~((UINT32)(m+i))))
+			{
+				return fail;
+			}
+		}
+	}
+	return success;
+}
+
+
+
+//#############################################################################
+//
+//  Name  memTest
+//
+/// @Description
+/// This function tests a block of memory with a series of 32 bit operations
+/// and return success or fail based on whether the memory tests all pass or
+/// there is at least a single failure.
+///
+/// @Inputs
+/// <B>mem</B>
+///    A pointer to the memory to test.
+///\n
+/// <B>bytes</B>
+///    A count in bytes of the memory to test. The memory tested will actually
+///    be a multiple of 8, because it tests with 32 bit words and splits the
+///    buffers in half to compare them.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all memory tests pass, fail there were any failures.
+//
+//#############################################################################
+Return_type memTest(void *mem, UINT32 numBytes)
+{
+    UINT32 i = 0;
+    UINT32 num32BitWords = 0;
+    UINT32 * leftHalf    = NULL;
+    UINT32 * rightHalf   = NULL;
+
+    if (numBytes < (sizeof(UINT32)*2))
+    {
+        return fail;    // not enough memory for the algorithms to test
+    }
+    num32BitWords = numBytes / (sizeof(UINT32) * 2);
+
+    leftHalf  = (UINT32 *) mem;
+    rightHalf = ((UINT32 *) mem) + (numBytes / sizeof(UINT32));
+
+    // fill and test the memory with random values
+    if (memTestFillRandomVal(leftHalf, rightHalf, UINT32 num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // run through the math operations
+    for (i = 0; i < 8; i++)
+    {
+        if memTestMathOperation(leftHalf, rightHalf, num32BitWords, i) != success)
+        {
+            return fail;
+        }
+    }
+
+    // refill the memory with random values
+    if (memTestFillRandomVal(leftHalf, rightHalf, UINT32 num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // see if we have any bits that are stuck or sticky
+    if (memTestStuckBits(leftHalf, rightHalf, num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // verify that each byte will accept all possible values
+    if (memTestSequenceAllBytes(leftHalf, rightHalf, num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // run a walking ones and zero bit test
+    if (memTestWalkBitsUpAndDown(leftHalf, rightHalf, num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // run a walking bit flip test
+    if (memTestBitFlipTest(leftHalf, rightHalf, num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // run a stuck address line test
+    if (memTestStuckAddressLineTest(mem, (numBytes / sizeof(UINT32)) != success)
+    {
+        return fail;
+    }
+
+    // run a cached memory test
+    if (memTestCachedTest(mem, (numBytes / sizeof(UINT32)) != success)
+    {
+        return fail;
+    }
+
+
+    return success;
+}
+
+//#############################################################################
+//
+//  Name  memTestQuick
+//
+/// @Description
+/// This function is similar to memTest(), but just does the random value and
+/// the stuck bits test to do a quick memory test.
+///
+/// @Inputs
+/// <B>mem</B>
+///    A pointer to the memory to test.
+///\n
+/// <B>bytes</B>
+///    A count in bytes of the memory to test. The memory tested will actually
+///    be a multiple of 8, because it tests with 32 bit words and splits the
+///    buffers in half to compare them.
+///
+/// @Outputs
+/// <B>None</B>
+///
+/// @Return_Values
+/// success if all memory tests pass, fail there were any failures.
+//
+//#############################################################################
+Return_type memTestQuick(void *mem, UINT32 numBytes)
+{
+    UINT32 i = 0;
+    UINT32 num32BitWords = 0;
+    UINT32 * leftHalf    = NULL;
+    UINT32 * rightHalf   = NULL;
+
+    if (numBytes < (sizeof(UINT32)*2))
+    {
+        return fail;    // not enough memory for the algorithms to test
+    }
+    num32BitWords = numBytes / (sizeof(UINT32) * 2);
+
+    leftHalf  = (UINT32 *) mem;
+    rightHalf = ((UINT32 *) mem) + (numBytes / sizeof(UINT32));
+
+    // fill and test the memory with random values
+    if (memTestFillRandomVal(leftHalf, rightHalf, UINT32 num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    // see if we have any bits that are stuck or sticky
+    if (memTestStuckBits(leftHalf, rightHalf, num32BitWords) != success)
+    {
+        return fail;
+    }
+
+    return success;
+}
+

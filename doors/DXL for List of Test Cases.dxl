@@ -1,0 +1,158 @@
+/*
+    This attribute DXL was generated on 09/03/08 07:10:07.
+*/
+
+// prevent dxl timeout dialog
+pragma runLim, 0
+
+Buffer bsz = create
+
+void endAttributeDXL()
+{
+    if (!null obj && attrDXLName != "")
+    {
+        obj.attrDXLName = richText tempStringOf(bsz)
+    }
+
+    delete bsz
+}
+
+void display(string s)
+{
+    bsz += s
+    bsz += "\n"
+}
+
+void getTestCases(string s)
+{
+    // A string is going to be sent to this subroutine, which
+    // contains a test case or list of test cases, something
+    // of the form "AAA-9999Some_description_of_test_case"
+    // Unfortunately, this is all string data at this point
+    // We need to iterate through the list and just pull
+    // out the test case numbers.
+    //
+    // I think I want to do everything here, so I have one
+    // point that I am affect global database results. We
+    // should be receiving all the data, although it is
+    // text, to solve the problem
+
+    // Going to find something that looks like a test case
+    // name AAA-9999
+    Regexp testCaseRegEx = regexp2 "[A-Z][A-Z][A-Z]-[0-9][0-9][0-9][0-9]"
+    while ((!null s) && (testCaseRegEx s)) {
+        if (!null s[match 0]) {
+            // match 0 is whole of the match
+            if (contains (bsz, s[match 0], 0) == -1) {
+                bsz += s[match 0] "\n" // insert unique test cases
+            }
+        }
+        // move past the last character in the match
+        s = s[end 0 + 1:]
+    }
+}
+
+//**********
+
+pragma runLim, 0
+string limitModules[2] = {"00000760", "00000787"}
+string limitVersions[2] = {"", ""}
+Skip objsSeen
+int objCount
+int lines[2] = {0, 0}
+bool objSeen(Object o) {
+    int count
+    Object compo=null
+    for (count = 0; count < objCount; count++) {
+        if (find(objsSeen,count,compo) && (compo == o)) return true
+    }
+    return false
+}
+void adjustLines(int depth, showAtDepth) {
+    int count
+    for (count = 0; count < 2; count++) {
+        while (lines[depth-1] < lines[count]) {
+            // XXX if (depth == showAtDepth) display ""
+            lines[depth-1]++
+        }
+    }
+}
+void showIn(Object o, int depth) {
+    Link l
+    LinkRef lr
+    string otherModName
+    Module otherMod = null
+    Module linkMod = null
+    ModuleVersion otherVersion = null
+    Object othero
+    string disp,s
+    string plain, plainDisp
+    int plainTextLen
+    int count
+    bool doneOne = false
+    string linkModName = "*"
+    if (depth ==  1) {
+        objsSeen = create
+        objCount = 0
+    }
+    put(objsSeen,objCount,o)
+    objCount++
+    for lr in all(o<-linkModName) do {
+        otherModName = fullName(source lr)
+        if (module otherModName) {
+            if ((!isDeleted module otherModName) && (null data(sourceVersion lr))) {
+                otherMod = read(otherModName,false)
+                if (isBaseline(sourceVersion lr)) {
+                    otherMod = load(otherMod,baseline(sourceVersion lr),false)
+                }
+            }
+        }
+    }
+    for l in all(o<-linkModName) do {
+        otherVersion = sourceVersion l
+        if (null module otherVersion) continue
+        if (isDeleted module otherVersion) continue
+        otherModName = fullName(otherVersion)
+        Item limitModItem = itemFromID(limitModules[depth-1])
+        if (null limitModItem) continue
+        if (type limitModItem != "Formal" && type limitModItem != "Descriptive") continue
+        if (otherModName != fullName(limitModItem)) continue
+        if (versionString(otherVersion) != limitVersions[depth-1]) continue
+        othero = source l
+        if (null othero) {
+            otherMod=read(otherModName,false)
+            if (isBaseline(otherVersion)) {
+                otherMod = load(otherMod,baseline(otherVersion),false)
+            }
+        }
+        othero = source l
+        if (null othero) continue
+        if (isDeleted othero) continue
+        otherMod = module othero
+        int oldLines = lines[depth-1]
+        adjustLines(depth, 2)
+        bool kick = (doneOne) && (lines[depth-1] == oldLines)
+        if (kick) {
+            lines[depth-1]++
+            // XXX if (depth == 2) display ""
+        }
+        if ((!objSeen othero) && (depth < 2)) {
+            showIn(othero, depth+1)
+        }
+        doneOne = true
+        if (depth == 2) {
+
+            s = probeRichAttr_(othero,"DXL for List of Test Cases", false)
+            getTestCases s
+        }
+        lines[depth-1] += 2
+    }
+    if (depth ==  1) delete objsSeen
+}
+showIn(obj,1)
+
+
+//**********
+
+endAttributeDXL()
+

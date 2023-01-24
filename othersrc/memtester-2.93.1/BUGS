@@ -1,0 +1,6 @@
+* With at least some versions of glibc, compilation with the default
+	warning option in the Makefile (-Wall) will issue a warning about
+	'implicit declaration of function strsignal()'.  This is harmless.
+
+If you spot any other bugs in the software or documentation, please email
+me at <memtest@discworld.dyndns.org> so that I can correct it.

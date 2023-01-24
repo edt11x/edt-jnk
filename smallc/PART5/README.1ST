@@ -1,0 +1,828 @@
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ                                                               บ
+บ Joan Riff's "Z80MU PROFESSIONAL" Z80 and CP/M 2.2 Emulator    บ
+บ                                                               บ
+บ Copyright (C) 1989 Computerwise Consulting Services           บ
+บ                    P.O. Box 813                               บ
+บ                    McLean, VA 22101                           บ
+บ                    (703) 450-7175                             บ
+บ                                                               บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ IMPORTANT NOTICE! Please read and understand the following... บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+This is a fully-functional version of Joan Riff's "Z80MU PROFESSIONAL" Z80
+and CP/M 2.2 Emulator, which allows you to run most CP/M 2.2 and/or Z80
+software on the IBM PC. This is not "crippleware". No functions have been
+disabled. This is the complete product, an exact image of the same
+emulator that we use here at CCS to produce Z80 controller software on the
+PC.
+
+However, we *ARE NOT* giving it away. We have placed many packages into
+the public domain in the last five years, but this is not one of them.
+
+This package is being distributed as "shareware", which translates roughly
+into "Try it *BEFORE* you buy it". This does not mean "Use it, don't pay
+for it, and don't tell anybody". We are the owners of the copyright for
+this software and all associated files and documentation. As the owners,
+we are free to specify how the package may be distributed, who may use it,
+and under what conditions it may be used. Under federal copyright
+statutes, our word in this matter is law. So please pay attention.
+
+
+HOW IT MAY BE DISTRIBUTED
+-------------------------
+
+This package may be transferred by you to others, but *ONLY* if you
+distribute the original ZIP (or ARC) file, and *ONLY* if what you
+distribute is unchanged. It may be posted to Bulletin Board Systems
+(BBSs), and may reside there indefinitely in its original ZIP (or
+ARC) format for others to find and download.
+
+
+WHO MAY USE IT
+--------------
+
+This package may be used by any individual who abides by the restrictions
+which we place upon the package, which means in summary that - except for
+a 14-day trial period - THIS PRODUCT MAY BE USED ONLY BY THOSE WHO ARE IN
+POSSESSION OF A VALID LICENSE ISSUED BY COMPUTERWISE CONSULTING SERVICES.
+
+
+UNDER WHAT CONDITIONS MAY IT BE USED
+------------------------------------
+
+You have our permission to unpack the ZIP (or ARC) file, examine the files
+contained therein, and briefly evaluate the package. Once the ZIP (or ARC)
+file is unpacked, the components thereof may not be distributed to others
+in any form. Remember - only the original ZIP (or ARC) file may be
+distributed.
+
+By "briefly evaluate" we mean that you may try out the package for up to
+14 days, in order to decide whether or not it's right for you. If you have
+CP/M software which you want to run on the PC, then 14 days is ample time
+for you to move that software to the PC, run it under Z80MU PROFESSIONAL,
+and see whether or not Z80MU PROFESSIONAL will do what you need done.
+
+If you don't think that this package is worth the registration price, then
+don't use it. Period. Not even to run the CP/M assembler ASM.COM, or to
+disassemble a Z80 ROM, or to run the CP/M version of WORDSTAR. Such use
+violates our copyright.
+
+If you like the package, then buy it. Period. With "shareware", you buy it
+by registering with us.
+
+
+HOW TO REGISTER
+---------------
+
+The fee for registration is $150 per user of the package (not per system).
+
+Send your name, address, telephone number, and the registration fee to:
+
+	Z80MU Registration
+	Computerwise Consulting Services
+	P.O. Box 813
+	McLean, VA 22101
+
+This registration process notifies us that there is one more user of the
+package to be supported by us. We want to be sure that you are properly
+supported. So when we receive your registration fee, we send you:
+
+	1) A disk with the latest version of the software on it. Sad
+	   to say, there are folks who introduce viruses (and other
+	   bugs) into packages that they find on BBSs, and then send the
+	   corrupted versions on to other BBSs. We discovered this with
+	   our public domain versions of Z80MU, DIAGS, and others, which
+	   is the primary reason that we no longer place software into the
+	   public domain. So when you register, you get a copy of the
+	   package straight from us, which is guaranteed to be a "virgin"
+	   copy, and to be the very latest version of the software.
+
+	2) A printed manual. You really can't get the most out of this
+	   software until you read the manual. Sure we've made the
+	   program easy to use. But there's no substitute for being
+	   able to curl up with a good manual when you want to become
+	   really smart about a product.
+
+	3) A single-user license, which gives you legal permission to
+	   use this product. PERSONS WHO USE THIS PRODUCT WITHOUT HAVING
+	   SUCH A LICENSE IN THEIR POSSESSION ARE IN VIOLATION OF
+	   FEDERAL COPYRIGHT LAW, AND MAY BE SUBJECT TO CIVIL AND/OR
+	   CRIMINAL PROSECUTION.
+
+You also get entered into our database of supported users. When you call
+as a registered user of our software, then you have our undivided
+attention.
+
+Lastly, by paying the registration fee you obtain our permission to use
+this software. If you don't pay the fee, you don't get our permission:
+this will not make your boss very happy (if you use this software at
+work), since his company is legally liable in federal court for copyright
+violations.
+
+Sure, you *COULD* keep the software for your own use without registering
+it - thus violating our copyright - and try to hide it from everybody. But
+what would you have gained? It must be a neat program, or else you would
+not want to use it at all (let alone illegally). So you've got access to
+the world's best operating system emulator, AND YOU CAN'T TELL ANYBODY!
+What's more, by your own admission (because you use it) we must have done
+a good job in writing the software. But you won't give us credit? Sorry,
+but we just can't imagine even a Software Scrooge being quite that sick in
+the spirit...
+
+BBS SYSOPS NOTE: If you make the original ZIP (or ARC) file of this
+package available on your system for others to download, then we might
+register you WITHOUT CHARGE. Just follow the registration process, but
+instead of including a registration fee include the phone number of your
+BBS, and a userid and password for Joan Riff to use to dial in to your
+system. When we dial in and verify the presence of the original ZIP (or
+ARC) file on your system, then we will send you a license to use this
+package - with our compliments! Unfortunately, this offer must be limited
+to the first 100 respondents.
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Background: Why Z80MU PROFESSIONAL?                                     บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+We are the folks who created Z80MU version 3.10, which was placed in the
+public domain in 1986, and was featured in the October 1986 issue of BYTE
+magazine as one of seven "Public Domain Powerhouses of 1986".
+
+According to our estimates (which are admittedly contestable due to the
+impossibility of accurately tracking public domain distribution), that
+version of Z80MU has rapidly become the most widely-used CP/M and Z80
+emulator of any type (public domain, shareware, or commercial) in the
+world, due mainly to the uncanny accuracy of Z80MU's emulation of CP/M and
+of the Z80 chip.
+
+Since 1986, we have completely rewritten Z80MU 3.10 in order to produce
+Z80MU PROFESSIONAL. This new package greatly increases the productivity of
+folks (like us) who deal with Z80 object code all day long, and - believe
+it or not - emulates CP/M much more accurately than even that reliable old
+workhorse Z80MU 3.10 did. Unlike Z80MU 3.10, Z80MU PROFESSIONAL is not
+being placed into the public domain. It is sold as a commercial product.
+
+Yes, it's nice that out of the goodness of our hearts we placed Z80MU 3.10
+in the public domain. And we're truly happy that so many folks have said
+flattering things about Z80MU 3.10. But there are aspects to public domain
+distribution which we overlooked back in 1986:
+
+	1) CORRUPTION: There are many copies of Z80MU 3.10 floating
+	   around various bulletin boards - and even being sold by
+	   so-called Public Domain software houses - which have been
+	   corrupted so that the 100-page manual or the executable
+	   file are not the same that they were when we released
+	   them. Some of this corruption seems to be inadvertant.
+	   Some seems to be deliberate. But since there are so many
+	   copies out there, we have lost all control over the
+	   package. When we come across a bad copy, we try to destroy
+	   it and replace it with a good copy. But we can't possibly
+	   track them all down, due to the nature of public domain
+	   distribution. And keeping long-distance bulletin boards up
+	   to date leads straight into...
+
+	2) WE LOST OUR SHIRTS: In theory, you place something in the
+	   public domain as a favor. People ought not to expect
+	   constant support for a public domain product. Just because
+	   we're decent folks and can emphasize with the poor end
+	   user, we have provided many long hours of support to users
+	   of Z80MU 3.10 at no charge. But this costs us. And every
+	   time that Computer Shopper or some other irresponsible
+	   publication reviews Z80MU 3.10 and says (without our
+	   permission) something like "CCS will send you a copy of
+	   this excellent program for FREE", we are inundated with
+	   calls and letters from readers who want as much as they
+	   can get for free. Due to the sheer volume of incoming
+	   requests, many must go unanswered. Some readers get irate,
+	   like the [few] who have said "I paid $3 for Z80MU from
+	   Such-and-Such Software, and I expect support, buddy!", and
+	   the one Good American who demanded "If you weren't gonna
+	   support the thing, why the h___ did you put it in the
+	   public domain!?" We lose because of the ill will created
+	   by such encounters. We lose because the manhours spent
+	   supporting users of Z80MU 3.10 are manhours that we aren't
+	   getting paid for.
+
+So we're still paying for that perhaps ill-advised but well-meaning
+decision back in 1986 to release Z80MU 3.10 to the public domain.
+
+We may learn slow, but we learn well. So we are offering Z80MU
+PROFESSIONAL for sale. We *WILL NOT* release it to the public domain. But
+we *WILL* support each and every purchaser, and we *WILL* guarantee that
+any copy which you get direct from us is free of corruption and viruses.
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Files on the Z80MU PROFESSIONAL Distribution Disk                       บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+		Filename           Size     Date
+		อออออออออออออ     อออออ ออออออออออออ
+		AUTOEXEC.Z80        315   2 Feb 1989
+		DDT.SYM             589  19 Sep 1988
+		SETTINGS.COM       1152  14 Jan 1989
+		TEST.COM           4736  20 Aug 1989
+		TEST.SYM           6516  20 Aug 1989
+		Z80MU.EXE        206058  10 Nov 1989
+		Z80MUDMP.COM       1400  23 Sep 1988
+		ZCONVERT.EXE       8948  21 Feb 1989
+
+AUTOEXEC.Z80	This is a sample AUTOEXEC.Z80 file. If such a file is
+		present in the current directory when the Emulator begins
+		execution, then the Emulator will automatically read and
+		execute all commands which are present on this file. Feel
+		free to change this file to suit your own preferences, or
+		to delete it entirely.
+
+DDT.SYM		Chapter 7 of the Z80 PROFESSIONAL manual describes the
+		operation of the Disassembler. At the end of the
+		chapter (see page 7-8) is an example which applies a
+		Symbol Table to Digital Research's DDT.COM program.
+		This file is the Symbol Table which is shown in the
+		text. We have included it here so that you don't have
+		to type it in from the sample shown in the manual.
+		Just read this file into the Emulator via "SUBMIT
+		DDT.SYM" where the text says to enter "the list of
+		commands shown above".
+
+SETTINGS.COM	This is a CP/M program which displays some of the current
+		Emulator settings. You should copy this file to whatever
+		directory holds your CP/M utility programs, as defined by
+		the "CPMPATH" environment variable.
+
+		Don't try running this file directly from DOS! It must be
+		run under the Emulator!
+
+TEST.COM	This is a sample CP/M program which simply demonstrates
+		that the Emulator does, in fact, run CP/M software.
+		In addition, this one automatically sets H19 terminal
+		emulation mode, and recognizes PC extended
+		keypresses.
+
+		Don't try running this file directly from DOS! It must be
+		run under the Emulator!
+
+TEST.SYM	This is the Symbol Table file for TEST.COM. This file is
+		useful if you're interested in learning about Z80MU's
+		RESOURCE facility. The symbols in this file can turn
+		a disassembly of the object code in TEST.COM into
+		something very close to the original source code.
+
+		To demonstrate this, issue the following Z80MU
+		commands:
+
+			coldboot
+			read test.com
+			dissam 100		Note: This disassembly
+						will show little more
+						than raw opcodes, because
+						Z80MU has no symbol
+						information to work with.
+
+			submit test.sym		Note: This reads in the
+						symbol information.
+
+			dissam 100		Note: This time, the
+						disassembly contains
+						enough symbol information
+						to produce original source
+						code.
+
+Z80MU.EXE	This is the Emulator itself. Copy this file to one of the
+		hard disk directories specified by your "PATH" environment
+		variable, so that it is available at the DOS prompt no
+		matter where you are on your hard disk.
+
+Z80MUDMP.COM	This is a DOS program which handles the printing of the
+		screen to the printer. It replaces the standard IBM
+		PC ROM BIOS print screen routine.
+
+		Many of the Emulator screens contain PC graphic
+		characters. When the IBM PC ROM BIOS print-screen
+		routine prints these characters, it sends odd escape
+		codes to the printer which may thoroughly confuse it.
+
+		This program - Z80MUDMP.COM - knows how to translate
+		these odd characters into the proper codes for the
+		printer. This yields accurate screen dumps without
+		producing garbage on the printer.
+
+		This program may be used with or without the
+		Emulator. It is a stand-alone utility which should be
+		invoked when your system first boots up, so you
+		should copy this file to a hard disk directory which
+		is available at system boot time (we recommend that
+		you copy it to the root directory of drive C:).
+
+		When the program is invoked, it accepts one
+		command-line parameter. This tells the program
+		whether your printer can handle IBM PC graphic
+		characters:
+
+		Z80MUDMP I	installs the program, and tells it
+				to use the IBM PC character set.
+
+		Z80MUDMP A	installs the program, and tells it
+				to use the ASCII character set. PC
+				graphic characters which are on the
+				screen will be translated into near
+				ASCII equivalents.
+
+ZCONVERT.EXE	This is a DOS program which converts an old-style symbol
+		table control file as created by version 3.10 of
+		Z80MU into a new-style symbol table which may be used
+		as a submit file with Z80MU PROFESSIONAL. The
+		old-style control file is read from standard input,
+		and the new-style table is written to standard
+		output, so the proper way to use this program is by
+		typing the following at the DOS prompt:
+
+			zconvert <oldfile >newfile
+
+		[Note: Substitute your own filenames for "oldfile"
+		and "newfile" in the above example.]
+
+		You may then input the new file into Z80MU PROFESSIONAL
+		via the Z80MU command:
+
+			SUBMIT newfile
+
+		The conversion isn't perfect, due to differing limits
+		imposed by the two versions of Z80MU. Labels may be
+		truncated, and so on. Just load the new file into
+		Z80MU PROFESSIONAL and clean it up with the
+		full-screen disassembler.
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Running Z80MU PROFESSIONAL                                              บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+The "shareware" version of Z80MU PROFESSIONAL does not include any sort of
+manual. When you register your copy, you will receive a manual. In the
+meantime, the following should be sufficient to get you up and running:
+
+	1) To install Z80MU, simply copy all of the distribution files
+	   into one directory on your hard disk (or to a work floppy).
+	   Likewise, copy to the same directory any of your CP/M programs
+	   which you will want to run.
+
+	2) You start Z80MU running just by typing in "Z80MU" at the DOS
+	   prompt. Once Z80MU begins execution, it displays its copyright
+	   screen. Press {Return} to acknowledge that you have read the
+	   screen.
+
+	   For all intents and purposes, you are now running CP/M on your
+	   PC.
+
+	3) Z80MU PROFESSIONAL (like all of our products) contains
+	   extensive online documentation. At Z80MU's CP/M prompt, just
+	   type "HELP". You will be presented with screen after screen of
+	   help, with one screen for each and every command which is
+	   processed by Z80MU. You may page through these HELP screens
+	   with the {PgUp} and {PgDn} keys. For more details on the use of
+	   HELP, type "HELP HELP" at Z80MU's prompt.
+
+	4) You quit Z80MU by typing "QUIT" at Z80MU's prompt. This brings
+	   you back to DOS.
+
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Changes for Z80MU PROFESSIONAL version 5.2b                             บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+	1) A new command has been implemented to control the use of
+	   sound to get your attention when an error occurs:
+
+	  	SET_SOUND ON	turns on sound (this is the default)
+	  	SET_SOUND OFF	turns it off
+
+	2) Z80MU.EXE is now distributed as a normal .EXE file. It used to
+	   be distributed as a packed .EXE file (packed by Microsoft's
+	   EXEPACK program) to make it smaller on disk, but some users
+	   - none of them registered, by the way - had odd combinations of
+	   software in their system which couldn't handle such packed
+	   .EXE files, even though such files run just fine on a "standard"
+	   DOS system. Rather than preach the advantages of standardization
+	   to fanatical "4DOS Shell" users, we decided just to unpack the
+	   darn thing...
+
+	   Users with standard DOS systems are perfectly free to EXEPACK
+	   the Z80MU.EXE file, and thereby reduce its size on disk by 90K
+	   or so.
+
+	3) The SET_COLORS command contained a bug which caused the first
+	   unspecified color to become zero. So if only three colors were
+	   specified, the fourth was set to zero (instead of being left
+	   alone). This has been fixed.
+
+	4) SPEAKING OF COLORS: Users of CP/M spreadsheets, word processors,
+	   etc are reminded that the colors used by the Emulated Terminal
+	   come directly from the SET_COLORS command. When an application
+	   sends an Inverse Video escape sequence to the Emulated Terminal,
+	   the color that will be used is whatever was specified as the
+	   Inverse color in the last SET_COLORS command. The same goes
+	   for the Highlight color. So if Supercalc's blank cells don't
+	   show up because there's no text in them to highlight (for
+	   example), just add a SET_COLORS command to your AUTOEXEC.Z80
+	   file which will pick a Highlight or Inverse color which suits
+	   you.
+
+	5) Z80MU now reprograms the video controller at every prompt, so
+	   that you have 16 background colors available (and no blinking).
+	   In previous versions this was done once at program startup, with
+	   the nasty side effect that you could run an editor (or some other
+	   program) from within Z80MU which might change the video board to
+	   enable blinking, and this change would affect Z80MU when you
+	   returned to it. Now things will be set back to the proper state
+	   at each and every Z80MU prompt.
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Changes for Z80MU PROFESSIONAL version 5.2a                             บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+	1) Distribution was changed from advertising to the "shareware"
+	   concept. No changes were made to the source code. The DEMO
+	   version of Z80MU PROFESSIONAL is now outdated.
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Changes for Z80MU PROFESSIONAL version 5.2                              บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+	1) The video routines were tweaked to provide faster support for
+	   CGA's, because CGA support was brutally sacrified at the altar
+	   of blinding performance for everybody else. Now it's reasonable.
+
+	2) The handling of direct port I/O (via SET_IOBASE) has changed
+	   slightly. When the Z80 CPU emulator encounters a Z80 IN or
+	   OUT instruction, the logic is now as follows:
+
+	  	a) Add the 8-bit Z80 I/O address to the current I/O
+	  	   BASE as set by the last SET_IOBASE command, thus
+	  	   yielding a 16-bit PC I/O address.
+
+	  	b) Handle the operation according to the resulting
+	  	   16-bit PC I/O address:
+
+			FF00 - FFFF:	No I/O is performed, although
+					any auto-increment etc is
+					accomplished. Only the actual
+					I/O is ignored. But the program
+					continues to run. So if you want
+					to run a Z80 program which you
+					know does direct I/O but which
+					you don't want to have aborted,
+					use "SET_IOBASE FF00".
+
+			0400 - EFFF:	The program is aborted. So if you
+					want to trap any programs which you
+					suspect might do direct I/O, use
+					"SET_IOBASE 400".
+
+			0000 - 03FF:	The I/O is performed to the resulting
+					16-bit PC I/O address.
+
+	3) A "PATCH" command has been added, for those times when you just
+	   have to patch CP/M memory from a SUBMIT file.
+
+	4) A "GO" command has been added to continue execution of an
+	   interrupted program, for those times when you just don't
+	   want to have to get into the debugger just to issue an
+	   {Alt-G} (for "Go") command. If you've started a program,
+	   for example, and discovered that the program requires a
+	   different terminal type, then just interrupt the program
+	   with ^BREAK, issue the right "SET_TERM" command, and then
+	   use this new "GO" command to resume execution where it
+	   left off.
+
+	5) The labels generated by the "SYMGEN" command have been changed
+	   slightly. Instead of being "AUTO99999" (where 99999 starts at
+	   zero and increments with each generated label), they are
+	   formatted as "AUTO_xxxx", where "xxxx" is the address of the
+	   label. This makes it easier during the analysis phase to see
+	   just what an auto-generated label refers to. Our apologies to
+	   those who will submit the generated source to an assembler which
+	   does not allow the underscore character in labels. All things
+	   considered, we thought that this method was the best for all
+	   concerned. Just use your editor to change the "_" characters
+	   to something else if you must...
+
+	6) RST 7 instructions are no longer used for breakpoints. Instead,
+	   we have gone back to the version 3.10 method of using HALT
+	   opcodes for the breakpoints. This allows you to use the
+	   debugger to trap code which isn't for CP/M (such as ROM-based
+	   disk controller code), or to set breakpoints in CP/M debuggers
+	   like DDT which use the RST 7 for their own use. One side effect
+	   of this is that you will be using the emulated Z80 CPU as long as
+	   you are in the debugger - even if the 8080 CPU (using the
+	   NEC V20 chip) had been in effect when you entered the debugger.
+	   So if you issue the "Go" command via {Alt-G} in the debugger,
+	   the program will be executed as Z80 opcodes, via the software
+	   Z80 emulator. When you exit the debugger, you will be switched
+	   back to the proper emulated CPU.
+
+	   Note, however, that RST instructions *ARE* still used for various
+	   CP/M-related operations like BIOS and BDOS calls. Since such
+	   calls only make sense in a CP/M application, this should be
+	   no problem.
+
+	7) Under certain circumstances the Z80MU prompt would appear
+	   farther up the screen than it should. This occurred whenever
+	   you sent output to the CON device (i.e. = "SYMLIST" without
+	   a filename, or "RESOURCE 100 1ff CON"). This has been fixed.
+
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Changes for Z80MU PROFESSIONAL version 5.1                              บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+	NOTE: A new manual was produced for version 5.1, so changes
+	listed for version 5.1 or for prior versions are reflected in
+	the manual. Changes for later versions are not in the manual.
+	Any information here which conflicts with information in the
+	manual takes precedence over the information in the manual.
+
+
+	1) The SET_MASK command has been added to allow masking of
+	   output characters to 7 bits.
+
+	2) Various commands (CD, CHDIR, MD, MKDIR, RD, RMDIR, CLS) which
+	   used to be passed to DOS and handled by COMMAND.COM are now
+	   handled internally by the Emulator. This speeds up the processing
+	   of these much-used commands.
+
+	3) The video support routines have been rewritten. Speed with EGA
+	   and VGA displays has been improved, but CGA displays which need
+	   to have snow eliminated by software will be a little slower than
+	   before.
+
+	4) The printed Step output obtained by {Alt-L} in DEBUG has been
+	   reformatted for easier scanning of voluminous output. In addition,
+	   any disassembled line with a PC value of 0005 has an asterisk
+	   at the left edge, to enable you to locate BDOS calls quickly.
+
+	5) The "WRITE" command used to generate a bad checksum on the last
+	   line of a HEX file in certain circumstances. This has been fixed.
+
+	6) Single-step mode used to execute two instructions upon return
+	   from a BIOS or BDOS call. This has been fixed so that it
+	   properly stops between instructions.
+
+	7) You may enter an Emulator command when you invoke Z80MU. When used
+	   like this, the Emulator will process this single command and then
+	   automatically exit back to DOS.
+
+	8) DOS reports that there are at least 5 drives on the system, even
+	   if you have fewer than 5. So Z80MU determines the number of drives
+	   by itself. This is more accurate.
+
+	9) Some confusion has resulted from the "Select Drive" BDOS emulation.
+	   At each Emulator prompt, the drive is reset to whichever drive
+	   was active before a CP/M program was run. During CP/M operation,
+	   drive select requests will be honored. So far, this is just the same
+	   as you had with CP/M. The confusion occurs when you interrupt a
+	   CP/M program with ^BREAK (which you never could do with a true
+	   CP/M system). The Emulator interrupts the CP/M program, then gives
+	   you its prompt. As part of this prompt, it switches back to the
+	   "right" default drive (just as the original DRI CCP used to do).
+	   If you then enter the debugger and continue the program, you will
+	   still be using the Emulator prompt's drive. This MAY OR MAY NOT be
+	   the drive which your CP/M program last selected. This MAY OR MAY
+	   NOT be the drive that you want to be the default one as you
+	   continue the CP/M program.
+
+	10) The CP/M BDOS emulation has been improved (again!).
+
+
+
+ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+บ Changes for Z80MU PROFESSIONAL version 5.0                              บ
+ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+	NOTE: This list details the most significant differences between
+	the last public domain version - Z80MU 3.10 (the one featured
+	in the October 1986 issue of BYTE magazine) - and the first
+	version of the Z80MU PROFESSIONAL series (version 5.0). This
+	list is by no means complete, because Z80MU PROFESSIONAL was a
+	complete rewrite of the source code. There are innumerable
+	differences not listed here which *WILL* make a difference in
+	operation. Nevertheless, we feel that it is important to show
+	some of the differences, so that owners of the public domain
+	version (Z80MU 3.10) will know what the PROFESSIONAL version
+	offers over the public domain version.
+
+	NOTE: We will not disclose details here. We made that mistake
+	when we wrote the definitive article on Z80 and CP/M emulation
+	which appeared in the October 1986 issue of BYTE magazine. Soon
+	after that article appeared, other emulators began incorporating
+	our copyrighted code without our permission. Rather than
+	litigate, we'll obtain justice by keeping Z80MU far and away
+	the fastest and most accurate emulator of the Z80 and of CP/M
+	for the IBM PC - and we *WON'T* tell them how we're doing it!
+
+
+	1) The user interface is interactive and lightning fast. We no
+	   longer use the very slow DOS input and output routines. On the
+	   negative side, this means that you can no longer use DOS I/O
+	   redirection when the program is run. On the positive side,
+	   this means that screen output is very fast, you have control
+	   over the colors used, and in general we can provide a much
+	   more productive environment.
+
+	2) You can recall and edit previous commands.
+
+	3) Interactive, full-screen help, disassembly, and debugging. This
+	   alone made the switch from DOS I/O worth it. You haven't lived
+	   until you have seen how fast and easy it is to create source
+	   code from object code using the disassembler, which includes:
+
+		a) Full-screen, instant updates. Whenever you tell the
+		   Emulator something about the object code, the result
+		   appears instantly on the screen. In effect, you are
+		   looking at a living disassembly of the object code.
+
+		b) Support for Z80 or 8080 mnemonics.
+
+	   And the full-screen debugger is likewise a joy to use:
+
+		a) All Z80 registers (including the Stack) are always
+		   on the screen, and the first dozen or so source
+		   statements at the current PC are always accurately
+		   disassembled and on-screen.
+
+		b) To change any register, you just move the cursor
+		   to that register's on-screen value and type in the
+		   new value.
+
+		c) You may have up to 8 unconditional breakpoints active
+		   at once, and each can contain a pass count. When any
+		   of the 8 breakpoints are reached, execution stops and
+		   the debug screen instantly appears.
+
+		d) You may also specify a Conditional Break, such as
+		   "Break when the PC is greater than F600", or "Break
+		   when the PC equals 0005 and the C register holds 1A".
+
+		e) BDOS and PC History tracebacks have been carried forward
+		   from version 3.10. In addition, you can have instructions
+		   disassembled to the printer (with or without the current
+		   register values) as they are executed, and limit this
+		   activity to a range of CP/M addresses. This is just the
+		   thing for those tricky bugs which are hard to catch,
+		   when what you really need is a boxfull of paper containg
+		   a step-by-step disassembly of every single instruction
+		   which was executed...
+
+	   And the "HELP" command is a great improvement over the primitive
+	   list that was necessary when using DOS:
+
+		a) Each command is explained in its own on-screen window.
+
+		b) You may page forward or backward through these help
+		   windows, until you find what you want. Or you may ask
+		   for help with a specific command.
+
+	4) An optional CCP has been included, which is the functional
+	   equivalent of Digital Research's CCP. This allows those few
+	   CP/M programs which mistakenly assume the presence of a CCP
+	   to run under the Emulator.
+
+	5) The four most-needed terminals have been emulated: Televideo
+	   950, VT52 (Heath/Zenith H-89), Osborne, and Kaypro. There is
+	   also a Raw emulation, which shows absolutely everything which
+	   is sent out. Needless to say, this emulation is much faster
+	   (and more accurate) than that provided with version 3.10.
+
+	6) The Emulator now supports the NEC V20 and V30 chips. This may
+	   seem exciting, and some users have purchased Z80MU PROFESSIONAL
+	   for this feature alone. But in all honesty we must warn you
+	   that NEC's implementation of the 8080 instruction set leaves
+	   much to be desired. Z80MU PROFESSIONAL uses the NEC chips as
+	   well and safely as they can be used, but these chips just
+	   aren't what they're cracked up to be. If you have some very
+	   safe and simple CP/M applications (like ASM, M80, L80, etc),
+	   then the use of these NEC chips with the Emulator will give
+	   very fast and safe performance. Just don't try to debug
+	   anything using the NEC chips, and above all don't feed them
+	   untested or buggy code. One wrong opcode and the NEC chips
+	   can easily hang your PC...
+
+	7) A "SUBMIT" command has been included, which emulates CP/M's
+	   own submit command, complete with parameter substitution.
+	   There is no provision for XSUB support, but our implementation
+	   has benefits (it doesn't go back to drive A for the submit file,
+	   for example) which make it more desirable for use on PC hard disks.
+
+	8) Some CP/M applications use "CP/M-specific" BIOS and BDOS calls to
+	   interrogate the disk environment. Under the public domain version
+	   of Z80MU these programs were simply aborted. Z80MU PROFESSIONAL
+	   allows you to decide whether to abort these programs or to feed
+	   them emulated CP/M information which is obtained from DOS. This
+	   alone allows many CP/M programs (TURBO PASCAL, for one popular
+	   example) to run under Z80MU PROFESSIONAL which could not run under
+	   the public domain version.
+
+	9) The accuracy of CP/M emulation has been improved. Z80MU version
+	   3.10 was justly famous because it would run CP/M programs which
+	   other emulators could not. Well, we have greatly improved the
+	   emulation of CP/M even over the high standard created by version
+	   3.10:
+
+		a) The FCB fields change now in a way which is more
+		   closely aligned with the way that CP/M used to change
+		   them.
+
+		b) During BDOS calls, the same Z80 registers are modified
+		   that CP/M modified, and in the same [sometimes silly]
+		   ways.
+
+		c) Certain oddball CP/M calls (we won't say which ones)
+		   are handled by Z80MU PROFESSIONAL in a way identical to
+		   the way that CP/M handled them. Without giving too many
+		   details, we'll just say that this enables several hundred
+		   more CP/M programs to run under Z80MU PROFESSIONAL which
+		   would not run under the Z80MU version 3.10.
+
+		d) The RLD opcode (the only one of the 600-odd Z80 opcodes
+		   which wasn't precisely emulated by Z80MU 3.10) has been
+		   fixed.
+
+	10) You may invoke your favorite PC editor from within Z80MU. This
+	    makes source code development seamless and easy.
+
+	11) You may cause Z80 "IN" and "OUT" instructions to be mapped
+	    to PC I/O addresses. Z80MU version 3.10 simply ignored these
+	    opcodes.
+
+	12) Here are a few of the new commands:
+
+		SET_COLORS	Define colors to be used
+
+		SET_CPMECHO	Control echo of CP/M screen output to the
+				printer.
+
+		SET_CPMLIST	Define the PC device to be used as the CP/M
+				"LIST" device.
+
+		SET_CPMPUN	Define the PC device to be used as the CP/M
+				"PUN" device.
+
+		SET_CPMRDR	Define the PC device to be used as the CP/M
+				"RDR" device.
+
+		SET_CPMPATH	Define a series of DOS directories to be
+				searched by Z80MU when looking for a CP/M .COM
+				file to be executed.
+
+		SET_CPU		Select the software Z80 emulated CPU, or the
+				hardware (and fast) 8080 CPU made available
+				by the NEC V20 and V30 chips.
+
+		SET_EDITOR	Define your favorite PC editor to be used
+				within Z80MU.
+
+		SET_FAKE	Control the result of hardware-specific BIOS
+				and BDOS calls (for example, to interrogate
+				the disk parameters).
+
+		SET_IOBASE	Control the execution of Z80 IN and OUT
+				instructions.
+
+		SET_KEY		Load a keyboard macro, to be played back
+				when the associated key is pressed.
+
+		SET_MASK	Control the dubious CP/M practice of masking
+				output characters to 7 bits.
+
+		SET_SNOW	Control the handling of "snow" on cheap
+				IBM CGA video screens.
+
+		SET_SOURCE	Choose Z80 or 8080 mnemonics for disassembly.
+
+		SET_TERM	Select one of the builtin terminal emulations.
+
+		SET_VARS	Choose whether or not to interpret "$"
+				characters in submit files as a parameter
+				substitution leadin.
+
+		TYPE		Display one or more files in full-screen mode,
+				pausing between screens.
+
+	13) An executing CP/M program may call Z80MU to obtain certain PC
+	    services (like controlling a serial port), and set or inquire
+	    about various Z80MU settings. So if you've got a CP/M accounting
+	    package which is set up for an H-19 terminal, for example,
+	    you can have that program automatically tell Z80MU to select
+	    H-19 emulation when it starts executing. Or if you are running
+	    a CP/M communications program, then that program can set
+	    Z80MU's I/O Base address so that it can access the PC's
+	    communications port directly via IN and OUT instructions.

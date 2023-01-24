@@ -1,0 +1,87 @@
+
+/************************************************************************/
+
+-e???   //all errors off
+
+/************************************************************************/
+
++e530   //Symbol 'Symbol' (Location) not initialized
+
++e644   //Variable 'Symbol' (Location) may not have been initialized
++e645   //Symbol 'Symbol' (Location) may not have been initialized
+
++e746   //call to function 'Name' not made in the presence of a prototype
+
++e007   //Unable to open include file: FileName
+        //Probably (lack of) lint configuration
+
++e533   //function 'Symbol' should (not) return a value (see Location)
+
++e506   //Constant value Boolean
+
++e720   //Boolean test of assignment
+
++e514   //Unusual use of a Boolean
+
++e564   //variable 'Symbol' depends on order of evaluation
+
++e604   //Returning address of auto variable 'Symbol'
+
++e649   //Sign fill during constant shift
++e702   //Shift right of signed quantity (int)
++e704   //Shift right of signed quantity (long)
+
+/************************************************************************/
+
++e558   //number of arguments inconsistent with format
++e559   //size of argument number Integer inconsistent with format
+
++e647   //Suspicious truncation
+
++e776   //Possible truncation of addition
+
++e648   //Overflow in computing constant for operation: String
+
++e650   //Constant out of range for operator String
+
++e628   //no argument information provided for function 'Symbol' (Location)
+
++e415   //access of out-of-bounds pointer ('Integer' beyond end of data)
++e416   //creation of out-of-bounds pointer ('Integer' beyond end of data)
++e661   //possible access of out-of-bounds pointer ('Int' beyond end of data)
++e662   //possible creation of out-of-bounds pointer ('Int' beyond end of data)
+
+/************************************************************************/
+
++e766   //Include of header file FileName not used in module String
+
++e771   //Symbol 'Symbol' (Location) conceivably not initialized
++e772   //Symbol 'Symbol' (Location) conceivably not initialized
+
++e727   //Symbol 'Symbol' (Location) not explicitly initialized
++e728   //Symbol 'Symbol' (Location) not explicitly initialized
++e729   //Symbol 'Symbol' (Location) not explicitly initialized
+
++e744   //switch statement has no default
+
++e718   //Symbol 'Symbol' undeclared, assumed to return int
+
++e616   //control flows into case/default
+
++e714   //Symbol 'Symbol' (Location) not referenced
++e715   //Symbol 'Symbol' (Location) not referenced
+
++e550   //Symbol 'Symbol' (Location) not accessed
++e551   //Symbol 'Symbol' (Location) not accessed
++e552   //Symbol 'Symbol' (Location) not accessed
+
++e602   //Comment within comment
+
++e504   //Unusual shift value
+
++e503   //Boolean argument to relational
+
++e722   //Suspicious use of ;
+
+/************************************************************************/
+

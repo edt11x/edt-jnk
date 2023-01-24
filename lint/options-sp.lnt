@@ -1,0 +1,270 @@
+// Please note -- this is a representative set of error suppression
+//                options.  Please adjust to suit your own policies
+//                See  manual (chapter LIVING WITH LINT)
+//                for further details.
+// See Torture Testing Your Code
+// String constants are const char flag, assumes string constants are const char *
++fsc
+
+// Pointer parameter may be Null flag
++fpn
+
+// Make sure no foreign includes change the format or output option
++flm
+
+// Make sure we warn when trigraphs are used
+-ftg
+
+// Include files with a library includes without a full path
++fdi
+
+// Do not let -e<nnnn> options bleed to other source files
+-restore_at_end
+
+// Make sure we produce a summary
+-summary()
+
+// Do not wrap source lines in messages
+-width(0,0)
+
+// Allow symbol not defined, the compiler will catch this, but we want to
+// to allow symbols not defined so that we can lint a single source file.
+// This does not give the symbol a pass on not being declared.
+-e526
+
+// Warn on signed-unsigned mix divide
++e573
+
+// Allow symbol not referenced, so that we can lint individual source
+// files
+-e714
+
+// Warn on loss of sign
++e737
+
+// Allow unused enumeration constants so that we can lint individual
+// header files.
+-e749
+
+// Allow unused or unreferenced macros so that we can lint individual
+// header files.
+-e750
+
+// Allow unused or unreferenced typedefs so that we can lint individual
+// header files.
+-e751
+
+// Allow unused or unreferenced declarations so that we can lint individual
+// header files.
+-e752
+
+// Allow unused or unreferenced unions so that we lint individual
+// header files.
+-e754
+
+// Allow unused global macros
+-e755
+
+// Allow unused global typedefs, OTP defines a lot of these in global
+// files like otp_types.h, but they may not be used in specific C files.
+-e756
+
+// Allow unused global declarator, so that we can lint individual files.
+-e757
+
+// Allow global unused structure members
+-e768
+
+// Allow global unused enumeration constants
+-e769
+
+// Really can not do this on JSF because of the error return enumeration
+// The Return_type error return enumerates all possible returns, but most
+// switch structures will only have those errors we are interested in,
+// not all possible errors enumerated.
+-e788
+
+// ANSI limit of 6 characters in an external identifier has too many
+// violations in JSF
+-e793
+
+// Warning level set to the max, -w4 is the max
+-w3
+// -wlib(1) co.lnt already sets this
+
+// Allow // comments in regular C
+-e950
+
+// Warn about what could be declared const
++e952
+
+// Warn about padding to align on a boundary
+// +e958
+
+// Boolean expression required for operator
+-e961
+
+// Warn on convertsion from int to unsigned int
++e912
+
+// Allow undefined symbols so that we can lint individual source
+// files. Functions defined in other source files will be declared
+// (in the headers), but not defined in the source file under analysis.
+-e960
+
+-passes(3)
+
+
+++d__attribute__()=   // ignore this keyword and following parenthetical
+++d__attribute()=     // variant spelling of "__attribute__"
+
+
+
+-dINTEGRITY
+-dINT_178B
+-d__PROTOTYPES__
+-d__ppc
+-d__ppc7447
+-d__STDC_LIMIT_MACROS
+-d__CHAR_BIT=8
+-d__INT_BIT=32
+-d__SHRT_BIT=16
+-d__LONG_BIT=32
+-d__LLONG_BIT=64
+-d__LANGUAGE_C__
+-dUSE_VSYNC_ADJUSTMENT
+-dSTATIC_PCI_CONFIG
+-dSDU_DEBUG
+-dSDMA_DEBUG
+-dREALDU
+-dPCI_SUPPORT
+-dPCI_STATIC
+-dPCI
+-dNIU_DMS
+-dL3_WORKAROUND
+-dINT_178B_ENET
+-dINSTALL_DRIVERS
+-dDRM_STATIC_NODES
+-i.
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\BIT
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Console
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\DU_Interface
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Fault_Maintenance_Log
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Flash_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Lab_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Main
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Network_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Power_Management
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\WDT
+-iR:\platforms\EDM\jsfPCD\INTEGRITY-include
+-iR:\platforms\EDM\jsfPCD\ansi
+-iR:\platforms\EDM\jsfPCD\asp
+-iR:\development\Common\Pciserver
+-iR:\development\Common\Types
+-iR:\development\Common\Marvell
+-iR:\platforms\XES_5102_BSP\rtos\INTEGRITY-include
+-iR:\platforms\XES_5102_BSP\rtos\ansi
+-iR:\platforms\XES_5102_BSP\rtos\asp
+-iR:\platforms\XES_5102_BSP\rtos\modules\ghs\virtual_drivers\i2c
+-iR:\platforms\XES_5102_BSP\rtos\rtos-i40-178B-xes-5102-03072017\rtos\bsp
+-iR:\platforms\XES_5102_BSP\rtos\rtos-i40-178B-xes-5102-03072017\rtos\modules\ghs\virtual_drivers\i2c\pq3\virtual_driver
+-iR:\applications\OTP
+-iR:\applications\OTP\Common
+-iR:\applications\OTP\Kernel_AS
+-iR:\applications\OTP\src
+-iR:\applications\OTP\Client1
+-iR:\applications\OTP\Client2
+-iR:\applications\OTP\Client3
+-iR:\applications\OTP\Client4
+-iR:\applications\OTP\Client5
+-iR:\applications\OTP\Client6
+-iR:\applications\OTP\Client7
+-iR:\applications\OTP\Client8
+-iR:\applications\OTP\Client9
+-iR:\applications\OTP\Client10
+-iR:\development\Common\Pci
+-iR:\development\Common\DP_FaultLog
+-iR:\development\SystemProcessor\Source\Common\BIT
+-iR:\development\SystemProcessor\Source\Common\Cache
+-iR:\development\SystemProcessor\Source\Common\CommonMessaging
+-iR:\development\SystemProcessor\Source\Common\Console\ConsoleIO
+-iR:\development\SystemProcessor\Source\Common\Console\Utility
+-iR:\development\SystemProcessor\Source\Common\CPU
+-iR:\development\SystemProcessor\Source\Common\DefaultISRs
+-iR:\development\SystemProcessor\Source\Common\Discretes\Inputs
+-iR:\development\SystemProcessor\Source\Common\DU_Interface
+-iR:\development\SystemProcessor\Source\Common\DU_Serial
+-iR:\development\SystemProcessor\Source\Common\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\Common\Flash_Utilities
+-iR:\development\SystemProcessor\Source\Common\I2C
+-iR:\development\SystemProcessor\Source\Common\L3Settings
+-iR:\development\SystemProcessor\Source\Common\MaintenanceClient
+-iR:\development\SystemProcessor\Source\Common\MasterReset
+-iR:\development\SystemProcessor\Source\Common\NIU_Interface
+-iR:\development\SystemProcessor\Source\Common\NodeID
+-iR:\development\SystemProcessor\Source\Common\NorthBridgeMPP
+-iR:\development\SystemProcessor\Source\Common\NSDul
+-iR:\development\SystemProcessor\Source\Common\PartNum
+-iR:\development\SystemProcessor\Source\Common\resetCause
+-iR:\development\SystemProcessor\Source\Common\Sdma
+-iR:\development\SystemProcessor\Source\Common\SystemProcessorFPGA
+-iR:\development\SystemProcessor\Source\Common\Timer
+-iR:\development\SystemProcessor\Source\Common\Types
+-iR:\development\SystemProcessor\Source\Common\Utility
+-iR:\development\SystemProcessor\Source\EBL\src\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\Discrete\Outputs
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\DisplaySync
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\DMA
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\DriverRecovery
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\Flash\Flash_API
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\MemoryWindow
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\CBIT
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\Periodic
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\VideoCompression
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\VideoInput
+-iR:\development\SystemProcessor\Source\Simulated_CPSW\src
+-iR:\development\SystemProcessor\Source\Common\WDT\WDT_API
+-iR:\development\SystemProcessor\Source\OGLClient\src
+-iR:\development\SystemProcessor\Source\OGLInterface\MaintenanceClient
+-iR:\development\SystemProcessor\Source\OGLInterface\OGLClient\src
+-iR:\development\SystemProcessor\Source\OGLInterface\CommonMessaging
+-iR:\development\SystemProcessor\Source\OGLClientReturnInterface\src
+-iR:\development\SystemProcessor\Source\OTP
+-iR:\development\SystemProcessor\Source\OTP\FatFs\src
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\BIT
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Console
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\DU_Interface
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Power_Management
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\WDT
+-iR:\development\SystemProcessor\Source\BSP_Libraries\UserInit
+-iR:\platforms\EDM\jsfPCD_SKPP\bsp
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Main
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Flash_Load
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Lab_Load
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Network_Load
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\EBL_Formal\src\Program_Execute
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\PowerManagement
+-iR:\applications\DU_Heater
+-iR:\development\SystemProcessor\Source\RTOS_Extensions\ghnet\modules\ghs\ghnet2\include
+-iR:\development\SystemProcessor\Source\RTOS_Extensions\ghnet\modules\ghs\ghnet2\source\kernel\178b\INTEGRITY-include
+-iR:\platforms\XES_5102_BSP\rtos\INTEGRITY-include
+-iR:\platforms\XES_5102_BSP\rtos\ansi
+-iR:\development\SystemProcessor\Source\commonSEAL3\utils\bitUtils
+-iR:\development\SystemProcessor\Source\commonSEAL3\utils\include
+-iR:\platforms\int178_l3_20180328\rtos\INTEGRITY-include
+-iR:\platforms\int178_l3_20180328\rtos\ansi
+-iR:\development\SystemProcessor\Source\commonSEAL1\Types
+-iR:\development\SystemProcessor\Source\commonSEAL1\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\EBL\src\powerManagement
+-iR:\development\SystemProcessor\Source\commonSEAL1\NodeID
+-iR:\development\SystemProcessor\Source\commonSEAL1\Utility
+-iR:\development\SystemProcessor\Source\commonSEAL1\SystemProcessorFPGA
+-iR:\development\SystemProcessor\Source\commonSEAL3\Console\ConsoleIO
+-iR:\development\SystemProcessor\Source\commonSEAL3\Console\Utility
+-iR:\development\SystemProcessor\Source\commonSEAL1\DU_Interface
+-iR:\development\SystemProcessor\Source\commonSEAL1\Sdma
+-iR:\development\SystemProcessor\Source\commonSEAL1\NIU_Interface
+-iR:\development\SystemProcessor\Source\commonSEAL1\CommonMessaging
+-iR:\development\SystemProcessor\Source\commonSEAL1\CPU

@@ -1,0 +1,98 @@
+
+                                   memtester
+                                       
+  Utility to test for faulty memory subsystem
+  
+    by Charles Cazabon <memtest@discworld.dyndns.org>
+    
+   Copyright © 1999 Simon Kirby. Version 2 Copyright © 1999 Charles
+   Cazabon.
+   Licensed under the GNU General Public License version 2. See the file
+   COPYING for license details.
+   
+      Top of Page     About memtester     Building memtester     Using
+              memtester     Current Version     Download Now!
+                                      
+  About memtest
+  
+   memtest is a utility for testing the memory subsystem in a computer to
+   determine if it is faulty. The original source was by Simon Kirby
+   <sim@stormix.com>. I have by this time completely rewritten the
+   original source, and added many additional tests to help catch
+   borderline memory. I also rewrote the original tests (which catch
+   mainly memory bits which are stuck permanently high or low) so that
+   they run approximately an order of magnitude faster.
+   
+  Building memtest
+  
+   memtest is currently only distributed in source-code form. Building
+   it, however, is simple, even for a non-programmer. To build memtest,
+     * Download and extract the tarball in a convenient directory. This
+       is typically done as follows: tar xzf memtester-x.xx.tar.gz
+       Note the tarball is also available compressed with bzip2.
+     * In the resulting memtester-x.xx directory, type make to build the
+       executable. If it fails to compile, complaining about missing the
+       function strsignal, type make bsd instead. Although I build and
+       test it on Linux/x86, it should build and run on any sufficiently
+       Unix-like system. I have reports from users running it under
+       various flavours of BSD, System V, and of course Linux. There may
+       be gcc-isms in the source -- if it won't build with your favourite
+       compiler, please let me know so I can fix it.
+       
+  Using memtest
+  
+   Usage is simple. Run the resulting memtest binary with the following
+   commandline:
+   
+   memtest <memory> [runs] [-l or --log]
+   
+   where <memory> is the amount of memory to test. This can be the
+   special value 'all', or a number followed by a units suffix (use a
+   suffix of B for bytes, K for kilobyes, M for megabytes, or G for
+   gigabytes).
+   [runs] is an optional limit to the number of runs through all tests.
+   memtest will attempt to lock its pages into memory after allocating
+   them, in an attempt to test more physical memory. This call will only
+   succeed if the user has sufficient privileges (read: root). If memtest
+   fails to lock its pages, it will issue a warning and continue
+   regardless.
+   
+   The -l or --log options will log output to a file (memtest.log) in
+   addition to stderr.
+   
+   Unlike the original version, memtest will not exit after detecting its
+   first error. It will simply abort the current test and proceed with
+   the next test in the current run. After each run, memtest reports how
+   long the run took, and how many errors were found. Note that it will
+   not log multiple errors in a single test. At the completion of the
+   last run (if a run limit supplied on the commandline) it will report
+   total runtime and total errors logged. memtest will also exit if it
+   receives one of SIGINT, SIGTERM, SIGSEGV, or SIGQUIT. memtest catches
+   and ignores SIGHUP.
+   
+   More details are available in the man page (memtest.1).
+   
+  Current Version
+  
+   The current version of memtest should be available at
+   http://www.qcc.sk.ca/~charlesc/software/memtester/ 
+   
+   The current version is v.2.93.1, dated 26-Apr-2000.
+   Questions, comments, bug reports, and feature requests should be
+   directed to me at <memtest@discworld.dyndns.org>.
+   
+  Download
+  
+                               Download now:
+                          memtester-2.93.1.tar.gz
+   http://www.qcc.sk.ca/~charlesc/software/memtester/memtester-2.93.1.ta
+                                    r.gz
+                          memtester-2.93.1.tar.bz2
+   http://www.qcc.sk.ca/~charlesc/software/memtester/memtester-2.93.1.ta
+                                   r.bz2
+                                      
+   The current experimental/development version (if any) is kept in
+   http://www.qcc.sk.ca/~charlesc/software/memtester/experimental/
+   
+   Older versions may be found in
+   http://www.qcc.sk.ca/~charlesc/software/memtester/old-tarballs/

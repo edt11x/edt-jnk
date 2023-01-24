@@ -1,0 +1,7 @@
+v 4
+file "/Users/edt/jnk/vhdl/counter/" "source/counter.vhd" "3080e012e78143194e927d27b49476b49240baeb" "20180617064220.888":
+  entity counter at 1( 0) + 0 on 13;
+  architecture behaviour of counter at 13( 216) + 0 on 14;
+file "/Users/edt/jnk/vhdl/counter/" "testbench/counter_tb.vhd" "3c52522b4c47d38aa0721d42b315f8ff7b8e5f25" "20180617064220.846":
+  entity counter_tb at 1( 0) + 0 on 11;
+  architecture testbench of counter_tb at 8( 111) + 0 on 12;

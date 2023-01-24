@@ -1,0 +1,19 @@
+SET_VARS OFF
+LABEL 0005 BDOS
+LABEL 0006 BDOS_VECTOR
+COMMENT 0100 Get exit address to push to stack
+COMMENT 0103 Skip over ASCII literals
+FORMAT 0106 Storage
+FORMAT 0130 ASCII
+LABEL 0130 INTRO_MSG
+FORMAT 013D Code
+LABEL 013D START
+COMMENT 013D \n\nSet local stack, display intro message, etc\n
+COMMENT 0140 Push exit address
+COMMENT 0141 Preserve BC across BDOS call
+COMMENT 0145 BDOS "Display String" func
+COMMENT 0147 Display intro via BDOS
+COMMENT 014A Restore BC
+COMMENT 014B \n\nCalc end of memory, cause that's where we'll move\n
+LABEL 0200 LOCAL_STACK
+SET_VARS ON

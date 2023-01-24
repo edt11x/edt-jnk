@@ -1,0 +1,124 @@
+#!build
+default:
+    :target_os=INTEGRITY
+    :bspname=db64460
+    :processor=ppc
+    :ppc_cputype=ppc7400
+    :target=C:\GHS\jsfPCD\target\db64460.bld
+    :toolchain=ghs
+    :objectformat=elf
+    :sourcedirs=C:\GHS\jsfPCD\db64460
+    :select=ppc
+    :select=c
+    :cxxfe.args=--option=30
+    :linker.args=-strict_overlap_check
+    :dblink.args=-no_warn_for_dbo_not_found
+    :buildrevision=c2000
+    :linker_opts=-crc_initval=0xffffffff
+    :linker_opts=-crc_polynomial=0x04c11db7
+    :intex.args=-crc_initval=0xffffffff
+    :intex.args=-crc_polynomial=0x04c11db7
+    :driver_flags=private_defines
+    :defines=NO_TRACEPOINTS
+    :deflibraries=
+    :nostdinc=true
+    :driver_opts=-nostdinc
+    :xswitches=-Xnosmallprologue
+ 
+#//-----------------------------------------------------------------------------
+#// CPSW Mandatory Compilation Definitions
+    :defines=CLIBS_178B
+    :defines=INT_178B
+    :defines=NDEBUG
+    :defines=INTEGRITY
+
+#// Define the preprocessor as itself.
+#// If it is used in the code there will be no impact.
+    :defines=PCD=PCD
+
+    :defines=CPLUSPLUS
+
+#// Mandatory build options    
+    :ec_option=nojapanese_automotive_c
+    :e_option=nomultibyte_chars
+    :e_option=nomicrosoft
+    :e_option=nosigned_char
+    :e_option=nosigned_field
+    :e_option=nosigned_enum_field
+    :e_option=noalternative_tokens
+    :cx_e_option=upgrade_cxx_errors
+    :cx_e_option=upgrade_c_errors
+    :cx_e_option=nonowarn
+    :cx_e_option=nonousebeforeset
+    :cx_e_option=nono_for_init_warn
+    :cx_option=noexceptions
+    :cx_option=nono_namespaces
+    :cx_option=no_rtti
+    :cx_option=new_style_casts
+    :cx_option=nono_bool_keyword
+    :cx_option=nono_explicit_keyword
+    :cx_option=no_wchar_t_keyword
+    :cx_option=no_implicit_extern_c_type_conversion
+    :cx_option=c_and_cpp_functions_are_distinct
+    :cx_option=readonly_virtual_tables
+    :cx_option=new_outside_of_constructor
+    :cx_option=common_implicit_initialization
+    :cx_option=nono_constructor_initialization_in_main
+    :cx_option=noanachronisms
+    :cx_option=noold_for_init_scoping
+    :cx_template_option=distinct_signatures
+    :cx_template_option=no_old_specializations
+    :language=cxx
+    :check=nobounds
+    :check=noassignbound
+    :check=nonilderef
+    :check=noswitch
+    :check=nozerodivide
+    :check=nowatchpoint
+    :asm_option=nono_warnings
+    :elxr_option=nono_warnings
+    :elxr_option=noundefined_okay
+    :elxr_option=nomultiple_okay
+
+    :ppc_option=constant_data_section
+    :config_setting=nopic
+    :config_setting=nopid
+    :config_setting=nobyteorder
+    :config_setting=longlong
+    :config_setting=bigswitch
+    :config_setting=nofarcalls
+    :config_setting=inline_prologue
+    :staticlink=true
+    :nolibraries=false
+    :coverage=false
+    :auto_mvc=false
+    :outputmode=elf
+    :fputype=hard
+    :xda_thresholdkind=normal
+    :sourcekanji=none
+    :targetkanji=none
+    :packing=none
+    :struct_min_alignment=1
+    :prototype_mode=error
+    :asm_mode=warn
+    :unknown_pragma=error
+    :incorrect_pragma=error
+    :cx_mode=extended_embedded
+    :cx_lib=eecnoe
+    :profilelevel=none
+    :memcheck=none
+    :optimizestrategy=none
+    :cx_enum=int
+    :program_layout=traditional
+    :elxr_overlap=error
+    :cxx_compiler.args=--mih
+
+#// Overridden Mandatory Settings
+    :ec_mode=ansi
+    :c_mode=ansi
+    :asm_option=external
+ 
+#// Other Compile Settings    
+    :ec_option=nono_slash_comment
+    :ppc_option=disable_altivec
+dummy.c

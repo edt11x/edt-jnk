@@ -1,0 +1,210 @@
+Changes
+=======
+
+v.2.93 2000/03/30 Charles Cazabon <memtest@discworld.dyndns.org>
+	-fixed some portability issues (again).
+
+v.2.92 2000/03/30 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Changed the Makefile to get around a problem with System V-derived vs.
+	BSD-ish systems and where/if strsignal() is defined.  If you get compilation
+	errors complaing that it can't find strsignal, do a `make bsd' instead of
+	a plain `make'.
+
+v.2.91 2000/03/25 Charles Cazabon <memtest@discworld.dyndns.org>
+	-made the new rlimt stuff a little more verbose.
+
+v.2.90 2000/03/25 Charles Cazabon <memtest@discworld.dyndns.org>
+	-added a getrlimit/setrlimit call to increase the hard and soft limits
+	on mlock'd memory for systems where this defaults to a small percentage
+	of available memory.  The symbolic constant involved seems to vary between
+	Unices; hopefully the two I have tested for (RLIMIT_MEMLOCK for Linux
+	(and BSD-ish systems?) and RLIMIT_VMEM for Solaris (and System V-ish
+	systems?)) will cover most Unices.
+
+v.2.89 2000/02/15 Charles Cazabon <memtest@discworld.dyndns.org>
+	-added strsignal.c and patch to use it for BSD-ish systems, contributed
+	by Bruce Gingery.
+
+v.2.88 2000/01/01 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Fixing some cosmetic issues with reports.
+	-Changed memory allocation behaviour.
+	-Added 'all' keyword for more easily testing maximum amount of memory.
+	-Various code cleanups.
+
+v.2.85 1999/12/17 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Changed memory allocator to page-align after allocation.  This was
+		preventing memtest from locking its pages in memory under at least
+		some versions of Solaris/SunOS.  Could be a System V-ism?
+	-Split some of the functionality of the main routine into separate
+		functions.  Is cleaner this way.
+	-Some evidence of a code cleanup can be seen.  This is because I hadn't
+		intended to do another 2.8x release until I received the bug report
+		about failure to mlock on Solaris.
+	-Cleaned up the manpage and updated to reflect these changes.
+	-Cleaned up the Makefile.
+	-Distributions are now named with the version number instead of date.
+	-Memory allocator will now keep trimming its attempted amount until
+		it can mlock () the resulting buffer if the reason the mlock fails
+		is a lack of resources (ENOMEM on Linux, EAGAIN on some System V
+		Unices).  Please let me know if the program spits out some other
+		errno value and string so I can check for other mutant responses.
+	-Added value 'all' as valid commandline specifier for amount of memory.
+	-Changed web page.
+
+v.2.81 1999/12/13 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Private test release.
+
+v.2.80 1999/12/06 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Added Bit Spread test.  This one helps catch inter-bit dependencies within
+		a word when a 0 bit is caught between two 1 bits, or vice versa.
+	-Project appears to be entering a maintenance phase; i.e. many people are
+		using this software, but no one is reporting bugs, and I have no
+		outstanding urgent items to add to it.  I have some ideas about a
+		complete rewrite for version 3 that will significantly clean the code
+		up, but that's about it.  Consider v. 2.80 to be the final release
+		(barring any reported bugs or feature requests) until/if I do a
+		version 3 rewrite.
+
+v.2.71 1999/11/19 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Fixed bonehead error in Stuck Address test.
+
+v.2.70 1999/11/19 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Added Stuck Address test.
+	-Added explanations of output messages to manpage.
+	-Fixed an ouput bug when errors are found.
+	-Changed numbering scheme a touch.
+
+v.2.6 1999/11/19 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Cleaned up logging.  Logfile is now in addition to stderr.
+	-Added specification of memory in units other than MB.
+	-Added a manpage.
+	-Cleaned up some remnants from test code changing.  Bogus testing will
+		not now be reported.
+	-Changed memory allocation algorithm to handle memory allocation in non-
+		default units.
+	-Passed 3000 downloads.  Freshmeat apparently gets a lot of readers.
+
+v.2.5 1999/11/16 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Added an expermental/development version.  This release version is
+		the first release to have come from that track.
+	-Added a logging option (-l or --log).  Logs to memtest.log.  Log is
+		currently a little messy, because of the \b sequences in the stderr
+		output.  Will clean up later.
+	-Handles commandline a little more flexibly now.
+	-Changed 'solid 1s' and 'solid 0s' tests to a single test which alternates
+		between the two several times.  Helps catch marginal memory with
+		inter-word bit dependencies.
+	-Added a "Bit Flip" test -- tries 0-1-0... or 1-0-1... cycles on each bit
+		individually per 32-bit word.  Helps catch marginal memory with
+		inter-bit dependencies.
+	-Updated documentation.
+
+v.2.41 1999/11/15 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Minor code and packaging updates.
+
+v.2.4 1999/11/11 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Fixed a bug in the memory allocation algorithm -- it was decrementing by
+		one MB after each unsuccessful malloc attempt, rather than the graduated
+		amounts I had intended.
+	-Removed some duplicated code in two of the testing routines.
+	-Submitted an announcement to freshmeat.net out of curiosity.
+
+v.2.3 1999/11/08 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Added code to cleanly exit after getting a signal.  Also ignores SIGHUP.
+	-Moved printing of summary information to separate function, so it could be
+		printed after receiving a signal.
+	-Clarified documentation, especially for beginners.
+	-Added a BUGS file.
+	-Fixed a bug I introduced when I removed the walkbits data array; the
+		walking zeroes data patterns were being generated incorrectly.
+	-Main inspiration was the fact that this package is actually being
+		downloaded on a fairly regular basis.
+
+v.2.2 1999/10/28 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Some code cleanups and output changes.
+	-Added solid ones and solid zeroes tests.
+	-If memory allocation fails, it will try again with a smaller allocation
+		until it either succeeds, or cannot allocate 1MB.
+	-Moved the changes record out of the source to this file and reorganized
+		it.
+
+v.2.1 1999/10/25 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Code cleanups.  Moved tests to separate functions and separate source file.
+		Consolidated semi-duplicated code by adding a mode bit parameter to
+		some tests (checkboard, walking bits).  Cleaned up logic of main routine
+		by invoking tests from inside loop. Consolidated error output code in
+		separate function.
+	-Gave the code a basic linting.  Should compile cleanly under gcc with the
+		-Wall option now.  Formerly gave tons of non-fatal warnings.
+	-Separated source into two headers and two C source files to reduce file
+		length.  Created a makefile, etc.  Looks like I've got a small package
+		to maintain now.
+	-Corrected checkerboard tests to invert the bit pattern every other word32.
+	-Added error counts and total runtime reporting.
+	-Broke some long lines.
+	-Rewrote walking bits tests to remove array data.  Also changed to walk the
+		bit back down the word32 after walking it up.
+
+v.2.02 1999/10/22 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Added a second, inverted, checkerboard test.
+	-Added optional commandline parameter to limit number of runs.
+	-Bah.  Changed the output back to stderr.  Liked the in-progress indicators
+		too much.
+
+v.2.0 1999/10/22 Charles Cazabon <memtest@discworld.dyndns.org>
+	-Version 2 release, based on Simon Kirby's original memtest.
+	-Changes made include:
+	-will attempt to mlock () pages into memory, to test more memory, rather
+		than allowing the machine to swap and test the same locations multiple
+		times.  This requires root privileges; it will default to its previous
+		behaviour if it cannot mlock its memory.
+	-memory accesses are now all done in 32-bit words, significantly speeding
+		the process.
+	-added tests (checkerboard, walking ones, walking zeroes) which help catch
+		cases where a bad bit is not simply hardwired high or low, but rather
+		is dependent on surrounding bits in either the same word, or the
+		previous and successive words.  Also added sequential increment and
+		block sequential tests.
+	-cleaned up output format.  Introduced concept of 'runs' versus individual
+		tests.
+	-program will not exit at first error.  It will abort the current test and
+		continue with the next test in the run.
+	-errors are logged to stderr, most other output goes to stdout.
+		Should make it easier to look through a captured log of an overnight
+		test run.  Unfortunately, stdout is buffered, so the in-progress updates
+		for recursive tests aren't as visible.  Can be changed if necessary.
+	-made all in-test memory references volatile.  Should help keep compilers
+		from optimizing away the tests.  Don't think this will help with the
+		hardware caching issues, though.
+	-displays time in seconds taken for each run.
+	-re-indented the code, changing it from k&r/Berkeley style to my personal
+		preferences.  YMMV.
+	-code is messy, but works.  It was a quick hack.
+
+
+
+Original v.1.0 release comments by Simon Kirby
+==============================================
+
+1999/10/21 Simon Kirby <sim@stormix.com> <sim@neato.org>
+
+This program will run on an active machine, but will test only the
+memory that the kernel maps to the process.  Make sure you specify
+at least enough memory (in 2^20 MB) to cross all of your memory
+chips, unless you want to keep a larger amount of memory
+available.  Note that the amount of time required to complete one
+test run is proportional to the amount of memory being tested.
+This program does not take in to account cache issues or anything
+similar, but it still seems to do the trick, and thus I have
+decided not cleaned up the cut-and-paste coding technique I used
+to create it very quickly several years ago, fearing that I may
+break its strange powers. :)
+I hope others can find this as useful as I have.
+The algorithm is simple:
+  1. Fill two byte arrays of equal size (half of the memory size
+     specified) with equal pseudo-random data.
+  2. Walk through each element of both arrays and do a simple
+     operation with another random byte on each element.
+  3. Compare each array to make sure both are equal (if not,
+     bomb out with a failure message).
+

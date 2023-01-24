@@ -1,0 +1,11 @@
+Name:           haq
+Version:        0.0
+Description:    Super cool mega lambdas
+License:        GPL
+License-file:   LICENSE
+Author:         Ed Thompson
+Maintainer:     edt@custommicronics.com
+Build-Depends:  base
+Executable:     haq
+Main-is:        Haq.hs
+ghc-options:    -O

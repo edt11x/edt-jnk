@@ -1,0 +1,61 @@
+// Please note -- this is a representative set of error suppression
+//                options.  Please adjust to suit your own policies
+//                See  manual (chapter LIVING WITH LINT)
+//                for further details.
+-dINTEGRITY
+-dINT_178B
+-d__PROTOTYPES__
+-d__ppc
+-d__ppc7447
+-d__STDC_LIMIT_MACROS
+-d__CHAR_BIT=8
+-d__INT_BIT=32
+-d__SHRT_BIT=16
+-d__LONG_BIT=32
+-d__LLONG_BIT=64
+-d__LANGUAGE_C__
+-i.
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\BIT
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Console
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\DU_Interface
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Fault_Maintenance_Log
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Flash_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Lab_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Main
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Network_Load
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\Power_Management
+// -iR:\development\SystemProcessor\Source\EBL_Formal\src\WDT
+-iR:\platforms\EDM\jsfPCD\INTEGRITY-include
+-iR:\platforms\EDM\jsfPCD\ansi
+-iR:\platforms\EDM\jsfPCD\asp
+-iR:\development\Common\Types
+-iR:\development\Common\Marvell
+-iR:\development\SystemProcessor\Source\Common\BIT
+-iR:\development\SystemProcessor\Source\Common\CPU
+-iR:\development\SystemProcessor\Source\Common\Cache
+-iR:\development\SystemProcessor\Source\Common\Discretes\Inputs
+-iR:\development\SystemProcessor\Source\Common\DU_Interface
+-iR:\development\SystemProcessor\Source\Common\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\Common\NSDul
+-iR:\development\SystemProcessor\Source\Common\Sdma
+-iR:\development\SystemProcessor\Source\Common\SystemProcessorFPGA
+-iR:\development\SystemProcessor\Source\Common\Types
+-iR:\development\SystemProcessor\Source\Common\Console\ConsoleIO
+-iR:\development\SystemProcessor\Source\Common\Timer
+-iR:\development\SystemProcessor\Source\Common\Console\Utility
+-iR:\development\SystemProcessor\Source\Common\NIU_Interface
+-iR:\development\SystemProcessor\Source\Common\NorthBridgeMPP
+-iR:\development\SystemProcessor\Source\EBL\src\Fault_Maintenance_Log
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\MemoryWindow
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\DMA
+-iR:\development\SystemProcessor\Source\OTP
+-iR:\development\SystemProcessor\Source\Common\Utility
+-iR:\development\Common\Pci
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\VideoInput
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\VideoCompression
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\DisplaySync
+-iR:\development\SystemProcessor\Source\ofpServices\L3Specific\Discrete\Outputs
+-iR:\development\SystemProcessor\Source\Common\NodeID
+-iR:\development\SystemProcessor\Source\OGLClient\src
+-iR:\development\SystemProcessor\Source\Common\CommonMessaging
+-iR:\applications\OTP\Common

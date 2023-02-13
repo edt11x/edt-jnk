@@ -1,0 +1,271 @@
+      *---------------------------------------------------------
+      * NJRSRV0001
+      * General Routines
+      * Nick Roux
+      * November 1998
+      *---------------------------------------------------------
+
+     H NoMain
+
+      *---------------------------------------------------------
+      * General Stuff
+
+      /Copy NJRLIBCPY,TYPES
+      /Copy NJRLIBCPY,NJRSRV0001
+
+      *---------------------------------------------------------
+      * Character bitwise NOT
+     P cNOT            B                   Export
+     D                 Pi                  Like(TChar)
+     D factor1                             Like(TChar) Value
+
+     D Result          S                   Like(TChar)
+
+     C                   Eval      Result = x'FF'
+     C                   BitOff    factor1       Result
+
+     C                   Return    Result
+
+     P cNOT            E
+
+      *---------------------------------------------------------
+      * Character bitwise and
+     P cAND            B                   Export
+     D                 Pi                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     D nfactor1        S                   Like(TChar)
+     D nfactor2        S                   Like(TChar)
+     D Result          S                   Like(TChar)
+
+     C                   Eval      nfactor1 = cNot(factor1)
+     C                   Eval      nfactor2 = cNot(factor2)
+     C                   Eval      Result = x'FF'
+     C                   BitOff    nfactor1      Result
+     C                   BitOff    nfactor2      Result
+
+     C                   Return    Result
+
+     P cAND            E
+
+      *---------------------------------------------------------
+      * Character bitwise or
+     P cOR             B                   Export
+     D                 Pi                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     D Result          S                   Like(TChar)
+
+     C                   Eval      Result = x'00'
+     C                   BitOn     factor1       Result
+     C                   BitOn     factor2       Result
+
+     C                   Return    Result
+
+     P cOR             E
+
+      *---------------------------------------------------------
+      * Character bitwise Xor
+     P cXOR            B                   Export
+     D                 Pi                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     C                   Return    cAND(cOR(factor1:factor2):
+     C                                  cNOT(cAND(factor1:factor2)))
+
+     P cXOR            E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise and
+     P uAND            B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     D farray1_ptr     S                   Like(TPointer)
+     D farray2_ptr     S                   Like(TPointer)
+     D rarray_ptr      S                   Like(TPointer)
+     D farray1         S                   Like(TChar) Dim(4) Based(farray1_ptr)
+     D farray2         S                   Like(TChar) Dim(4) Based(farray2_ptr)
+     D rarray          S                   Like(TChar) Dim(4) Based(rarray_ptr)
+     D C               S                   Like(TInt)
+
+     D Result          S                   Like(TInt_u)
+
+     C                   Eval      farray1_ptr = %addr(factor1)
+     C                   Eval      farray2_ptr = %addr(factor2)
+     C                   Eval      rarray_ptr = %addr(Result)
+
+     C                   Do        4             C
+     C                   Eval      rarray(c) = cAND(farray1(c):farray2(c))
+     C                   EndDo
+
+     C                   Return    Result
+
+     P uAND            E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise or
+     P uOR             B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     D farray1_ptr     S                   Like(TPointer)
+     D farray2_ptr     S                   Like(TPointer)
+     D rarray_ptr      S                   Like(TPointer)
+     D farray1         S                   Like(TChar) Dim(4) Based(farray1_ptr)
+     D farray2         S                   Like(TChar) Dim(4) Based(farray2_ptr)
+     D rarray          S                   Like(TChar) Dim(4) Based(rarray_ptr)
+     D C               S                   Like(TInt)
+
+     D Result          S                   Like(TInt_u)
+
+     C                   Eval      farray1_ptr = %addr(factor1)
+     C                   Eval      farray2_ptr = %addr(factor2)
+     C                   Eval      rarray_ptr = %addr(Result)
+
+     C                   Do        4             C
+     C                   Eval      rarray(c) = cOR(farray1(c):farray2(c))
+     C                   EndDo
+
+     C                   Return    Result
+
+     P uOR             E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise XOR
+     P uXOR            B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     D farray1_ptr     S                   Like(TPointer)
+     D farray2_ptr     S                   Like(TPointer)
+     D rarray_ptr      S                   Like(TPointer)
+     D farray1         S                   Like(TChar) Dim(4) Based(farray1_ptr)
+     D farray2         S                   Like(TChar) Dim(4) Based(farray2_ptr)
+     D C               S                   Like(TInt)
+
+     D ResultDS        DS
+     D  Result                             Like(TInt_u)
+     D  RBytes                             Like(TChar) Dim(4) Overlay(Result)
+
+     C                   Eval      farray1_ptr = %addr(factor1)
+     C                   Eval      farray2_ptr = %addr(factor2)
+
+     C                   Do        4             C
+     C                   Eval      rBytes(c) = cXOR(farray1(c):farray2(c))
+     C                   EndDo
+
+     C                   Return    Result
+
+     P uXOR            E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise Not
+     P uNot            B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+
+     D farray1_ptr     S                   Like(TPointer)
+     D rarray_ptr      S                   Like(TPointer)
+     D farray1         S                   Like(TChar) Dim(4) Based(farray1_ptr)
+     D rarray          S                   Like(TChar) Dim(4) Based(rarray_ptr)
+     D C               S                   Like(TInt)
+
+     D Result          S                   Like(TInt_u)
+
+     C                   Eval      farray1_ptr = %addr(factor1)
+     C                   Eval      rarray_ptr = %addr(Result)
+
+     C                   Do        4             C
+     C                   Eval      rarray(c) = cNot(farray1(c))
+     C                   EndDo
+
+     C                   Return    Result
+
+     P uNot            E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise ShiftLeft
+     P uLShift         B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D shiftcount                          Like(TInt_u) Value
+
+     D C               S                   Like(TInt)
+
+     D ResultDS        DS
+     D  Result                             Like(TInt_u)
+     D  RByte                              Like(TChar) Dim(4) Overlay(Result)
+
+     C                   Eval      Result = factor1
+
+     C                   Do        ShiftCount    C
+     C                   BitOff    '0'           RByte(1)
+     C                   Eval      Result = Result * 2
+     C                   EndDo
+
+     C                   Return    Result
+
+     P uLShift         E
+
+      *---------------------------------------------------------
+      * TInt_u bitwise ShiftRight
+     P uRShift         B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D shiftcount                          Like(TInt_u) Value
+
+     C                   Return    factor1 / (2**ShiftCount)
+
+     P uRShift         E
+
+      *---------------------------------------------------------
+      * TInt_u mod
+     P uMod            B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     D  Result         S                   Like(TInt_u)
+
+     C                   Div       factor2       factor1
+     C                   Mvr                     Result
+     C                   Return    Result
+
+     P uMod            E
+
+      *---------------------------------------------------------
+      * TInt_u div
+     P uDiv            B                   Export
+     D                 Pi                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     D  Result         S                   Like(TInt_u)
+
+     C     factor1       Div       factor2       Result
+
+     C                   Return    Result
+
+     P uDiv            E
+
+      *---------------------------------------------------------
+      * TString Upcase
+     P Upcase          B                   Export
+     D                 Pi                  Like(TString)
+     D factor1                             Like(TString) Value
+
+     D  Result         S                   Like(TString)
+
+     C     factor1       Div       factor2       Result
+
+     C                   Return    Result
+
+     P uDiv            E
+

@@ -1,0 +1,375 @@
+****************************************************************************
+      *  SOCKCOPY  ILE RPG copy file for sockets API. Contains the procedure
+      *            prototypes for the "starter set" socket APIs.
+      *            Other basic sockets APIs. Another service program,
+      *            QSOSRV2, contains the advanced network-level sockets
+      *            APIs.
+      *
+      *            This file also contains constant definitions for the
+      *            valid parameter values you'll use for basic socket
+      *            communications.
+      *
+****************************************************************************
+      * Compiler Include Directives
+****************************************************************************
+      /If Not Defined( $SocketsHCopied )
+      /Define          $SocketsHCopied
+      /Else
+      /EOF
+      /EndIf
+****************************************************************************
+      *
+      *Constants used in the reference material and defined in the C include
+      *  files. These constants are used as parameter values for some of the
+      *  sockets functions. Because of the 10-=character name limit, some of
+      *  the constants have been abbreviated.
+      *
+      * There are three different types of primary transport types
+      * in Berkley sockets. AF_UNIX, AF_INET and AF_NS. AF_INET
+      * is really the only one of interest. AF_INET indicatest that
+      * that we want to communication out over the Network. AF_UNIX
+      * is a flag to the system that this is really just Interprocess
+      * communication rather than network communication. It is a
+      * short cut for the system to commuicate between processes
+      * but still maintain the socket interface. AF_NS is the older
+      * Xerox NS protocol, noone uses this. So you probably just
+      * want AF_INET.
+      *
+     dAF_INET          c                   Const(2)
+      * There are two primary interfaces to the sockets. A stream
+      * oriented interface, SCK_STREAM and a datagram interface
+      * SCK_DGRAM. Datagrams are typically used with UDP/IP or
+      * IMP/IP, Socket streams are typically used with TCP/IP.
+      * But this is not a hard rule. In this case to talk with
+      * the Tandem, we are using a Stream based TCP protocol.
+     dSOCK_STREAM      c                   Const(1)
+      * Reuse Address allows us reuse a specified socket multiple
+      * times.
+     dREUSEADDR        c                   Const(55)
+      *The __errno function is a standard C function that returns a pointer
+      *  to the internal C errno variable. The sockets APIs use this varia-
+      *  ble to communicate more information about an error. Typically, when
+      *  an error occurs in a sockets API, the API returns a -1 and sets the
+      *  errno variable to one of the pre-assigned error numbers. You can
+      *  then call the __errno function to determine what caused the error
+      *  (see below for the error numbers). The errno variable is a 10.0
+      *  integer.
+      *
+      ***************************************************************
+      * For now, under V3R7 without the Common Programming API (CPA)
+      * errno is not available. Attempting to use it will cause
+      * unresolved externals in the link.
+      * It is my suspecion that by adding the Common Programming
+      * API,you should be able to access the errno functions
+      * (errno, perror(),strerror()) and the "C" string manipulation
+      * subroutines to handle the "C" text.
+      ***************************************************************
+     d$$errno          pr              *   ExtProc('__errno')
+      *Assign the return value of the $$errno function to the pointer perrno
+      *  then you can access the error information via the errno field
+      *  defined below. Usethe following call:
+      *                  Eval      perrno=$$errno
+      *See member ERRNO in the file QSYSINC/H for a list of the preassigned
+      *  error values.
+     dStrError         pr              *   ExtProc('strerror')
+     derrno                          10i 0 Value
+     d$$Error          pr              *   ExtProc('__errno')
+      ***************************************************************
+      ***************************************************************
+      * For a connection oriented TCP conversation such as with the
+      * Tandem VarCTI the flow of the TCP connection for the AS/400
+      * will be as follows.
+      *        - Call inet_addr() to convert the IP/Address to
+      *          the internal representation of the address
+      *        - Call Socket() to retrieve a socket pair to
+      *          communicate through. You will get back a handle
+      *          to the socket pair.
+      *        - Call Connect() passing the address converted
+      *          with inet_addr(), the socket handle, and the
+      *          length of the address. These three call,
+      *          inet_addr(),Socket() and Connect() make up the
+      *          process of "Opening" a connection to the socket
+      *          on the other machine. More modern TCP/IP APIs
+      *          combine these three calls into just a SocketOpen
+      *          operation.
+      *        - Call Send() to send data to the other side. In
+      *          our case to the Tandem VarCTI.
+      *        - Call Recv() to receive data from the other side.
+      *        - Call Close() when we are done with the connection.
+      *
+      * There are obviously many permutations of the connection
+      * through TCP/IP, but this is one of the straight forward
+      * and common ones. In this case the AS/400 is just acting
+      * as the client to the Tandem VarCTI. The Tandem side,
+      * since it is acting as a server is just a little bit more
+      * complex. Rather than issuing a connect, it has to call
+      * bind() which allocates a socket for receiving connections,
+      * listen() which listens for someone attempting to connect and
+      * finally accept() to accept a connection, once someone
+      * on the other side has issued a connect() request. The
+      * data transfer (send() & recv()) and the close() calls
+      * are the same.
+      *
+      * If something goes wrong with one of these routines,
+      * they will return a -1. A return value of -1 or 0 on
+      * "C" function calls typically indicates a problem.
+      * Unfortuanetly, in "C", they expect you to check the
+      * return values of each system call. So at each point
+      * when you make a call to socket(), inet_addr(),
+      * connect(), send(), and recv(), you need to check the
+      * error returns.
+      ***************************************************************
+      ***************************************************************
+      *The inet_addr function takes an IP address in dotted decimal format
+      *  (eg, 150.1.1.49) and converts it to a 32-bit integer.
+      *  Note: The IP Address string must be null-terminated.
+      *
+      * This is a prototype to allow access to the "C" externally
+      * callable inet_addr() function. Note that we discovered that
+      * this will not accept the newer style addresses specification
+      * for the socket, eg. inet_addr('150.1.1.49:6666') won't
+      * work. You have to manually insert the socket into the
+      * address structure after you have called the inet_addr()
+      * routine with the IP address, eg inet_addr('150.1.1.49')
+      ***************************************************************
+      ***************************************************************
+     dinet_addr        pr            10u 0 ExtProc('inet_addr')
+     dIPAddress                        *   Value Options(*String)
+      ***************************************************************
+      ***************************************************************
+      * The perror() routine (which doesn't work at present, because
+      * we can't link to the library) prints the last error that
+      * has occured. It uses errno to get the error, strerror()
+      * to retreive the text for the error and then prints it
+      * to the user.
+      ***************************************************************
+      ***************************************************************
+     d*error           pr            10i 0 ExtProc('perror')
+     d*rrStr                           *   Value Options(*String)
+      *
+      ***************************************************************
+      ***************************************************************
+      *The Socket function returns the socket descriptor you'll pass to
+      *  other functions. Socket() is called to get a socket,
+      *  before you call Connect().
+      *
+      * This function takes three arguments,
+      *   the address family - in our case AF_INET
+      *   the communication type - in our case SCK_STREAM,a socket stream
+      *   the protocol - which is typically set to 0.
+      * The protocol is usually determined by the interface, by
+      * setting the value to zero, but can be overriden by specifying
+      * a value. In our case, we will set it to zero.
+      ***************************************************************
+      ***************************************************************
+     dSocket           pr            10i 0 ExtProc('socket')
+     dAF_NET                         10i 0 Value
+     dSOCK_STREAM                    10i 0 Value
+     dUNUSED                         10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * SetSockOpt() is a multi purpose function that stands for
+      * "Set Socket Options". It allows you to set a wide variety
+      * of behaviours for the sockets. The parameters for this
+      * call change based on what you are trying to do. I won't
+      * try to document the set of SetSockOpt() calls,because
+      * there are number of them.
+      *
+      * In our case, we probably won't have to call SetSockOpt()
+      *
+      *The SetSockOpt function returns a -1 if unsuccessful.
+      ***************************************************************
+      ***************************************************************
+     dSetSockOpt       pr            10i 0 ExtProc('setsockopt')
+     dSocketDId                      10i 0 Value
+     dSOL_SOCKET                     10i 0 Value
+     dSOL_REUSEADDR                  10i 0 Value
+     dPtrToOn                          *   Value Options(*String)
+     dSizeOfOn                       10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * The Bind() function is for server programs. It allows
+      * the server to assign a Socket,that has been acquired with
+      * Socket() call, to a specific address and port.
+      * This causes the port to be available to other computers
+      * to "dial-in" or Connect() to that address.
+      *
+      * In our case, with the Tandem VarCTI, the Tandem is acting
+      * as the server side, so we will not need to call this
+      * function.
+      *
+      *The Bind function returns a -1 if unsuccessful.
+      ***************************************************************
+      ***************************************************************
+     dBind             pr            10i 0 ExtProc('bind')
+     dSocketDId                      10i 0 Value
+     dPtrToSAddr                       *   Value Options(*String)
+     dAddrLen                        10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * The Listen() call is another call used by server programs
+      * to "listen" for connections. A server program will call
+      * listen() to wait for a connection. When a client program
+      * on another machine calls Connect(), Listen()  will return
+      * with the information about the Client's requested connection.
+      * If the server program decides that the client is permitted
+      * the server will call Accept() to accept the connection from
+      * the client. In most simple server applications, all
+      * connections retunrned from Listen() are accepted.
+      *
+      * In our case, we are acting as the client program and the
+      * Tandem is acting as the server program, so we don't need
+      * to call Listen().
+      *
+      *The Listen function returns a -1 if unsuccessful.
+      ***************************************************************
+      ***************************************************************
+     dListen           pr            10i 0 ExtProc('listen')
+     dSocketDId                      10i 0 Value
+     dNbrOfClients                   10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * Accept() accepts a connection on a socket. The Listen()
+      * call will block waiting on someone to make connection. When
+      * someone attempts the connection, Listen() will return with
+      * information about the connection. Accept() is called to
+      * accept the connection.
+      *
+      * This is another call that is done by the server in a
+      * connection oriented TCP/IP conversation. In our case,
+      * this is the Tandem VarCTI. The AS/400 probably won't be
+      * doing a Listen(), Bind() or Accept() for the Rockwell
+      * application.
+      *
+      *The Accept function returns a socket descriptor. This socket
+      *  descriptor is different than the one returned by the socket
+      *  function. This descriptor identifies the communications link
+      *  between the client and server programs and is the descriptor the
+      *  two programs will use when communicating to each other (eg,on the
+      *  send and recv functions).
+      ***************************************************************
+      ***************************************************************
+     dAccept           pr            10i 0 ExtProc('accept')
+     dSocketDId                      10i 0 Value
+     dPtrToSAddr                       *   Value Options(*String)
+     d*PtrToAddrSz                    10i 0 Value
+     dPtrToAddrSz                      *   Value Options(*String)
+      ***************************************************************
+      * READ
+      ***************************************************************
+     dRead             pr            10i 0 ExtProc('read')
+     dSocketDId                      10i 0 Value
+     dPtrToBuffer                      *   Value
+     dPtrToAddrSz                    10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * WRITE
+      ***************************************************************
+     dWrite            pr            10i 0 ExtProc('write')
+     dSocketDId                      10i 0 Value
+     dPtrToBuffer                      *   Value
+     dSizeToRead                     10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * Connect() is called by a client program attempting a connection
+      * to a know socket on a machine with the server program running.
+      * It actually is requesting a connection which the server
+      * program can choose to accept or deny.
+      *
+      * For the connection from the AS/400 to the Tandem VarCTI
+      * we will be acting as a client program, so we will call
+      * Connect() after calling Socket() to get a socket to
+      * communicate on and inet_addr() to translate our
+      * internet address.
+      *
+      *The Connect function returns a -1 if unsuccessful.
+      ***************************************************************
+      ***************************************************************
+     dConnect          pr            10i 0 ExtProc('connect')
+     dSocketDId                      10i 0 Value
+     dSockAddress                      *   Value Options(*String)
+     dAddressLen                     10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * Send sends the data to the other machine connected on the
+      * other end of the socket connection. It is similar to the
+      * AS/400's WRITE verb in that it writes the data to the other
+      * side.
+      *
+      * Both the server and client sides will call Send() and Recv()
+      * to write and read data to each other.
+      *
+      *The Send function returns a -1 if unsuccessful. If successful, it
+      *  returns the number of bytes sent. It is important to check
+      *  check the return value of every Send() call to make sure
+      *  all of the bytes were written.
+      ***************************************************************
+      ***************************************************************
+     dSend             pr            10i 0 ExtProc('send')
+     dSocketDId                      10i 0 Value
+     dBuffer                           *   Value Options(*String)
+     dBufferLen                      10i 0 Value
+     dFlags                          10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * The Recv() function is used to READ data from the other side
+      * of the connection. Both
+      *
+      * Both the client and the server programs will use Recv() to
+      * read data from the other side.
+      *
+      *The Recv function returns a -1 if unsuccessful. If successful, it
+      *  returns the number of bytes received. A return of 0 means
+      *  there was no data to read and you should simply call
+      *  Recv() again. Always check the return value from a Recv()
+      ***************************************************************
+      ***************************************************************
+     dRecv             pr            10i 0 ExtProc('recv')
+     dSocketDId                      10i 0 Value
+     dBuffer                           *   Value Options(*String)
+     dBufferLen                      10i 0 Value
+     dFlags                          10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * Close() closes the socket connection. When a program ends,
+      * you need to close the socket, or it will stay open on the
+      * system for a long time.
+      *
+      * Both the client and the server programs will need to call
+      * Close() when their programs are done with the socket.
+      *
+      ***************************************************************
+      ***************************************************************
+     dClose            pr            10i 0 ExtProc('close')
+     dSocketDId                      10i 0 Value
+      ***************************************************************
+      ***************************************************************
+      * GetHostID() gets the IP address from the AS/400 for use in
+      * the communication process.
+      *
+      ***************************************************************
+      ***************************************************************
+     dGetHostID        pr            10i 0 ExtProc('gethostid')
+      ***************************************************************
+      ***************************************************************
+      * The Socket Address is constructed from the combination of
+      * the call to inet_addr() and the static data that is presented
+      * here. As mentioned previously, AF_INET, is the protocol that
+      * we will use to communicate to another machine with sockets
+      * we will manually insert the port into the port field. The
+      * Address will come from the value returned out of the
+      * inet_addr() call. And finally the Zero portion of the
+      * address is always zero. It is space needed for the Xerox NS
+      * transport layer that noone uses any more.
+      *
+      * In the case of the Tandem VarCTI the port is currently
+      * configured to be 6666.
+      *
+      ***************************************************************
+      * C Macros (Constants)
+     D UNUSED          C                   Const(0)
+     D SOL_SOCKET      C                   Const(-1)
+     D SOL_REUSEADDR   C                   Const(55)
+     D BufferLen       C                   Const(10)
+      ***************************************************************
+

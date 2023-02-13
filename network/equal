@@ -1,0 +1,22 @@
+#!/bin/sh
+# Kernel IP routing table
+# Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+# 209.190.102.10  0.0.0.0         255.255.255.255 UH        0 0          0 ppp0
+# 192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 eth0
+# 0.0.0.0         209.190.102.10  0.0.0.0         UG        0 0          0 ppp0
+
+#
+# First delete the gateways
+#
+for i in `netstat -nr | egrep ' UG  *0 0' | awk '{ print $2 }'`
+do
+    echo "Deleting Gateway : $i"
+    route del default gw $i
+done
+#
+# Find the ppp destination
+#
+PPP0=`netstat -nr | egrep ppp0 | awk '{ print $1 }' | head -1`
+ip route add default \
+    nexthop via 192.168.1.1 dev eth0 weight 1 \
+    nexthop via $PPP0       dev ppp0 weight 1

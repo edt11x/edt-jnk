@@ -1,0 +1,29 @@
+      *---------------------------------------------------------
+      * NJRLIBCPY.ERRNO
+      * Error Number
+      * Nick Roux
+      * November 1998
+      *
+      * __errno is defined it service program QSYS/QC2UTIL1 
+      * in order to use this module your program should be 
+      * compiled with BDNDIR(QC2LE)
+      *
+      *
+      *
+      *---------------------------------------------------------
+
+      /If Not Defined(ERRNO)
+      /Define         ERRNO
+      /Else
+      /Eof
+      /EndIf
+
+      *---------------------------------------------------------
+      * General Stuff
+
+      /Copy NJRLIBCPY,TYPES
+
+     DGetErrNo         PR              *   ExtProc('__errno')
+
+     D ErrnoPtr        S                   Like(TPointer)
+     D errno           S                   Like(TInt) Based(ErrnoPtr)

@@ -1,0 +1,71 @@
+      *--------------------------------------------------------
+      * NJRLIBCPY.CONSTANTS
+      * Standard Types
+      * Nick Roux
+      * November 1998
+      *--------------------------------------------------------
+
+      /If Not Defined(CONSTANTS)
+      /Define         CONSTANTS
+      /Else
+      /Eof
+      /EndIf
+
+      * Logical
+     D True            C                   1
+     D False           C                   0
+
+      * API Types
+     D Failed          C                   -1
+     D Success         C                   0
+
+      * Character Types
+     D Numeric         C                   '0123456789'
+     D Alpha           C                   'abcdefghijklmnopqrstuvwxyz-
+     D                                     ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+     D LowerCase       C                   'abcdefghijklmnopqrstuvwxyz'
+     D UpperCase       C                   'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+     D Operators       C                   '+-*/'
+     D Minus           C                   '-'
+     D Plus            C                   '+'
+     D Multiply        C                   '*'
+     D Devide          C                   '/'
+     D Equal           C                   '='
+
+     D Blank           C                   ' '
+     D Comma           C                   ','
+     D Dot             C                   '.'
+     D UnderScore      C                   '_'
+     D Question        C                   '?'
+     D Percentage      C                   '%'
+     D Ampersant       C                   '&'
+     D Astrix          C                   '*'
+
+     D Slash           C                   '/'
+     D BackSlash       C                   '\'
+
+     D Colon           C                   ':'
+     D SemiColon       C                   ';'
+
+     D SingleQuote     C                   ''''
+     D DoubleQuote     C                   '"'
+
+     D GreaterAs       C                   '>'
+     D LessThan        C                   '<'
+
+     D LeftBracket     C                   '('
+     D RightBracket    C                   ')'
+
+     D ByteNil         C                   x'00'
+
+     DEBC_CR           C                   x'0D'
+     DEBC_LF           C                   x'25'
+     DEBC_CRLF         C                   x'0D25'
+
+      * Some handy ASCII Constants
+     DASC_CR           C                   x'0D'
+     DASC_LF           C                   x'0A'
+     DASC_CRLF         C                   x'0D0A'
+     DASC_SPC          C                   x'20'
+

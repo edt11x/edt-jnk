@@ -1,0 +1,351 @@
+#
+# Nynex Information Solutions Group, 1989, 1990
+#
+# File:		$MOM/src/noc/nocfiles/Makefile
+# Version:	1.4
+# Latest Rev:	10/15/90 13:48:56
+# SCCS String:	@(#) Makefile 1.10@(#)
+# Description:	Makefile for noc in mom1015 integration.
+#
+# @(#)Makefile 1.10 Copyright 1989, 1990 NYNEX Corp. All rights reserved.
+#
+
+
+# required environment variable MOM
+include $(MOM)/src/noc/nocfiles/Makefile.tmpl
+NOC = $(MOM)/src/noc/nocfiles
+MK = make "MOM=$(NOC)"
+
+# libraries that come from mom in the mom1015 structure
+LFLAGS = -L$(MOM)/src/lib/$(ARCH) -L/DB/ingres/lib
+MOMLIBS = -lic201 -lshare -lipc -ldbms -lic101 -lingres
+#
+# I want NOC to be dependant on the libraries so that NOC will be
+# rebuilt if the libraries are updated. 
+#
+# Ed Thompson Tue Apr 24 14:42:07 EDT 1990
+#
+MOMLIBDIR = $(MOM)/src/lib/$(ARCH)
+MOMLIBA = $(MOMLIBDIR)/libshare.a \
+	  $(MOMLIBDIR)/libic201.a \
+	  $(MOMLIBDIR)/libic101.a \
+	  $(MOMLIBDIR)/libipc.a   \
+	  $(MOMLIBDIR)/libdbms.a
+
+# libraries that don't come from mom
+LIBS = $(ICPAKDIR)/library/libuipak_g.a $(SUNLIBS)
+
+# total library segment
+LIBRARIES = $(LFLAGS) $(MOMLIBS) $(LIBS)
+
+# sub-directory definitions
+NE2KSUBS = HEADERS DBMS DBINTF MSGREF SYSTEM NSP MAIN
+LIBSSUBS = HEADERS LIBTW DISP APPL
+
+# files definitions
+NOC_EXECUTABLES = $(ARCH)/nocexec $(ARCH)/nocpd $(ARCH)/RunLogo
+
+# files from mom/NE2K.obj/=MAIN
+MAIN_M  = adminMain.m allocator.m memError.m memTrace.m RunLogo.m 
+MAIN_C  = nocpd.c noc_functions.c
+MAIN_H  = allocator.h RunLogo.h noc_functions.h
+MAIN_DB = $(MAIN_M:%.m=%.df)
+
+# files from mom/NE2K.obj/=SYSTEM
+NE2K_M = AlarmDetailPane.m AlarmDetails.m AlarmLayer.m \
+	 ActiveAlarm.m ActiveAlarmPane.m DataBasePane.m DatabaseAppl.m \
+	 DatabaseUpdate.m DeleteAlarms.m DialogMonitor.m DialogPane.m \
+	 EventsPane.m MCRowField.m \
+	 MessagesPane.m MgrCntrl.m \
+	 NetworkProcPane.m PassThru.m PassThruPane.m Reports.m \
+	 TrblAPane.m TrblAdd.m TrblAppl.m \
+	 TrblLayer.m TrblPane.m TrblTickets.m TrblUpd.m UpdateDialog.m \
+	 UpdateManager.m ViewMgrMsgsPane.m TriggerEventPane.m \
+	 PrblLayer.m PrblDetail.m PrblDetailPane.m TtPane.m \
+	 HalfPane.m NetObjPane.m Printer.m PrinterPane.m PrinterLayer.m
+NE2K_H = AlarmDetailPane.h AlarmDetails.h AlarmLayer.h \
+	 ActiveAlarm.h ActiveAlarmPane.h DataBasePane.h DatabaseAppl.h \
+	 DatabaseUpdate.h DeleteAlarms.h DialogMonitor.h DialogPane.h \
+	 EventsPane.h MCRowField.h \
+	 MCTableForm.h MessagesPane.h MgrCntrl.h NetworkProcPane.h \
+	 PassThru.h PassThruPane.h Reports.h TrblAPane.h TrblAdd.h \
+	 TrblAppl.h TrblLayer.h TrblPane.h \
+	 TrblTickets.h TrblUpd.h UpdateDialog.h UpdateManager.h \
+	 ViewMgrMsgsPane.h TriggerEventPane.h \
+	 PrblLayer.h PrblDetail.h PrblDetailPane.h TtPane.h \
+	 HalfPane.h NetObjPane.h Printer.h PrinterPane.h PrinterLayer.h
+NE2K_T = MCTableForm.t
+NE2K_DB = $(NE2K_T:%.t=%.df) $(NE2K_M:%.m=%.df)
+
+
+# files from mom/NE2K.obj/=NSP
+NSP_M = NSPLayer.m NetView.m CurNetView.m SevColor.m ParkButton.m \
+	NSPLayer2.m NMdisplayLine.m NetElView.m LineItem.m DisplayLayer.m \
+	NSPIcon.m PSMLayer.m AlarmView.m DispMultiText.m  MultiMenu.m \
+	Dname.m StrOrdCltn.m timer.m ReadDraw.m Location.m Configuration.m \
+	ConfigElement.m NMdatabase.m NMdbkey.m NMdisplayNode.m \
+	NOdisplayer.m AlarmChange.m AtkBigImageLayer.m AtkDefRec.m \
+	AtkEarthBaseExtension.m AtkFixture.m AtkIconRecord.m AtkLegend.m \
+	AtkLegendLine.m AtkLibraryList.m AtkLibraryListLine.m \
+	AtkLibraryManager.m AtkScrollBar.m AtkSizeBar.m AtkSmallImageLayer.m \
+	ColorDisplay.m IconEdit.m Panel.m Executor.m OCursor.m \
+	NOdisplayOnForm.m ControlView.m UserListPane.m UserListLayer.m \
+	CreateEventMenu.m EventReportTemplate.m GenericCmd.m NSPdb.m \
+	DisplayObject.m LineObject.m DisplayLine.m NetworkView.m ExpandButton.m
+NSP_H = NSPLayer.h NetView.h CurNetView.h SevColor.h ParkButton.h NSPLayer2.h \
+	NMdisplayLine.h NetElView.h LineItem.h DisplayLayer.h NSPIcon.h \
+	PSMLayer.h AlarmView.h DispMultiText.h  MultiMenu.h Dname.h \
+	StrOrdCltn.h nynexIcon.h ReadDraw.h Location.h Configuration.h \
+	ConfigElement.h NMdatabase.h NMdbkey.h NMdisplayNode.h NOdisplayer.h \
+	AlarmChange.h Panel.h IconEdit.h ColorDisplay.h AtkBigImageLayer.h \
+	AtkDefRec.h AtkFixture.h AtkIconRecord.h AtkLegend.h AtkLegendLine.h \
+	AtkLibraryList.h AtkLibraryListLine.h AtkLibraryManager.h \
+	AtkScrollBar.h AtkSizeBar.h AtkSmallImageLayer.h Executor.h \
+	OCursor.h NOdisplayOnForm.h ControlView.h UserListPane.h \
+	UserListLayer.h CreateEventMenu.h EventReportTemplate.h \
+	GenericCmd.h NSPdb.h DisplayObject.h LineObject.h DisplayLine.h \
+	NetworkView.h ExpandButton.h
+NSP_DB = $(NSP_M:%.m=%.df)
+
+
+# files form mom/NE2K.obj/=MSGREF
+MSGREF_H = Action.h Alert.h Component.h Condition.h Event.h IdentAlert.h \
+	 IdentComponent.h IdentEvent.h IdentFilter.h MakeMR.h MessRefPane.h \
+	 MessageRefine.h SelectRaw.h
+MSGREF_M = Action.m Alert.m Component.m Condition.m Event.m IdentAlert.m \
+	 IdentComponent.m IdentEvent.m IdentFilter.m MakeMR.m MessRefPane.m \
+	 MessageRefine.m SelectRaw.m
+MSGREF_DB = $(MSGREF_M:%.m=%.df)
+
+
+# These are files that need to linked in that are not in the normal
+# areas.
+#
+# Ed Thompson Mon Mar 12 12:13:05 EST 1990
+#
+#DBMS_E  = Database.h Manager.h ProcTable.h FilterRule.h FilterCondition.h
+#IPC_E   = Message.h rpcPacket.h mtypes.h env.h AlarmRecord.h EventRecord.h \
+#	  EventReport.h eventdef.h
+#PATCH_E = PatchObject.h PatchOrdCltn.h PatchDictionary.h WordDictionary.h
+#SHARE_E = DateTime.h Environment.h
+
+
+# files from mom/NE2K.obj/=DBMS
+DBMS_PIA = circuit.h dialog.h elem_prop.h net_el_cls.h net_elem.h prop_hist.h \
+	   property.h raw_message.h ruser.h trouble_tkt.h prob_record.h
+DBMS_T = Dialog.t ObjectClass.t RawMessage.t TroubleRecord.t PrblRecord.t
+DBMS_H = Dialog.h ObjectClass.h RawMessage.h TroubleRecord.h PrblRecord.h \
+	 $(DBMS_PIA)
+DBMS_DB = $(DBMS_T:%.t=%.df)
+
+
+# files from mom/NE2K.obj/=DBINTF
+DBINTF_M = DBenumHandler.m
+DBINTF_H = DBinterface.h DBevent_type_view.h DBevent_cat.h \
+	   DBalarm_record_status.h DBmonitored_attribute.h \
+	   DBnet_user_x_ref.h DBnetwork_user.h DBsubnet_type.h \
+	   DBsubnet_mgr.h DBservice_state.h DBmanaged_status.h DBline_type.h \
+	   DBfunction.h DBinternet_line.h DBlines.h DBnet_element_port.h \
+	   DBequipment.h DBnet_element.h DBsubnet.h DBnetwork.h \
+	   DBgeo_display.h DBdisplay_dbkey.h DBclass_ref.h DBdbkey_x_ref.h \
+	   DBtop_display.h DBnet_object_rel.h DBplayer.h DBenumHandler.h \
+	   DBsecurity.h DBdisplay_object.h DBrecommended_list.h \
+	   DBrecommended_profile.h DBenumeration.h DBdisplay_link.h \
+	   DBview_object.h DBline_display.h DBevent_report_template.h \
+	   DBsecurity_level.h DBsecurity_gate.h DBsecurity_cntl.h \
+	   DBevent_profile.h DBgeneric_cmd.h 
+ 
+#  files added to support recommended actions : mano 07/30/90
+
+DBINTF_T = DBinterface.t DBevent_type_view.t DBevent_cat.t \
+	   DBalarm_record_status.t DBmonitored_attribute.t \
+	   DBnet_user_x_ref.t DBnetwork_user.t DBsubnet_type.t \
+	   DBsubnet_mgr.t DBservice_state.t DBmanaged_status.t DBline_type.t \
+	   DBfunction.t DBinternet_line.t DBlines.t DBnet_element_port.t \
+	   DBequipment.t DBnet_element.t DBsubnet.t DBnetwork.t \
+	   DBgeo_display.t DBdisplay_dbkey.t DBclass_ref.t DBdbkey_x_ref.t \
+	   DBtop_display.t DBnet_object_rel.t DBplayer.t DBsecurity.t \
+	   DBdisplay_object.t DBrecommended_list.t DBrecommended_profile.t \
+	   DBenumeration.t DBdisplay_link.t DBview_object.t DBline_display.t \
+	   DBevent_report_template.t DBsecurity_level.t DBsecurity_gate.t \
+	   DBsecurity_cntl.t DBevent_profile.t DBgeneric_cmd.t
+
+#  files added to support recommended actions : mano 07/30/90
+
+DBINTF_DB = $(DBINTF_T:%.t=%.df) $(DBINTF_M:%.m=%.df)
+
+
+# files from mom/LIBS.obj/=DISP
+DISP_M = ApplicationPane.m AskUser.m AssistBox.m BufPageLayer.m \
+	 StrArray.m CancelToggle.m CharLayer.m CheckBox.m ColorMenu.m \
+	 CornerExpandBox.m CursorOther.m DBTableForm.m DandTField.m \
+	 DatabasePane.m EditPane.m ErrorMessage.m Field.m FieldEdit.m \
+	 FontMenu.m Form.m FrameIcon.m FrameLayer.m HelpPane.m \
+	 LineDown.m LineUp.m MenuObject.m MorePane.m NullStretchBox.m \
+	 OkToggle.m OriginExpandBox.m PageDown.m PageUp.m Pane.m \
+	 PreferenceMenu.m PromptUser.m ReadFlat.m ReadRaw.m ResetToggle.m \
+	 RowField.m ScrollMenu.m ScrollToggle.m \
+	 SimpleField.m TableForm.m TextEdit.m VisibleMenu.m Button.m \
+	 BufLineLayer.m ColorDisp.m TextScrollBar.m BufTextLayer.m \
+	 Security.m ShellPane.m TextLayer.m TextModel.m \
+	 CheckBoxLayer.m TranspLayer.m AdministratorPane.m SecurityObj.m \
+	 TimedStrEdit.m qBitMapText.m QBitMap.m NSTextModel.m pty.m 
+DISP_H = ApplicationPane.h AskUser.h AssistBox.h BufPageLayer.h \
+	 StrArray.h CancelToggle.h CharLayer.h CheckBox.h ColorMenu.h \
+	 CornerExpandBox.h CursorOther.h DBTableForm.h DandTField.h \
+	 DatabasePane.h EditPane.h ErrorMessage.h Field.h FieldEdit.h \
+	 FontMenu.h Form.h FrameIcon.h FrameLayer.h HelpPane.h \
+	 LineDown.h LineUp.h MenuObject.h MorePane.h NullStretchBox.h \
+	 OkToggle.h OriginExpandBox.h PageDown.h PageUp.h Pane.h \
+	 PreferenceMenu.h PromptUser.h ReadFlat.h ReadRaw.h ResetToggle.h \
+	 RowField.h ScrollMenu.h ScrollToggle.h \
+	 SimpleField.h TableForm.h TextEdit.h VisibleMenu.h Button.h \
+	 BufLineLayer.h ColorDisp.h TextScrollBar.h BufTextLayer.h \
+	 Security.h ShellPane.h TextLayer.h TextModel.m \
+	 CheckBoxLayer.h TranspLayer.h AdministratorPane.h SecurityObj.h \
+	 TimedStrEdit.h QBitMap.h NSTextModel.h
+DISP_DB = $(DISP_M:%.m=%.df)
+
+
+# files from mom/LIBS.obj/=APPL
+APPL_M  = Application.m ApplicationLayer.m ColumnHeader.m LeftString.m \
+	  Interrupts.m CachedStdSysLayer.m DispTextValue.m PatchScrollBar.m \
+	  HelpApplicationLayer.m HelpDisplayIndex.m HelpTableCltn.m \
+	  HelpDisplay.m HelpStringLayer.m HelpIndexApplicationLayer.m \
+	  ColorDepMenu.m CommandDispatcher.m VerticalDispText.m \
+	  VerticalStringLayer.m RecommendedAction.m Color.m PatchPrompter.m PatchConfirmer.m
+APPL_H  = Application.h ApplicationLayer.h fixtureImages.h ColumnHeader.h \
+	  LeftString.h Interrupts.h CachedStdSysLayer.h \
+	  fixtureImages20by20.h DispTextValue.h PatchScrollBar.h \
+	  HelpApplicationLayer.h HelpDisplayIndex.h HelpTableCltn.h \
+	  HelpDisplay.h HelpStringLayer.h HelpIndexApplicationLayer.h \
+	  ColorDepMenu.h CommandDispatcher.h VerticalDispText.h \
+	  VerticalStringLayer.h RecommendedAction.h Color.h PatchPrompter.h PatchConfirmer.h
+APPL_DB = $(APPL_M:%.m=%.df) $(APPL_C:%.c=%.df)
+
+
+# files from mom/LIBS.obj/=LIBTW
+LIBTW_M = Date.m File.m
+LIBTW_H = Date.h File.h
+LIBTW_C = itoa.c
+LIBTW_DB = $(LIBTW_M:%.m=%.df) $(LIBTW_C:%.c=%.df)
+
+
+# files excluded, that come from sys include
+NE2K_HDR_H = AdminIcon.h db.h ingres.h event_consts.h operator_consts.h \
+	     alarm_consts.h drawings.h parameter_names.h config_file.h \
+	     prbl_consts.h color_consts.h debug.h cachedPanes.h \
+	     forms_init.h form_names.h managed_state.h managed_states.h \
+	     service_states.h help_display.h nsp_consts.h gate_names.h
+
+# files deleted by ilan
+LIBS_HDR_H = TWuil.h cursors.h form.h images.h zoom.h mom_icon.h \
+	     ALLINK_icon.h ALLINK_icon2.h ALLINK_icon3.h ALLINK_icon4.h \
+	     bigHelp_icon.h
+
+MFILES = $(MAIN_M) $(NE2K_M) $(NSP_M) $(MSGREF_M) $(DBINTF_M) \
+	 $(DISP_M) $(APPL_M) $(LIBTW_M) 
+TFILES = $(MAIN_T) $(NE2K_T) $(NSP_T) $(MSGREF_T) $(DBMS_T) $(DBINTF_T) \
+	 $(DISP_T) $(APPL_T) $(LIBTW_T)
+HFILES = $(MAIN_H) $(NE2K_H) $(NSP_H) $(MSGREF_H) $(DBMS_H) $(DBINTF_H) \
+	 $(DISP_H) $(APPL_H) $(LIBTW_H) \
+	 $(NE2K_HDR_H) $(LIBS_HDR_H)
+CFILES = $(MAIN_C) $(NE2K_C) $(NSP_C) $(MSGREF_C) $(DBMS_C) $(DBINTF_C) \
+	 $(DISP_C) $(APPL_C) $(LIBTW_C)
+DBFILES = $(MAIN_DB) $(NE2K_DB) $(MSGREF_DB) $(NSP_DB) $(DMBS_DB) \
+	  $(DBINTF_DB) $(DISP_DB) $(APPL_DB) $(LIBTW_DB)
+
+
+INTERMEDIATES = dialog.c net_el_cls.c prob_record.c raw_message.c \
+		trouble_tkt.c \
+		__links.c __links.o
+
+#
+# all object dependencies
+#
+MAIN = adminMain.o
+RLGO_BIN = RunLogo.o
+MAIN_BIN = allocator.o memError.o memTrace.o $(MAIN_C:%.c=%.o)
+NE2K_BIN = $(NE2K_M:%.m=%.o) $(NE2K_T:%.t=%.o)
+NSP_BIN = $(NSP_M:%.m=%.o)
+MSGREF_BIN = $(MSGREF_M:%.m=%.o)
+DBMS_BIN = $(DBMS_T:%.t=%.o)
+DBINTF_BIN = $(DBINTF_M:%.m=%.o) $(DBINTF_T:%.t=%.o)
+DISP_BIN = $(DISP_M:%.m=%.o)
+APPL_BIN = $(APPL_M:%.m=%.o) $(APPL_C:%.c=%.o)
+LIBTW_BIN = $(LIBTW_M:%.m=%.o) $(LIBTW_C:%.c=%.o)
+
+BIN = $(NE2K_BIN) $(NSP_BIN) $(MSGREF_BIN) $(DBMS_BIN) $(DBINTF_BIN) \
+      $(DISP_BIN) $(APPL_BIN) $(LIBTW_BIN) $(MAIN_BIN)
+
+LEFTOVERS = $(MFILES:%.m=$(ARCH)/%.c) \
+	    $(TFILES:%.t=$(ARCH)/%.m) \
+	    $(TFILES:%.t=$(ARCH)/%.c)
+PIA = $(DBMS_PIA)
+
+
+
+# standard targets
+
+build:	$(ARCH)/libnoc.a $(ARCH)/nocexec $(ARCH)/nocpd $(ARCH)/RunLogo
+
+clean:	
+	@(echo "... cleaning nocfiles files "; \
+	  /bin/rm -f $(ARCH)/*.o $(ARCH)/nocexec $(ARCH)/nocpd $(ARCH)/libnoc.a $(INTERMEDIATES)) 
+
+update:	$(ARCH)/nocexec
+	(for i in $(NOC_EXECUTABLES); do \
+	  /bin/rm -f $(MOM)/bin/$$i; \
+	  /bin/cp $$i $(MOM)/bin/$(ARCH); done )
+#	(/bin/rm -f $(MOM)/bin/$(ARCH)/nocexec; \
+#	 /bin/cp $(ARCH)/nocexec $(MOM)/bin/$(ARCH))
+#	(/bin/rm -f $(MOM)/bin/$(ARCH)/nocpd; \
+#	 /bin/cp $(ARCH)/nocpd $(MOM)/bin/$(ARCH))
+#	(/bin/rm -f $(MOM)/bin/$(ARCH)/RunLogo; \
+#	 /bin/cp $(ARCH)/RunLogo $(MOM)/bin/$(ARCH))
+
+rebuild: clean build
+
+full:	rebuild update
+
+
+# internal targets
+
+$(ARCH)/$(MAIN): adminMain.m
+	@(echo "... compiling adminMain.m in $(@D)"; cd $(@D); \
+	  $(OBJCC) -c ../adminMain.m)
+
+$(ARCH)/nocexec: $(ARCH)/$(MAIN) $(ARCH)/libnoc.a $(MOMLIBA)
+	cc -c -g malloc.c -o $(ARCH)/malloc.o
+	cc -c -g valloc.c -o $(ARCH)/valloc.o
+	(echo "... building $(@F) in $(@D)"; \
+	  cd $(@D); $(OBJCC) -o $(@F) $(MAIN) malloc.o valloc.o \
+	libnoc.a $(LIBRARIES); \
+	  /bin/rm -f $(INTERMEDIATES))
+
+$(ARCH)/nocpd: nocpd.c
+	@(echo "... building $(@F) in $(@D)"; \
+	  cd $(@D); cc -o $(@F) $(CFLAGS) ../nocpd.c)
+
+$(ARCH)/RunLogo: RunLogo.m RunLogo.h
+	@(echo "... building $(@F) in $(@D)"; \
+	  cd $(@D); $(OBJCC) -o $(@F) ../RunLogo.m -L. -lnoc $(LIBRARIES))
+
+$(ARCH)/libnoc.a: $(HFILES) $$(MBIN) $$(TBIN) $$(CBIN)
+	@(echo "... building $(@F) in $(@D)"; \
+	  cd $(@D); ar urvl $(@F) $(BIN); ranlib $(@F))
+
+_nocexec: $(MAIN) $(BIN) malloc.c
+	cc -c -g malloc.c 
+	($(OBJCC) $(MAIN) $(BIN) malloc.o $(LIBRARIES))
+	(mv a.out _nocexec)
+	(/bin/rm -f $(INTERMEDIATES))
+
+_reload: ;($(OBJCC) $(MAIN) libnoc.a $(LIBRARIES); \
+	   mv a.out nocexec)
+	(/bin/rm -f $(INTERMEDIATES))
+
+upd:	;(/bin/cp nocexec ../../../bin/sun3)
+
+
+initnoc: clean 

@@ -1,0 +1,782 @@
+     H DEBUG DFTNAME(NTC03)
+     F*******************************************************************
+     F*                                                                 *
+     F*  PROGRAM: CGR10AA - CONTACT GATEWAY SEND PROGRAM                *
+     F*                                                                 *
+     F*  START DATE:        11/03/93   BY: JWC                          *
+     F*                                                                 *
+     F*  PROGRAM DESCRIPTION:                                           *
+     F*                                                                 *
+     F*      THIS PROGRAM SENDS REQUESTS TO THE CONTACT GATEWAY.        *
+     F*                                                                 *
+     F* --------------------------------------------------------------- *
+     F*                                                                 *
+     F* PROGRAM REVISION LOG:                                           *
+     F*                                                                 *
+     F*       DATE     PROGRAMMER               DESCRIPTION             *
+     F*     --------   ----------   ----------------------------------- *
+     F*     11/02/93   JWC         CREATE PROGRAM                       *
+     F*     05/25/99   Ed Thompson Conversion to TCP/IP sockets         *
+     F*     08/10/99   Ed Thompson I'm going to add a small delay after *
+     F*                            an error on a socket. Give things    *
+     F*                            a chance to recover.                 *
+     F*                                                                 *
+     F*******************************************************************
+     Fqsysprt   o    f  132        printer
+     F/EJECT
+     D**************************************************************
+     D* Use the CPI-Communications supplied pseudonyms.            *
+     D**************************************************************
+     D*
+     D/COPY CMRPGLE
+     D* Bring in Common Socket Programming protocols
+     D/Copy SOCKCOPY
+     D*
+     D CMPARM          DS
+     D  CONVID                 1      8
+     D  RTNCOD                 9     12B 0
+     D  DATRCV                13     16B 0
+     D  DLCTYP                17     20B 0
+     D  RCVLEN                21     24B 0
+     D  REQLEN                25     28B 0
+     D  REQTSR                29     32B 0
+     D  SNDLEN                33     36B 0
+     D  SNDTYP                37     40B 0
+     D  STSRCV                41     44B 0
+     D  SYNLVL                45     48B 0
+     D  SYMDST                49     56
+     D*******                                57  64 TPNAM
+     D  TPNLEN                65     68B 0
+     D*****                                  71  90 TPNAM
+     D  MDNLEN                91     94B 0
+     D  CONTYP                95     98B 0
+     D  LULEN                 99    102B 0
+     D  RCVTYP               103    106B 0
+     D*
+     D DQDATA          DS
+     D  DQ0001                 1      1
+     D  DQ3000              3000   3000
+     D                 DS
+     D  DQLEN                  1      3P 0
+     D                 DS
+     D  DQWAIT                 1      3P 0
+     D                 DS
+     D  DQKLEN                 1      2P 0
+     D                 DS
+     D  DQSLEN                 1      2P 0
+     D DQHDR           DS
+     D  DQL                    1      2B 0
+     D  HEX12                  3      3
+     D  HEXFF                  4      4
+     D  DQ305               3005   3005
+     D*
+     D* Variables for Socket Routines
+     D*
+     Dresult           s             10i 0
+     Drresult          s             10i 0
+     DsavResult        s             10i 0
+     DsavResult2       s             10i 0
+     D*
+     DSockBuf          S           3000
+     DSockB1           S           3000
+     DSockB2           S           3000
+     DSockBufCopy      S           3000
+     DWorkBuf          S              1A   Dim(3006)
+     DBuffer           S           3000
+     D*
+     D* Variables for Rockwell ETS Messages
+     D*
+     D F000          E DS                  EXTNAME(CGF000)
+     D F002          E DS                  EXTNAME(CGF002)
+     D*
+     D                 DS
+     D DLENP                   1      4S 0
+     D DLENC                   1      4
+     D*
+     D* Data structures for QCMDEXC
+     D*
+     D CMDLEN          DS
+     D*
+     D*   COMMAND LENGTH
+     D*
+     D  CMDLE1                 1      8P 5
+     D*
+     D*
+     D CMD             DS
+     D*
+     D*   COMMAND
+     D*
+     D  CMD1                   1      1
+     D  CMD100               100    100
+     D*
+     dSOM              S              1    Inz(x'02')
+     dEOM              S              1    Inz(x'0A')
+     D*
+     D* Extra work buffers
+     D*
+     D DSPLYBuf        S             52
+     I*
+     I*
+     C*********************************************************************
+     C*                                                                   *
+     C*   MAINLINE                                                        *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C                   EXSR      HSKPG
+     C*
+     C                   EXSR      INIT
+     C*
+     C     FUNREQ        DOWEQ     *BLANKS
+     C                   EXSR      PROC01
+     C                   END
+     C*
+     C                   EXSR      EOJ
+     C*
+     C     ABEND         IFEQ      YES
+     C     DQLEN         ANDNE     0
+     C                   MOVEL     '001'         DQKEY
+     C                   Z-ADD     3             DQKLEN
+     C                   CALL      DQSPGM
+     C                   PARM                    DQSNAM
+     C                   PARM                    DQLIB
+     C                   PARM                    DQLEN
+     C                   PARM                    DQDATA
+     C                   PARM                    DQKLEN
+     C                   PARM                    DQKEY
+     C                   ENDIF
+     C*
+     C                   MOVE      *ON           *INLR
+     C*
+     C*********************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  HSKPG                                         *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE WILL ACCEPT PARAMETERS,       *
+     C*                     SET UP GENERAL CONSTANTS,                     *
+     C*                     AND INITALIZE NUMERIC LITERALS.               *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     HSKPG         BEGSR
+     C*
+     C*************
+     C* SECTION 01*   ACCEPT PARAMETERS
+     C*************
+     C*
+     C     *ENTRY        PLIST
+     C                   PARM                    ABEND             1
+     C*
+     C                   Z-Add     0             BufLen            5 0
+     C                   Z-Add     0             SavBL             5 0
+     C                   Z-Add     1             HostID            4 0
+     C*
+     C*************
+     C* SECTION 02*   SETUP GENERAL CONSTANTS
+     C*************
+     C*
+     C                   MOVE      *BLANKS       FUNREQ            8
+     C                   MOVE      'EXIT    '    EXIT              8
+     C*
+     C                   MOVE      *BLANKS       DQPGM            10
+     C                   MOVEL     'QRCVDTAQ'    DQPGM            10
+     C                   MOVE      *BLANKS       DQLIB            10
+     C                   MOVEL     '*LIBL'       DQLIB            10
+     C                   MOVE      *BLANKS       DQDATA
+     C                   MOVE      *BLANKS       DQNAME           10
+     C                   MOVEL     'CGZ10AA'     DQNAME           10
+     C                   MOVE      *BLANKS       DQSPGM           10
+     C                   MOVEL     'QSNDDTAQ'    DQSPGM           10
+     C                   MOVE      *BLANKS       DQSNAM           10
+     C                   MOVEL     'CGZ10AA'     DQSNAM           10
+     C                   Z-ADD     0             DQLEN
+     C                   Z-SUB     1             DQWAIT
+     C                   MOVE      *BLANKS       DQKEY             3
+     C                   MOVE      *BLANKS       DQORD             2
+     C                   Z-ADD     3             DQKLEN
+     C                   Z-ADD     0             DQSLEN
+     C                   MOVE      *BLANKS       DQSNDR           26
+     C                   MOVE      *BLANKS       CANTYP            6
+     C*
+     C                   MOVE      'Y'           YES               1
+     C                   MOVE      'N'           NO                1
+     C                   MOVE      NO            ABEND             1
+     C                   MOVE      NO            ERRFLG            1
+     C*
+     C                   Z-ADD     0             ##COD            15 0
+     C                   MOVE      *BLANKS       ##PGM            10
+     C                   Z-ADD     0             #@COD            15 0
+     C                   MOVE      *BLANKS       #@PGM            10
+     C*
+     C                   ENDSR
+     C*********************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  PROC01                                        *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE WILL PROCESSES THE INCOMING   *
+     C*                     DATA QUEUE AND SENDS THE TRANSACTION TO       *
+     C*                     THE CONTACT GATEWAY.                          *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     PROC01        BEGSR
+     C*
+     C                   MOVE      *BLANKS       DQDATA
+     C                   Z-SUB     1             DQWAIT
+     C                   MOVE      *BLANKS       DQKEY
+     C                   MOVE      'GE'          DQORD
+     C                   Z-ADD     3             DQKLEN
+     C                   Z-ADD     0             DQSLEN
+     C                   MOVE      *BLANKS       DQSNDR
+     C*
+     C                   CALL      DQPGM                                98
+     C                   PARM                    DQNAME
+     C                   PARM                    DQLIB
+     C                   PARM                    DQLEN
+     C                   PARM                    DQDATA
+     C                   PARM                    DQWAIT
+     C                   PARM                    DQORD
+     C                   PARM                    DQKLEN
+     C                   PARM                    DQKEY
+     C                   PARM                    DQSLEN
+     C                   PARM                    DQSNDR
+     C*
+     C     *IN98         IFEQ      *ON
+     C                   DUMP
+     C                   GOTO      ENPR01
+     C                   ENDIF
+     C*
+     C     DQLEN         IFEQ      0
+     C                   GOTO      ENPR01
+     C                   ENDIF
+     C*
+     C     RESEND        TAG
+     C*
+     C* OK, I'm not sure what the Data Queue is actually giving us,
+     C* but I'm guessing from the old code, it's the old ETS message
+     C* without the length. In our case, we are going open the
+     C* socket, format the message with the length, send the message
+     C* send another message so have a different host ID and then
+     C* close the socket. This should cause the responses to go
+     C* down the discard channel.
+     C                   MOVE      *BLANKS       SOCKBUF
+     C                   MOVEL     DQDATA        SOCKBUF
+     C                   Z-ADD     DQLEN         BufLen            5 0
+     C* Add the length of the message in
+     C                   EXSR      AddBufLen
+     C*
+     C                   EXSR      Translate
+     C*
+     C* SockBuf still has the data, BufLen still has the length, add the SOM and
+     C*
+     C                   EXSR      AddSOMEOM
+     C*
+     C* OK, Rockwell says that we need to append the Keepalive message on the
+     C* end of the first message being sent. So I am hacking up the code
+     C* to allow this.
+     C*
+     C                   eval      SockB1 = SockBuf
+     C                   eval      savBL  = BufLen
+     C* construct the ETS000 buffer
+     C                   EXSR      ETS000
+     C*
+     C                   eval      SockB2 = SockBuf
+     C*
+     C     SockB1        cat       SockB2:0      SockBuf
+     C                   eval      BufLen = savBL + 29
+     C*
+     C* send the data (this cant use the stubborn version, has to use the normal
+     C*
+     C                   EXSR      SOpenS
+     C                   EXSR      SSendS
+     C                   Z-ADD     result        savResult
+     C*
+     C* By sending the ETS message down the channel, we have it open long enough
+     C* sends the response back on this channel. So we are taking the SETS000 ou
+     C*
+     C****************** EXSR      SETS000
+     C                   EXSR      ShutS
+     C                   Z-ADD     savResult     result
+     C*
+     C     result        iflt      0
+     C                   TIME                    @@@TIM           14 0
+     C                   DUMP
+     C                   MOVE      YES           ERRFLG
+     C                   GOTO      RESEND
+     C                   ENDIF
+     C*
+     C*
+     C     ENPR01        ENDSR
+     C*
+     C*********************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  EOJ                                           *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE HANDLES THE END OF PROGRAM    *
+     C*                     PROCESSING INCLUDING THE ENDING OF THE        *
+     C*                     CONVERSATION.                                 *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     EOJ           BEGSR
+     C*
+     C                   Z-ADD     DEFLUS        DLCTYP
+     C*
+     C*
+     C     ABEND         IFEQ      YES
+     C                   TIME                    @@@TIM           14 0
+     C                   DUMP
+     C                   ENDIF
+     C*
+     C                   ENDSR
+     C*
+     C*********************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  INIT                                          *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE ESTABLISHES THE CONVERSA-     *
+     C*                     TION CHARACTARISTICS AND INITIATES THE        *
+     C*                     CONVERSATION.                                 *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     INIT          BEGSR
+     C*
+     C**************************************************************
+     C* Set the local deallocate_type parameter variable to        *
+     C* CM_DEALLOCATE_ABEND.                                       *
+     C**************************************************************
+     C*
+     C                   Z-ADD     DEABTY        DLCTYP
+     C*
+     C                   ENDSR
+     C*
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SETS000                                       *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine is stubborn about sending     *
+      *                     the ETS000 message. Getting this message      *
+      *                     across is important because this
+      *                     establishes us as the discard channel.
+      *                     So if the ETS000 message fails, we
+      *                     want to shut the socket, reopen it and
+      *                     try the message again.
+      *                                                                   *
+4.0   *****************************************************************
+     c     SETS000       begsr
+     C*
+     C                   eval      result = -1
+     C                   z-add     1             SETSCNT           5 0
+     C*
+     C                   dow       (result = -1) and (setscnt < 100)
+     C*
+     C                   EXSR      ETS000
+     C*
+     C     result        iflt      0
+     C                   EXSR      Shuts
+     C                   EXSR      SOpenS
+     C                   endif
+     C*
+     C                   eval      SETSCNT = SETSCNT + 1
+     C*
+     C                   enddo
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  ETS000                                        *
+      *                                                                   *
+      *   SUBROUTINE DESC:  THIS Subroutine sends the ETS000 Message      *
+      *                     to the Tandem                                 *
+      * This version rotates the host ID to so replies go down the
+      * discard channel.
+      *                                                                   *
+4.0   *****************************************************************
+     C     ETS000        begsr
+     C*
+     C                   EXSR      FmtETS0
+     C*
+     C* Message is setup, move it to the munge buffer
+     C*
+     C                   MOVE      *BLANKS       SOCKBUF
+     C                   MOVEL     F000          SOCKBUF
+     C                   Z-Add     23            BufLen            5 0
+     C* Add the length of the message in
+     C                   EXSR      AddBufLen
+     C*
+     C                   EXSR      Translate
+     C*
+     C* SockBuf still has the data, BufLen still has the length, add the SOM and
+     C*
+     C                   EXSR      AddSOMEOM
+     C* send the data (this cant use the stubborn version, has to use the normal
+     C*****************  EXSR      SendS
+     C* I don't care about the response.
+     C*
+     C                   endsr
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  FmtETS0 - Format ETS000 Message               *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This function formats the ETS000 message.     *
+      *                                                                   *
+4.0   *****************************************************************
+     C     FmtETS0       begsr
+     C*
+     C                   CLEAR                   F000
+     C*
+     C                   Z-ADD     HostID        DLenP
+     C                   MOVE      DLenC         #00CIS
+     C                   ADD       1             HostID
+     C     HostID        IFEQ      9999
+     C                   Z-ADD     1             HostID
+     C                   ENDIF
+     C*
+     C                   MOVEL     '01'          #00SW
+     C                   MOVE      *BLANKS       #00SEQ
+     C                   Z-ADD     0             #00COD
+     C                   MOVEL     'KEEPALIVE'   #00TXT
+     C*
+     C                   endsr
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  AddBufLen                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  Add the Buffer Length to the message and      *
+      *                     adjust the BufLen                             *
+      *                                                                   *
+4.0   *****************************************************************
+     C     AddBufLen     begsr
+     C                   MOVEA     *BLANKS       WorkBuf
+     C                   MOVEA     SockBuf       WorkBuf(5)
+     C* Put the length into the message
+     C                   Z-ADD     BufLen        DLenP
+     C                   MOVEA     DLenC         WorkBuf(1)
+     C*
+     C                   Eval      BufLen = BufLen + 4
+     C                   MOVEA     WorkBuf(1)    SockBuf
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  RmvBufLen                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  Remove the buffer length from the message     *
+      *                     adjust the BufLen                             *
+      *                                                                   *
+4.0   *****************************************************************
+     C     RmvBufLen     begsr
+     C                   MOVEA     *BLANKS       WorkBuf
+     C                   MOVEA     SockBuf       WorkBuf(1)
+     C* Get the length from the message
+     C                   MOVEA     WorkBuf(1)    DLenC
+     C     DLenP         ifgt      0
+     C                   Z-ADD     DLenP         BufLen
+     C                   else
+     C                   eval      BufLen = BufLen - 4
+     C                   EndIf
+     C*
+     C                   MOVEA     WorkBuf(5)    SockBuf
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  AddSOMEOM                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  Add the SOM and EOM to the message and        *
+      *                     adjust the BufLen                             *
+      *                                                                   *
+4.0   *****************************************************************
+     C     AddSOMEOM     begsr
+     C*
+     C                   MOVEA     *BLANKS       WorkBuf
+     C                   MOVEA     SockBuf       WorkBuf(2)
+     C*
+     C                   Z-ADD     BufLen        BL                5 0
+     C                   Eval      BL = BL + 2
+     C                   MOVE      SOM           WorkBuf(1)
+     C                   MOVE      EOM           WorkBuf(BL)
+     C                   Eval      BufLen = BL
+     C                   MOVEA     WorkBuf(1)    SockBuf
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  RmvSOMEOM                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  Remove the SOM and EOM from the message       *
+      *                     and adjust the buffer length                  *
+      *                                                                   *
+4.0   *****************************************************************
+     C     RmvSOMEOM     begsr
+     C*
+     C                   MOVEA     *BLANKS       WorkBuf
+     C                   MOVEA     SockBuf       WorkBuf(1)
+     C*
+     C                   Z-ADD     BufLen        BL                5 0
+     C                   MOVEA     *BLANKS       WorkBuf(BL)
+     C*
+     C                   Eval      BL = BL - 2
+     C                   Eval      BufLen = BL
+     C*
+     C                   MOVEA     WorkBuf(2)    SockBuf
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  Translate                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine translates the socket buffer  *
+      *                     to ASCII                                      *
+      *                                                                   *
+4.0   *****************************************************************
+     C     Translate     begsr
+     C*
+     C* I expect BufLen to be set to the length of the buffer
+     C* and      SockBuf to contain the data to be translated
+     C*
+4.0   *
+      * Temporary code to see why we're locking up**********
+     c                   movel     sockbuf       output          120
+     c                   time                    timstp            6 0
+     c                   except
+      ******************************************************
+4.0   *
+4.0   * This routine coverts the ETS Message from EBCDIC to ASCII prior to
+      *   transmission to VarCTI
+      *
+     c                   movel     'QASCII'      ascii            10
+     c                   movel     'QSYS'        xlib             10
+      *
+     C* Call translation program to put data in ASCII format
+     c                   call      'QDCXLATE'
+     c                   parm                    buflen
+     c                   parm                    sockbuf
+     c                   parm                    ascii
+     c                   parm                    xlib
+     C*
+     C                   endsr
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  UnTrans                                       *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine translates the socket buffer  *
+      *                     from ASCII to EBCDIC                          *
+      *                                                                   *
+4.0   *****************************************************************
+     C     UnTrans       begsr
+     C*
+     C* I expect BufLen to be set to the length of the buffer
+     C* and      SockBuf to contain the data to be translated
+     C*
+4.0   *
+4.0   * This routine coverts the ETS Message from EBCDIC to ASCII prior to
+      *   transmission to VarCTI
+      *
+     c                   movel     'QEBCDIC'     ebcdic           10
+     c                   movel     'QSYS'        xlib             10
+      *
+     C* Call translation program to put data in ASCII format
+     c                   call      'QDCXLATE'
+     c                   parm                    buflen
+     c                   parm                    sockbuf
+     c                   parm                    ebcdic
+     c                   parm                    xlib
+     C*
+      * Temporary code to see why we're locking up**********
+     c                   movel     sockbuf       output          120
+     c                   time                    timstp            6 0
+     c                   except
+      ******************************************************
+     C                   endsr
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SOPENS                                        *
+      *                                                                   *
+      *   SUBROUTINE DESC:  THIS Subroutine is stubborn about opening     *
+      *                     a socket connection to the Tandem             *
+      *                                                                   *
+4.0   *****************************************************************
+     c     SOPENS        begsr
+      *
+     c                   z-add     1             OPCOUNT          10 0
+     c                   eval      result=-1
+     c                   dow       (OPCOUNT < 10) and (result = -1)
+     c                   exsr      OPENS
+     C                   eval      OPCOUNT = OPCOUNT + 1
+     c                   enddo
+      *
+     c                   endsr
+      *
+     C*
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SSendS                                        *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This routine is the stubborn version of the   *
+      *                     socket send routine. It will try multiple     *
+      *                     times to get the information down to the      *
+      *                     Tandem.                                       *
+      *                                                                   *
+4.0   *****************************************************************
+     c     SSendS        begsr
+      *
+     c                   z-add     1             SNCOUNT          10 0
+     c                   eval      result=-1
+     c                   dow       (SNCOUNT < 10) and (result = -1)
+     c                   exsr      SendS
+     C*
+     C     result        iflt      0
+     C*
+     C* Save a copy of what we wanted to send
+     C*
+     C                   eval      SockBufCopy = SockBuf
+     C                   eval      savResult2  = result
+     C*
+     C* Close the socket, reopen it and try to send again.
+     C*
+     C                   exsr      dlyjob
+     C                   exsr      shuts
+     C                   exsr      dlyjob
+     C                   exsr      opens
+     C                   exsr      dlyjob
+     C*
+     C* Restore the sending buffer
+     C*
+     C                   eval      SockBuf = SockBufCopy
+     C                   eval      result  = savResult2
+     C*
+     C                   endif
+     C*
+     C                   eval      SNCOUNT = SNCOUNT + 1
+     c                   enddo
+      *
+     c                   endsr
+      *
+     C*
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  OPENS                                         *
+      *                                                                   *
+      *   SUBROUTINE DESC:  THIS SUBROUTINE OPENS THE SOCKET CONNECTION   *
+      *                     TO THE TANDEM PRIOR TO TRANSMITTING THE DATA  *
+      *                                                                   *
+4.0   *****************************************************************
+     c     OPENS         begsr
+      *
+      * Start main transmission processing
+      *Create a socket, an end-point for communication.
+     c                   eval      iSockDesc=socket(AF_INET:SCK_STREAM:0)
+      *Convert the dotted decimal IP address string of the server to a
+      *  32-bit integer.
+      * Code here for both Tandem IP addresses (both are valid)
+     c                   eval      Address=inet_addr('150.1.1.48')
+     c*                  eval      Address=inet_addr('150.1.1.49')
+      *Connect to the server. If the server is busy, the result field will
+      *  not be 0.
+     c                   eval      result=connect(iSockDesc:%Addr(SockAddr):
+     c                                 %Size(SockAddr))
+     c                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SendS                                         *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine sends data down the socket    *
+      *                     to the Tandemo                                *
+      *                                                                   *
+      *********************************************************************
+     c     SendS         begsr
+      *Send data to server.
+     C                   move      *BLANKS       Buffer
+     c                   eval      Buffer= SockBuf
+     c                   eval      result=send(iSockDesc:%Addr(buffer):
+     c                                 BufLen:0)
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  RecvS                                         *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine receives data from the        *
+      *                     socket connection.                            *
+      *                                                                   *
+      *********************************************************************
+     C     RecvS         begsr
+     C*
+     c                   eval      rresult=recv(iSockDesc:%Addr(buffer):
+     c                                 %Size(buffer):0)
+     C                   MOVE      *BLANKS       SockBuf
+     C                   eval      result = rresult
+     C     result        ifgt      6
+     C                   eval      SockBuf = buffer
+     C                   endif
+     C*
+     C                   endsr
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SHUTS                                         *
+      *                                                                   *
+      *   SUBROUTINE DE
+      *                     CONNECTION TO THE TANDEM AFTER TRANSMITTING   *
+      *                     ALL DATA.                                     *
+      *                                                                   *
+      *********************************************************************
+     c     SHUTS         begsr
+      *End the connection to the server.
+     c                   eval      result=close(iSockDesc)
+      * End of Transmission, We're done.
+     c                   endsr
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  DLYJOB                                        *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE DELAYS THE JOB                *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     DLYJOB        BEGSR
+     C*
+     C                   Z-ADD     20            CMDLE1
+     C                   MOVE      *BLANKS       CMD
+     C                   MOVEL     'DLYJOB '     CMD
+TH1  C     CMD           CAT       '001':1       CMD
+     C*
+     C                   CALL      'QCMDEXC'
+     C                   PARM                    CMD
+     C                   PARM                    CMDLEN
+     C*
+     C                   ENDSR
+     C**************************************************************
+     C**************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  *PSSR                                         *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  ERROR SUBROUTINE HANDLER.                     *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     *PSSR         BEGSR
+     C                   DUMP
+     C                   MOVEL     '*CANCL'      CANTYP
+     C     ENPSSR        ENDSR     CANTYP
+     C*********************************************************************
+     oqsysprt   e
+20   O                       timstp               6
+20   O                       output             130
+

@@ -1,0 +1,113 @@
+      *--------------------------------------------------------
+      * NJRLIBCPY.TYPES
+      * Standard Types
+      * Nick Roux
+      * November 1998
+      *--------------------------------------------------------
+
+      /If Not Defined(TYPES)
+      /Define         TYPES
+      /Else
+      /Eof
+      /EndIf
+
+      * Pointers
+     D TNulPtr         S               *
+     D TPointer        S               *   Based(TNulPtr)
+     D TBuffPtr        S               *   Based(TNulPtr)
+     D TProcPtr        S               *   Based(TNulPtr) ProcPtr
+
+      * Character & String
+     D TChar           S              1    Based(TNulPtr)
+     D TWChar          S              2    Based(TNulPtr)
+     D TString         S            256    Based(TNulPtr)
+
+      * Integers - signed
+     D TShort          S              5I 0 Based(TNulPtr)
+     D TInt            S             10I 0 Based(TNulPtr)
+     D TLong           S             10I 0 Based(TNulPtr)
+
+      * C type integers - unsigned
+     D TShort_u        S              5U 0 Based(TNulPtr)
+     D TInt_u          S             10U 0 Based(TNulPtr)
+     D TLong_u         S             10U 0 Based(TNulPtr)
+
+      * Binaries
+     D TBinary         S              9B 0 Based(TNulPtr)
+     D TSmallBinary    S              4B 0 Based(TNulPtr)
+
+      * Floats
+     D TFloat          S              8F   Based(TNulPtr)
+     D TSmallFloat     S              4F   Based(TNulPtr)
+
+      * Decimals/400
+     D TPacked         S             15P 5 Based(TNulPtr)
+     D TSigned         S             15P 5 Based(TNulPtr)
+
+      * Names/400
+     D TName           S             10    Based(TNulPtr)
+     D TLongName       S             20    Based(TNulPtr)
+
+      * API/400
+     D TAPIFormat      S              8    Based(TNulPtr)
+
+      * Misc/400
+     D TMessageID      S              7    Based(TNulPtr)
+     D TMessageKey     S              4    Based(TNulPtr)
+     D TBool           S              1    Based(TNulPtr)
+     D TCommand        S           3000    Based(TNulPtr)
+     D TTime           S               T   Based(TNulPtr)
+     D TDate           S               D   Based(TNulPtr)
+     D TText           S             50    Based(TNulPtr)
+     D TBuffer         S          32767    Based(TBuffPtr)
+
+
+     D CndTokTyp       S             12    Based(TNulPtr)
+     D TokTyp          S             32    Based(TNulPtr)
+     D TmsTyp          S               Z   Based(TNulPtr)
+
+      * C Types
+     D clock_t         S                   Like(TLong)
+     D dev_t           S                   Like(TInt_u)
+     D gid_t           S                   Like(TInt_u)
+     D ino_t           S                   Like(TInt_u)
+     D key_t           S                   Like(TInt)
+     D mode_t          S                   Like(TInt_u)
+     D nlink_t         S                   Like(TShort_u)
+     D off_t           S                   Like(TInt)
+     D pid_t           S                   Like(TInt)
+     D size_t          S                   Like(TInt_u)
+     D ssize_t         S                   Like(TInt)
+     D time_t          S                   Like(TLong)
+     D uid_t           S                   Like(TInt_u)
+
+     D u_char          S                   Like(TChar)
+     D u_int           S                   Like(TInt_u)
+     D u_short         S                   Like(TShort_u)
+     D u_long          S                   Like(TLong_u)
+
+     D uchar           S                   Like(TChar)
+     D uint            S                   Like(TInt_u)
+     D ushort          S                   Like(TShort_u)
+     D ulong           S                   Like(TLong_u)
+
+     D caddr_t         S                   Like(TNulPtr)
+
+     DQLD_JOB_CCSID    C                   0
+     DQLD_JOB_COUNTRY  C                   0
+     DQLD_JOB_LANG     C                   0
+
+     D FD_SETSIZE      C                   200
+
+     D readsetptr      S                   Like(TPointer)
+     D writesetptr     S                   Like(TPointer)
+     D exceptsetptr    S                   Like(TPointer)
+
+     D read_set        DS                  Based(readsetptr)
+     D   fdesread                          Like(TInt_u) Dim(8)
+     D write_set       DS                  Based(writesetptr)
+     D   fdeswrite                         Like(TInt_u) Dim(8)
+     D except_set      DS                  Based(exceptsetptr)
+     D   fdesexcept                        Like(TInt_u) Dim(8)
+
+

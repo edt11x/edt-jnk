@@ -1,0 +1,18 @@
+Data-Dumper-2.124.tar.gz
+XML-Simple-2.18.tar.gz
+XML-SAX-0.96.tar.gz
+XML-NamespaceSupport-1.10.tar.gz
+
+Go to CPAN Search website and search for the module that you wish to download. In this example, let us search, download and install XML::Parser Perl module. I have downloaded the XML-Parser-2.36.tar.gz to /home/download
+
+# cd /home/download
+# gzip -d XML-Parser-2.36.tar.gz
+# tar xvf XML-Parser-2.36.tar
+# cd XML-Parser-2.36Build the perl module
+# perl Makefile.PL
+Checking if your kit is complete...
+Looks good
+Writing Makefile for XML::Parser::Expat
+Writing Makefile for XML::Parser
+# make
+# make test

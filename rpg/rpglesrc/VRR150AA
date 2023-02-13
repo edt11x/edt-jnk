@@ -1,0 +1,511 @@
+     H DEBUG DFTNAME(VRR150AA)
+     F*******************************************************************
+     F*                                                                 *
+     F*  PROGRAM: VRR150AA - EDIFY VRU RECEIVE PROGRAM                  *
+     F*                                                                 *
+     F*  START DATE:        07/31/99   BY: Don Barnes, Wise Acres, Inc. *
+     F*                                                                 *
+     F*  PROGRAM DESCRIPTION:                                           *
+     F*                                                                 *
+     F*      THIS PROGRAM RECEIVES REQUESTS FROM THE EDIFY VRU.         *
+     F*                                                                 *
+     F* --------------------------------------------------------------- *
+     F*                                                                 *
+     F* PROGRAM REVISION LOG:                                           *
+     F*                                                                 *
+     F*       DATE     PROGRAMMER               DESCRIPTION             *
+     F*     --------   ----------   ----------------------------------- *
+     F*     07/31/99   Don Barnes  CREATE PROGRAM                       *
+     F*                                                                 *
+     F*******************************************************************
+     f*sysprt   o    f  130        printer
+     F/EJECT
+     D**************************************************************
+     D* Use the CPI-Communications supplied pseudonyms.            *
+     D**************************************************************
+     D*
+     D*COPY CMRPGLE
+     D/COPY CMRPG
+     D* Bring in Common Socket Programming protocols
+     D/Copy SOCKEDFY
+     D*
+     D CMPARM          DS
+     D  CONVID                 1      8
+     D  RTNCOD                 9     12B 0
+     D  DATRCV                13     16B 0
+     D  DLCTYP                17     20B 0
+     D  RCVLEN                21     24B 0
+     D  REQLEN                25     28B 0
+     D  REQTSR                29     32B 0
+     D  SNDLEN                33     36B 0
+     D  SNDTYP                37     40B 0
+     D  STSRCV                41     44B 0
+     D  SYNLVL                45     48B 0
+     D  SYMDST                49     56
+     D*******                                57  64 TPNAM
+     D  TPNLEN                65     68B 0
+     D*****                                  71  90 TPNAM
+     D  MDNLEN                91     94B 0
+     D  CONTYP                95     98B 0
+     D  LULEN                 99    102B 0
+     D  RCVTYP               103    106B 0
+     D*
+     D DQDATI          DS
+     D  DQI001                 1      1
+     D  DQI300              3004   3004
+     D*
+     D DQDATO          DS
+     D  DQO001                 1      1
+     D  DQO300              3000   3000
+     D                 DS
+     D  DQLEN                  1      3P 0
+     D                 DS
+     D  DQWAIT                 1      3P 0
+      *
+     d sockaddr        ds
+     d   sa_family                    5u 0
+     d   sa_data                     14a
+     d serveraddr      DS
+     d   sin_family                   5i 0
+     d*  sin_port                     5u 0 INZ(6500)
+     d   sin_port                     5u 0
+     d   sin_addr                    10u 0
+     d    sin_addrA                   4a   OVERLAY(sin_addr)
+     d   sin_zero                     8a
+      ***************************************************************
+      * MISCELLANEOUS DATA STRUCTURES.
+      ****************************************************************
+     d Miscellaneous   DS
+     d  DspError                      4S 0 INZ
+     d   DspErrorA                    4A   OVERLAY(DspError)
+      *****************************************************************
+      *  STANDALONE - Miscellaneous Standalone fields.
+      ****************************************************************
+     d Errno           S             10i 0 Based(perrno)
+     d svaddrlen       S             10u 0 INZ
+     d SdId            S             10i 0 INZ
+     d SdId2           S             10i 0 INZ
+     d TotCnt          S             10i 0 INZ
+     d TotCharRead     S             10i 0 INZ
+     d Command         S             80a   inz
+     d CommandLen      S             15p 5 inz(80)
+     d rc              S             10i 0 INZ(0)
+     d On              S             10i 0 INZ(1)
+      *
+     d SockError       S             40A   INZ('**Error on Socket create')
+     d SetSError       S             40A   INZ('**Error on Socket set')
+     d BindError       S             40A   INZ('**Error on Socket bind')
+     d ReuseError      S             40A   INZ('**Error on Reusen')
+     d ListenError     S             40A   INZ('**Error on Listen')
+     d AcceptError     S             40A   INZ('**Error on Accept')
+     d ConnectError    S             40A   INZ('**Error on Connect')
+     d Buffer          S           3000A   INZ
+     d Request         S             10A
+     d DataLen         S              5P 0 INZ
+     d BufLen          S              5P 0 INZ
+     d XLateTable      S             10A   INZ
+     d XLateTblLib     S             10A   INZ
+     d pMessage        S               *
+     d Message         S            100A   Based(pMessage)
+     d MsgToDsply      S            100A   Based(pMessage)
+     d SockBuf         S           3000
+     d SockB1          S           3000
+     d SockB2          S           3000
+     d SockBufCopy     S           3000
+     d WorkBuf         S              1A   Dim(3006)
+     d Buffr           S           3000
+     d Print           S            100A
+     D*
+    * ***************************************************************
+    * * CONSTANTS
+    * ***************************************************************
+      *
+    * ***************************************************************
+     D*
+     D* Variables for EDIFY ETS Messages
+     D*
+     D E00200        E DS                  EXTNAME(EDF00200)
+     D*
+     D                 DS
+     D DLENP                   1      4S 0
+     D DLENC                   1      4
+     D*
+     C*********************************************************************
+     C*                                                                   *
+     C*   MAINLINE                                                        *
+     C*                                                                   *
+     C*********************************************************************
+      *
+     C                   EXSR      HSKPG
+      *
+      *********************************************************************
+      * SOCKET - Create a Socket Descriptor for the Server Process
+      *********************************************************************
+     c     Retry         tag
+     c                   EVAL      SDID = Socket(AF_INET:SOCK_STREAM:UNUSED)
+     c                   if        (SDID < 0)
+     c                   eval      perrno=$$errno
+      *
+     c*                  movel     SockError     print
+     c*                  except
+     c*                  select
+     c*                  when      errno=EACCESS
+     c*                  movel     error3401     print
+     c*                  except
+      *********************************************************************
+      * error handling here
+      *********************************************************************
+     c*                  when      Errno=EAFNOSUPPORT
+     c*                  movel     error3422     print
+     c*                  except
+      *********************************************************************
+      * error handling here
+      *********************************************************************
+     c*                  other
+     c                   eval      DspError=Errno
+     c                   eval      pMessage=StrError(Errno)
+     c                   eval      MsgToDsply=DspErrorA+' '+Message
+     c*                  movel     MsgToDsply    print
+     c*                  except
+     c*                  endsl
+      *
+     c                   eval      *inlr=*on
+     c                   exsr      eoj
+     c                   return
+     c                   endif
+      *********************************************************************
+      * REUSE - Set socket descriptor to be reuseable
+      *********************************************************************
+     c                   eval      rc=SetSockOpt(SdId:SOL_SOCKET:
+     c                             SOL_REUSEADDR:%ADDR(On):%SIZE(On))
+     c                   if        (rc<0)
+     c                   eval      perrno=$$errno
+     c                   eval      DspError=Errno
+     c                   eval      pMessage=StrError(Errno)
+     c                   eval      MsgToDsply=DspErrorA+' '+Message
+     c*                  movel     ReuseError    Print
+     c*                  except
+     c*                  movel     MsgToDsply    Print
+     c*                  except
+     c*                  movel     SetSErrory    Print
+     c*                  except
+     c                   eval      *inlr=*on
+     c                   exsr      eoj
+     c                   return
+     c                   endif
+      *********************************************************************
+      * BIND - Bind Server IP & Well Known Port to Socket Descriptor
+      *********************************************************************
+     c                   exsr      BINDR
+      *
+     c                   IF        (rc < 0 )
+     c                   EVAL      perrno = $$Errno
+     c                   EVAL      DspError = Errno
+     c                   eval      DspError=Errno
+     c                   eval      pMessage=StrError(Errno)
+     c                   eval      MsgToDsply=DspErrorA+' '+Message
+     c*                  movel     BindError     Print
+     c*                  except
+     c*                  movel     MsgToDsply    Print
+     c*                  except
+     c                   exsr      ShutS
+     c                   goto      Retry
+     c                   endif
+      * Loop through this section until LR comes on
+     c     *inlr         doueq     *on
+      *********************************************************************
+      * LISTEN - Listen to the Socket to Accept Connection Requests
+      *********************************************************************
+     c                   eval      rc=Listen(SdId:10)
+     c                   IF        (rc < 0 )
+     c                   EVAL      perrno = $$Errno
+     c                   EVAL      DspError = Errno
+     c                   eval      DspError=Errno
+     c                   eval      pMessage=StrError(Errno)
+     c                   eval      MsgToDsply=DspErrorA+' '+Message
+     c*                  movel     ListenError   Print
+     c*                  except
+     c*                  movel     MsgToDsply    Print
+     c*                  except
+     c                   eval      *inlr=*on
+     c                   exsr      eoj
+     c                   return
+     c                   endif
+      *********************************************************************
+      * ACCEPT - Accept new connection requests If rc is greater than zero,
+      *  the returned value is the socket descriptor identifier for the
+      *  client partner that requested the current connection.
+      *********************************************************************
+     c                   dow       (Buffer<>'*STOPSVR')
+     c                   EVAL      rc = Accept(SdId:%ADDR(serveraddr):
+     c                             %ADDR(svaddrlen))
+     c                   if        (rc<0)
+     c                   EVAL      perrno = $$Errno
+     c                   EVAL      DspError = Errno
+     c                   eval      DspError=Errno
+     c                   eval      pMessage=StrError(Errno)
+     c                   eval      MsgToDsply=DspErrorA+' '+Message
+     c*                  movel     AcceptError   Print
+     c*                  except
+     c*                  movel     MsgToDsply    Print
+     c*                  except
+     c*                  dump
+     c                   eval      *inlr=*on
+     c                   exsr      eoj
+     c                   endif
+      *
+      * At this point the return code from the accept is our new file
+      * descriptor
+      *
+     c                   eval      SdId2 = rc
+      *
+     c                   eval      TotCharRead=*zero
+     c                   dow       (TotCharRead >= 0)
+      * Read from Socket Descriptor of Accepted Connection Request
+     c                   eval      TotCharRead=*zero
+     c                   eval      BufLen = 3000
+     c                   eval      TotCharRead=Read(SdId2:%ADDR(Buffer):
+     c                             BufLen)
+      * If we have received a request, it's time to process
+     c                   if        (TotCharRead>*zero)
+     c                   exsr      Proc01
+     c                   eval      TotCharRead = -1
+      *
+     c                   endif
+     c                   enddo
+     c                   enddo
+      *
+     c                   eval      rc=Close(SdId)
+     c                   eval      rc=Close(SdId2)
+     c                   enddo
+      * LR has come on
+     c                   exsr      eoj
+     c                   return
+      *********************************************************************
+     C/EJECT
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  HSKPG                                         *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE WILL ACCEPT PARAMETERS,       *
+     C*                     SET UP GENERAL CONSTANTS,                     *
+     C*                     AND INITALIZE NUMERIC LITERALS.               *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     HSKPG         BEGSR
+     C*
+     C*************
+     C* SECTION 01*   ACCEPT PARAMETERS
+     C*************
+     C*
+     C     *ENTRY        PLIST
+     C                   PARM                    ABEND             1
+     C*
+     C*************
+     C* SECTION 02*   SETUP GENERAL CONSTANTS
+     C*************
+     C*
+     C                   MOVE      *BLANKS       FUNREQ            8
+     C                   MOVE      'EXIT    '    EXIT              8
+     C*
+     C                   MOVE      *BLANKS       DQRPGM           10
+     C                   MOVEL     'QRCVDTAQ'    DQRPGM           10
+     C                   MOVE      *BLANKS       DQlib            10
+     C                   MOVEL     '*LIBL'       DQlib            10
+     C                   MOVE      *BLANKS       DQDATI
+     C                   MOVE      *BLANKS       DQRNAM           10
+     C                   MOVEL     'VRZ200AA'    DQRNAM           10
+     C                   Z-ADD     0             DQLEN
+     C                   Z-SUB     1             DQWAIT
+     C*
+     C                   MOVE      *BLANKS       DQSPGM           10
+     C                   MOVEL     'QSNDDTAQ'    DQSPGM           10
+     C                   MOVE      *BLANKS       DQSNAM           10
+     C                   MOVEL     'VRZ100AA'    DQSNAM           10
+     C                   MOVE      *BLANKS       DQDATO
+     C                   MOVE      *BLANKS       CANTYP            6
+     C*
+     C                   Z-ADD     1000          COD##             5 0
+     C                   Z-ADD     0             Z                 5 0
+     C*
+     C                   MOVE      'Y'           YES               1
+     C                   MOVE      'N'           NO                1
+     C                   MOVE      NO            ABEND             1
+     C                   MOVE      *BLANKS       DFTDQ            10
+     C*
+     C                   ENDSR
+     C*********************************************************************
+     C/EJECT
+      *********************************************************************
+      * BINDR- Bind Server IP & Well Known Port to Socket Descriptor
+      *********************************************************************
+     c*
+     c     BINDR         BEGSR
+     c                   EVAL      sin_family = AF_INET
+     c                   EVAL      sin_port   = 6666
+     c*                  EVAL      sin_port   = 3005
+     c                   EVAL      sin_addr = GetHostId
+     c                   EVAL      sin_zero   = X'0000000000000000'
+     C                   EVAL      sin_addr = inet_addr('150.1.1.2')
+     c                   EVAL      svaddrlen = %SIZE(serveraddr)
+     c                   EVAL      rc = Bind(SdId:%ADDR(serveraddr):
+     c                             svaddrlen)
+     c                   endsr
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  PROC01                                        *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE WILL PROCESSES THE INCOMING   *
+     C*                     DATA QUEUE AND SENDS THE TRANSACTION TO       *
+     C*                     THE CONTACT GATEWAY, WAITS FOR A REPLY AND    *
+     C*                     PASSES THE DATA BACK.                         *
+     C*                                                                   *
+     C*********************************************************************
+     c*
+     c     PROC01        BEGSR
+      * Set up a counter so we don't get hung up.
+     c                   z-add     0             count             2 0
+      * Process the inbound data request
+     c                   eval      SockBuf=Buffer
+     c                   eval      BufLen=TotCharRead
+     c                   exsr      UnTrans
+     c                   eval      dqdato = sockbuf
+     c                   eval      dqlen  = BufLen
+      *
+     C**
+     C** Here's where we are sending the message to the Data Queue
+     C** we need to make sure we have the right data in here
+     C**
+     C                   CALL      DQSPGM
+     C                   PARM                    DQSNAM
+     C                   PARM                    DQLIB
+     C                   PARM                    DQLEN
+     C                   PARM                    DQDATO
+     C* Receive the data back from the request
+     c     Wait          tag
+     C                   CALL      DQRPGM
+     C                   PARM                    DQRNAM
+     C                   PARM                    DQLIB
+     C                   PARM                    DQLEN
+     C                   PARM                    DQDATI
+     C                   PARM                    DQWAIT
+     C* We must wait for the data to come back.
+     C     DQLEN         IFEQ      0
+     c     Count         andle     10
+     c                   add       1             count
+     C                   GOTO      Wait
+     C                   ENDIF
+     C* Convert the message from EBCDIC to ASCII to go back to EDIFY.
+     c                   exsr      UnTrans
+     C*
+     C* Send the data back to the Edify system.
+     c                   eval      rc=Write(SdId:%ADDR(dqdati):Buflen)
+     C     ENPR01        ENDSR
+     C*
+     C*********************************************************************
+     C/EJECT
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  Translate                                     *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine translates the socket buffer  *
+      *                     to ASCII                                      *
+      *                                                                   *
+4.0   *****************************************************************
+     C     Translate     begsr
+     C*
+     C* I expect BufLen to be set to the length of the buffer
+     C* and      SockBuf to contain the data to be translated
+     C*
+4.0   *
+4.0   * This routine coverts the ETS Message from EBCDIC to ASCII prior to
+      *   transmission to VarCTI
+      *
+     c                   movel     'QASCII'      ascii            10
+     c                   movel     'QSYS'        xlib             10
+      *
+     C* Call translation program to put data in ASCII format
+     c                   call      'QDCXLATE'                             68
+     c                   parm                    buflen
+     c*                  parm                    sockbuf
+     c                   parm                    dqdati
+     c                   parm                    ascii
+     c                   parm                    xlib
+     C*
+     C                   endsr
+      *
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  UnTrans                                       *
+      *                                                                   *
+      *   SUBROUTINE DESC:  This subroutine translates the socket buffer  *
+      *                     from ASCII to EBCDIC                          *
+      *                                                                   *
+4.0   *****************************************************************
+     C     UnTrans       begsr
+     C*
+     C* I expect BufLen to be set to the length of the buffer
+     C* and      SockBuf to contain the data to be translated
+     C*
+4.0   *
+4.0   * This routine coverts the ETS Message from ASCII to EBCDIC prior to
+      *   transmission to VarCTI
+      *
+     c                   movel     'QEBCDIC'     ebcdic           10
+     c                   movel     'QSYS'        xlib             10
+      *
+     C* Call translation program to put data in ASCII format
+     c                   call      'QDCXLATE'
+     c                   parm                    buflen
+     c*                  parm                    dqdati
+     c                   parm                    sockbuf
+     c                   parm                    ebcdic
+     c                   parm                    xlib
+     C*
+     C                   endsr
+      *
+     C**************************************************************
+     C*********************************************************************
+     C*                                                                   *
+     C*   SUBROUTINE NAME:  EOJ                                           *
+     C*                                                                   *
+     C*   SUBROUTINE DESC:  THIS SUBROUTINE HANDLES THE END OF PROGRAM    *
+     C*                     PROCESSING INCLUDING THE ENDING OF THE        *
+     C*                     CONVERSATION.                                 *
+     C*                                                                   *
+     C*********************************************************************
+     C*
+     C     EOJ           BEGSR
+     C*
+     c                   exsr      shuts
+     C***                Z-ADD     DEFLUS        DLCTYP
+     C*
+     C     ABEND         IFEQ      YES
+     C                   TIME                    @@@TIM           14 0
+     C                   DUMP
+     C                   ENDIF
+     C*
+     C                   ENDSR
+     C*
+4.0   *****************************************************************
+      *                                                                   *
+      *   SUBROUTINE NAME:  SHUTS                                         *
+      *                                                                   *
+      *   SUBROUTINE DETAIL: CLOSE THE CONNECTION TO THE EDIFY AFTER      *
+      *                     PROCESSING.                                   *
+      *                                                                   *
+      *********************************************************************
+     c     SHUTS         begsr
+      *End the connection to the server.
+     c                   eval      rc=Close(SdId2)
+     c                   eval      rc=close(SdId)
+      * End of Transmission, We're done.
+     c                   endsr
+     C*********************************************************************
+     o*sysprt   e
+     o*                      Print
+     o*                      SdId
+     o*                      serveraddr
+     o*                      svaddrlen
+

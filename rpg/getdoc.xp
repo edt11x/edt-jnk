@@ -1,0 +1,1006 @@
+<html>
+<head>
+<title>DN - Re: Help: TCP/IP sockets and RPG</title>
+<meta name=keywords content="dejanews usenet newsgroup articles search query discussion">
+
+<!-- <base href="http://www.dejanews.com/[ST_rn=qs]"> -->
+</head>
+
+<body bgcolor=#ffffff text=#000000 link=#0000ff vlink=#52188c alink=#cc0000>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<IMG SRC="http://g.dejanews.com/gifs/nav_g6b.gif" alt="Deja News Toolbar" WIDTH=600 HEIGHT=35 BORDER=0 usemap="#nav_g.map" border=0><br>
+
+<map name="nav_g.map">
+    <area shape="rect" coords="0,0,83,30" href="http://www.dejanews.com/[ST_rn=qs]/" alt="Home">
+    <area shape="rect" coords="90,0,241,30" href="http://www.dejanews.com/[ST_rn=qs]/communities/home_comm.shtml" alt="Communities">
+    <area shape="rect" coords="240,0,379,30" href="http://www.dejanews.com/[ST_rn=qs]/mydn.xp" alt="My Deja News">
+    <area shape="rect" coords="378,0,516,30" href="http://www.dejanews.com/[ST_rn=qs]/home_ps.shtml" alt="Power Search">
+    <area shape="rect" coords="515,0,600,30" href="http://www.dejanews.com/[ST_rn=qs]/post.xp?NG=comp.sys.ibm.as400.misc" alt="Post">
+    <area shape="default" nohref alt="">
+</map>
+
+
+
+
+<p>
+<table border=0 cellpadding=0 cellspacing=0 width=600><tr><td align=center>
+<table border=0 cellpadding=0 cellspacing=0 width=470>
+<tr><td align=center><!-- banner begins here -->
+<center><script language='JavaScript'>function jumpBox(list)
+{location.href = list.options[list.selectedIndex].value}</script>
+<form name='menuform'>
+<table border='0' cellspacing='0' cellpadding='0' nowrap width='468'>
+<tr><td bgcolor='#99FFFF' width='240' valign='top'>
+<a href='http://www.aldon.com/wb_cms.html'><img
+src='http://g.dejanews.com/ads/bannercms.gif' width='468' height='40'
+border='0' alt='Simplify AS/400 Programming with Aldon'></a>
+</td></tr>
+<tr><td align='CENTER' valign='TOP' bgcolor='#99FFFF'>
+<select name='select'>
+<option value='http://www.aldon.com/wb_cms.html'>More AS/400 Product
+Information
+<option value='http://www.aldon.com/wb_cms.html'>Change Management
+<option value='http://www.aldon.com/wb_cms_versioncontrol.html'>Version
+Control
+<option value='http://www.aldon.com/wb_cms_networkmgmt.html'>Network
+Management
+<option value='http://www.aldon.com/wb_cms_projectmgmt.html'>Project
+Management
+<option value='http://www.aldon.com/wb_cms_requestmgmt.html'>User
+Request Management
+</select>
+<input type='button' value='Go!'
+onClick='jumpBox(this.form.elements[0])' name='button'>
+</td></tr>
+</table>
+<font size=2><a href='http://www.aldon.com/wb_cms.html'>Click Here for
+Free Trials of AS/400 Software!</a>
+</form>
+</center>
+<!-- this is the end of the banner --></td>
+</tr></table></td>
+</tr></table>
+
+
+
+</td>
+
+
+
+
+<font size=0><p></font>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<img src="http://g.dejanews.com/gifs/tab_mt.gif" alt="message/thread" width=600 height=25 usemap="#tab_mf.map" border=0>
+
+<MAP NAME="tab_mf.map">
+<AREA SHAPE="RECT" COORDS="132,0,251,25" HREF="http://x15.dejanews.com/[ST_rn=qs]/viewthread.xp?AN=391547514&search=thread&svcclass=dnold&ST=PS&CONTEXT=922421515.1687486710&HIT_CONTEXT=922421515.1687486710&HIT_NUM=67&recnum=%3c35FF0FB4.65DBC7E@cura.net%3e%231/7&frpage=getdoc.xp&back=clarinet" ALT="Thread">
+</MAP>
+
+<table width=600 border=0 cellpadding=0 cellspacing=0>
+<tr valign=top><td><font face="arial,helvetica"><font color=#ff6600><b>Message 68 of 457 </b></font>
+<font size=3>for search <b>RPG Sockets</b></font>
+<br><font face="arial,helvetica" color=#cc0000 size=4><b>&nbsp;&nbsp;&nbsp;&#187;&nbsp;</b></font><font size=2><a href="http://x15.dejanews.com/[ST_rn=qs]/dnquery.xp?search=next&DBS=2&LNG=ALL&IS=RPG%20Sockets&svcclass=dnold&ST=QS&offsets=db99p1%0218%01db98p4%021%01db98p5%0212%01db98p6%0212%01db98p7%027&svcclass=dnold&CONTEXT=922421515.1687486710"><b>Return</b></a> to <b><font color=#ff6600>search results</font></b></font></font></td>
+<td align=right><font face="arial,helvetica" size=-1><a href="http://www.dejanews.com/[ST_rn=qs]/help/help_art.shtml">help</a></font></td></tr>
+<tr valign=top>
+<td><font size=0>&nbsp;<br></font>
+<font face="arial,helvetica" color="#cc0000"><b>Re: Help: TCP/IP sockets and RPG</b></font><font size=4>&nbsp;</font>
+<br>
+<table cellpadding=0 cellspacing=0 border=0>
+<tr height=10%>
+<td width=50><font face="arial,helvetica" size=2><b>Author:</b></font></td>
+<td width=20>&nbsp;</td>
+<td width=360><font size=2><b>Koos Bezemer</b> &lt;<A HREF="http://www.dejanews.com/[ST_rn=qs]/jump/mailto:bezemer@cura.net">bezemer@cura.net</a>&gt;</font></td>
+</tr>
+<tr height=10%>
+<td nowrap><font face="arial,helvetica" size=2><b>Date:</b></font></td>
+<td width=20>&nbsp;</td>
+<td><font size=2>1998/09/15</font></td>
+</tr>
+<tr height=10%>
+
+
+<td nowrap><font face="arial,helvetica" size=2><b>Forum:</b></font></td>
+<td width=20>&nbsp;</td>
+<td><font size=2>comp.sys.ibm.as400.misc </font>
+</td>
+</tr>
+
+</table></td>
+
+<td align=right>
+<table border=0 cellpadding=3 cellspacing=0>
+<tr valign=middle>
+
+<td nowrap><font size=0>&nbsp;&nbsp;</font><table width=120 border=1 cellpadding=0 cellspacing=0>
+<tr valign=top>
+<td align=center bgcolor=ffffe0><font face='arial,helvetica' size=2 font color='#cc0000'>computer</font><font face='arial,helvetica' size=2>literacy.com</br>Find books on<br><a href='/jump/http://gp4.dejanews.com/gtc?id=24001&tm=922425297.561407&site=dn.button&location=1.comp.sys.ibm.as400.misc&keywords=rpg%20sockets&cr=1.comp.sys.%7c%7c%7c%7c%7c%7c%7c%7c'><b>rpg sockets</b></a></font></td>
+</tr>
+</table><font size=0>&nbsp;&nbsp;</font></td>
+
+
+
+</tr>
+</table>
+
+
+
+</td>
+</tr></table>
+
+<table width=600 border=0 cellpadding=0 cellspacing=0>
+<tr valign=middle><td>
+<table cellpadding=2 cellspacing=3 border=0><tr>
+<td><font face="arial,helvetica" size=2 color="#ff6600"><a href="http://x15.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=391547514&CONTEXT=922421515.1687486710&hitnum=67&AH=1">more headers</a>
+</td>
+<td><font face="arial,helvetica" size=2>
+<A HREF="http://www.dejanews.com/[ST_rn=qs]/profile.xp?author=Koos%20Bezemer%20%3cbezemer@cura.net%3e&ST=PS">author posting history</A>
+</font></td>
+<td><font face="arial,helvetica" size=2></font></td></tr>
+</table></font></td>
+
+<td align=right>
+<img src="http://g.dejanews.com/gifs/postart2_x.gif" border=0 width=85 height=25 alt="">
+<a href="http://x15.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=391738613&CONTEXT=922421515.1687486710&hitnum=66"><img src="http://g.dejanews.com/gifs/prevart2.gif" border=0 width=55 height=25 alt="prev"></a>
+<a href="http://x15.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=384633955&CONTEXT=922421515.1687486710&hitnum=68"><img src="http://g.dejanews.com/gifs/nextart2.gif" border=0 width=55 height=25 alt="next"></a></td>
+</tr></table>
+
+<hr width=600 align=left>
+
+
+
+<pre>This is a multi-part message in MIME format.
+--------------B08FB2D0B3D311560DD9E371
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+
+
+&gt; Rob,
+&gt;
+&gt; &gt;Does anyone of you know wheter I can use ILE/<B>RPG</B> to write TCP/IP <B>sockets</B>
+&gt; &gt;without having the ILE/C compiler?
+&gt; &gt;Any Examples??
+&gt;
+
+It can be done and it works very efficiently. You don't need the compiler for
+anything really, once you know how the procedures work. I will attach a copy
+I received some time ago on this group from Mark Davidson when I asked a
+similar question. He saved my **ss with this. I used this as a basis for a
+TCP/IP driver that runs 24/7 to authorize credit and debit card transactions
+while using minimal CPU and disk.
+
+It's the performance that is important when avoiding tools and C-programs -
+and instead use C-procedures directly.
+
+Koos
+
+
+--------------B08FB2D0B3D311560DD9E371
+Content-Type: text/plain; charset=us-ascii; name=&quot;Sample.txt&quot;
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename=&quot;Sample.txt&quot;
+
+     HDEBUG
+     ***********************************************************************
+     **
+     ** This program uses the ability of V3R2 ILE <B>RPG</B> to call C functions
+     **   to enable <B>RPG</B> to open and uses tcp/ip <B>sockets</B> connections
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ** This Program must be compiled with DVTACTGRP(*NO) and FIXNBR(*ZONED)
+     **
+     ***********************************************************************
+     **
+     FProgistl  IF   E           K DISK
+     FProgback  O    E             DISK
+     FProgmisc  O    E             DISK
+     FProgLog   O    E             DISK
+     ** --------------------------------------------------------------------
+     **
+     **    socket--Create Socket
+     **
+     **    int  socket(int address_family,
+     **                int type,
+     **                int protocol)
+     **
+     **
+     **     The socket() function is used to create an end pint for
+     **        communications.  The end point is represented by the
+     **        socket descriptor returned by the socket() function.
+     **
+     **
+     ** --------------------------------------------------------------------
+     Dsocket1          PR            10I 0 ExtProc('socket')
+     D   Sock_Fam1                   10I 0 Value
+     D   Addr_Typ1                   10I 0 Value
+     D   Protocol                    10I 0 Value
+     D   Sock_Mis1                  256    Value
+     ** --------------------------------------------------------------------
+     D   Sock_Descr    S             10I 0
+     **
+     D   Addr_Fam      S             10I 0
+     D   Addr_Type     S             10I 0
+     D   Protocol      S             10I 0
+     D   Sock_Misc     S            256
+     **
+     ** --------------------------------------------------------------------
+     **
+     **    setsockopt()--Set Socket Options
+     **
+     **    int  setsockopt(int socket_descriptor,
+     **                    int level,
+     **                    int option_name,
+     **                    char *option_value
+     **                    int option_length)
+     **
+     **
+     **
+     **    The setsockopt() function is used to set socket options
+     **
+     **
+     **
+     ** --------------------------------------------------------------------
+     Dstsockopt1       PR            10I 0 ExtProc('setsockopt')
+     D   Sock_Desc1                  10I 0 Value
+     D   Opt_Level1                  10I 0 Value
+     D   Opt_Name1                   10I 0 Value
+     D   Opt_Value1                    *   Value
+     D   opt_Len1                    10I 0 Value
+     ** --------------------------------------------------------------------
+     D   Opt_Stts      S             10I 0
+     D   Opt_Level     S             10I 0
+     D   Opt_Name      S             10I 0
+     D   Opt_Value     S             10I 0
+     D   Opt_Len       S             10I 0
+     D   OptValPtr     S               *
+     D**
+     **
+     ** --------------------------------------------------------------------
+     **
+     **    getsockname()--Get Local Address for Socket
+     **
+
+     **    int  getsockname(int socket_descriptor,
+     **              struct sockaddr *local_address,
+     **              int address_length)
+     **
+     **           struct sockaddr {
+     **              u_short sa_family;
+     **              char    sa_data[14];
+     **           };
+     **
+     **
+     **    The getsockname() function is used to retreive the local address
+     **      asociated with a socket.
+     **
+     **
+     **
+     ** --------------------------------------------------------------------
+     Dgtsocknam1       PR            10I 0 ExtProc('getsockname')
+     D   Sock_Desc1                  10I 0 Value
+     D   Addr_Ptr1                     *   Value
+     D   Addr_Len1                   10I 0 Value
+
+     D   Getn_Misc1                 256    Value
+     ** --------------------------------------------------------------------
+     D   Getn_Stts     S             10I 0
+     D   Getn_Misc     S            256
+     D   Addr_Len      S             10I 0
+     D**
+     D  Sock_Adr       S             16    DIM(10)
+     D**
+     D  Sock_Adr_I     DS                  Based(Addr_Ptr)
+     D    Sock_Fam                    5U 0
+     D    Loc_Addr                   14
+     D**
+     D**
+     ** --------------------------------------------------------------------
+     **    bind()--Set Local Address for Socket
+     **
+     **    int  bind(int socket_descriptor,
+     **              struct sockaddr *local_address,
+     **              int address_length)
+     **
+     **           struct sockaddr {
+     **              u_short sa_family;
+     **              char    sa_data[14];
+     **           };
+     **
+     **
+     **    The bind() function is used to associate a local address
+     **      with a socket.
+     **
+     **
+     **
+     ** --------------------------------------------------------------------
+     Dbind1            PR            10I 0 ExtProc('bind')
+     D   Sock_Desc1                  10I 0 Value
+     D   Addr_Ptr1                     *   Value
+     D   Addr_Len1                   10I 0 Value
+     ** --------------------------------------------------------------------
+     D   Bind_Stts     S             10I 0
+     D   Bind_Misc     S            256
+     ** --------------------------------------------------------------------
+     D  Sock_AdrI      S             28    DIM(10)
+     D**
+     D SockAddr_I      DS                  based(addr_ptrI)
+     D   s1n_family                   5I 0
+     D   s2n_port                     5U 0
+     D   s3n_addr                    10U 0
+     D   s4n_zero                     8
+     D**
+     D**
+     ** --------------------------------------------------------------------
+     **    listen()--Invite Incoming Connections Requests
+     **
+     **    int  listen(int socket_descriptor,
+     **                 int back_log)
+     **
+     **
+     **    The listen() function is used to indicate a willingness to accept
+     **       incoming connection requests.  if a listen() is not done,
+     **       incoming requests are refused.
+     **
+     **
+
+     ** --------------------------------------------------------------------
+     D**
+     DListen1          PR            10I 0 ExtProc('listen')
+     D   Sock_Desc1                  10I 0 Value
+     D   Back_Log1                   10I 0 Value
+     D   List_Misc1                 256    Value
+     ** --------------------------------------------------------------------
+
+     D   Listn_Stts    S             10I 0
+     D   Back_Log      S             10I 0
+     D   List_Misc     S            256
+     D**
+     ** --------------------------------------------------------------------
+     **    accept()--Wait for Connection Request and Make Connection
+     **
+     **    int  accept(int socket_descriptor,
+     **              struct sockaddr *address,
+     **              int *address_length)
+     **
+     **           struct sockaddr {
+     **              u_short sa_family;
+     **              char    sa_data[14];
+     **           };
+     **
+     **   The accept() function is used to wait for connection requests.
+     **    accept() takes the first connection request on the queue of
+     **    pending connection requests and creates a new socket to service
+     **    the connection request.
+     **
+     **
+     **
+     ** --------------------------------------------------------------------
+     D**
+     Daccept1          PR            10I 0 ExtProc('accept')
+     D   Sock_Desc1                  10I 0 Value
+
+     D   Addr_Ptr1                     *   Value
+     D   A_Addr_Le1                    *   Value
+     D   Accpt_Mis1                 256    Value
+     ** --------------------------------------------------------------------
+     D   Accpt_Stts    S             10I 0
+     D   Accpt_Msc     S            256
+     D   A_Addr_Len    S               *
+     ** --------------------------------------------------------------------
+     **    send()--Send Data
+     **
+     **    int  send(int socket_descriptor,
+     **              char *buffer,
+     **              int  buffer_length,
+     **              int  flags)
+     **
+     **
+     ** --------------------------------------------------------------------
+     D**
+     DSend1            PR            10I 0 ExtProc('send')
+     D   Sock_Desc1                  10I 0 Value
+     D   SBuff_Ptr1                    *   Value
+     D   SBuff_Len1                  10I 0 Value
+     D   Send_Mis1                  256    Value
+     ** --------------------------------------------------------------------
+     D   Send_Stts     S             10I 0
+     D   Send_Misc     S            256
+     D   Send_Buff     S             16
+     D   SBuff_Ptr     S               *
+     D   SBuff_Len     S             10I 0
+     ** --------------------------------------------------------------------
+     **    recv()--Receive Data
+     **
+     **    int  recv(int socket_descriptor,                 I
+     **              char *buffer,                          I
+     **              int  buffer_length,                    I
+     **              int  flags)
+     **
+     **
+     **   The recv() funcion is used to receive data through a socket.
+     **
+     **
+     ** --------------------------------------------------------------------
+     D**
+     DRecv1            PR            10I 0 ExtProc('recv')
+     D   Sock_Desc1                  10I 0 Value
+     D   RBuff_Ptr1                    *   Value
+     D   RBuff_Len1                  10I 0 Value
+     ** --------------------------------------------------------------------
+     D   Recv_Stts     S             10I 0
+     D   Recv_Misc     S            256
+     D   Recv_Buff     S             24
+     D   RBuff_Ptr     S               *
+     D   RBuff_Len     S             10I 0
+     ** --------------------------------------------------------------------
+     **    close()--Enc Socket Connection
+     **
+     **    int  close(int descriptor)
+     **
+     **
+     ** --------------------------------------------------------------------
+     D**
+     DClose1           PR            10I 0 ExtProc('close')
+     D   Sock_Desc1                  10I 0 Value
+     D   Close_Msc1                 256    Value
+     D
+     D   Close_Stts    S             10I 0
+     D   Close_Misc    S            256
+     D**
+     D status          S             10I 0
+     ** --------------------------------------------------------------------
+     **
+     **    Information to send / be sent
+     **
+     ** --------------------------------------------------------------------
+     D**
+     D From_TandA      S            343
+     D**
+     D From_Tand       S            343     Based(RBuff_Ptr)
+     D**
+     D From_TandF      DS
+     D   Rlgt                         4
+     D   Sys#                         2
+     D   Ware                         4
+     D   Cono                         4
+     D   Ordn                        10
+     D   Prom                         6
+     D   Void                         1
+     D   Trk#                        20
+     D   Asvc                         4S 0
+     D   #Pkg                         2S 0
+     D   Frt$                         7S 2
+     D   Net$                         7S 2
+     D   Awht                         6
+     D   Ctg$                         6S 2
+     D   Sat$                         6S 2
+     D   CODFee$                      6S 2
+     D   Calltag                     15
+     D   Zone                         3
+     D   PTim                         4S 0
+     D   PDat                         6S 0
+     D   Oper                        15
+     D   Mdat                         6S 0
+     D   Err                          2S 0
+     D*** (BLDG)
+     D   Carr                        20
+     D*** Info from Manual Shipments
+     D   Zipc                        10
+     D   Mord#                       10
+     D    Mjob#                       5
+     D   Mname                       30
+     D   Mcont                       30
+     D   Madr1                       30
+     D   Madr2                       30
+     D   Mcity                       30
+     D   Mstat                        2
+     D**                         =======
+     D**                            343
+     D**
+     D To_TandA        S            407
+     D**
+     D To_Tand         DS                   Based(SBuff_Ptr)
+     D   Slgt                         4S 0
+     D   PgSys#
+     D   PgCono
+     D   PgWare
+     D   PgOrdn
+     D   PgProm
+     D   PgRnam
+     D   PgPayt
+     D   PgAcct
+     D   PgRef1
+     D   PgRef2
+     D   PgSnam
+     D   PgCont
+     D   PgAdr1
+     D   PgAdr2
+     D   PgCity
+     D   PgStat
+     D   PgZipc
+     D   Pg#Par
+     D   PgPar#
+     D   PgRsvc
+     D   PgFdat
+     D   PgPhon
+     D   PgSatd
+     D   PgHldp
+     D   PgOsiz
+
+     D   PgDelc
+     D   PgMwht
+     D   PgDval
+     D   PgCod$
+     D   PgCodt
+     D   PgDeli
+     D   PgPakl
+     D   PgIntl
+     D   PgCtry
+     D   PgCval
+     C*
+     C***  Address Family :     1 = AF_UNIX
+     C*                         2 = AF_INET
+     C*                         6 = AF_NS
+     C*
+     C                   move      2             Addr_fam
+     ** --------------------------------------------------------------------
+     C*
+     C***  Address Type:        1 = SOCK_STREAM
+     C*                         2 = SOCK_DGRAM  (Datagram)
+     C*                         3 = SOCK_RAW
+     C*                         5 = SOCK_SEQPACKET
+     C*
+     C                   move      1             Addr_Type
+     ** --------------------------------------------------------------------
+     **
+     ****  Protocol Families:   Same codes as Address Family
+     **                         0=look at address family
+     **
+     C                   move      0             Protocol
+     **
+     ** --------------------------------------------------------------------
+     **   reset field that will contain the socket descriptor
+     **
+     C                   move      0             Sock_Descr
+     C**
+     ** --------------------------------------------------------------------
+     **   socket                                                      socket
+
+     ** --------------------------------------------------------------------
+     C**
+     C                   eval      Sock_Descr= socket1( addr_fam:
+     C                                                  addr_type:
+     C                                                  Protocol:
+     C                                                  Sock_Misc)
+     C**
+     C                   Eval      Status = Sock_Descr
+     ***
+     ** --------------------------------------------------------------------
+     ***  bind                                                          bind
+     ** --------------------------------------------------------------------
+     ***
+     C                   Eval      Addr_Ptr = %Addr(Sock_AdrI(2))
+     C                   Eval      Addr_PtrI   = %Addr(Sock_ADRI(1))
+     C**
+     C                   eval      S1n_Family = Addr_Fam
+     C                   eval      S2n_Port   = 1600
+     C                   eval      S3n_Addr   =  *zeros
+     C                   eval      S4n_Zero   = x'0000000000000000'
+     C**
+     C                   eval      Addr_Len  = 16
+     C**
+
+     C                   eval      Bind_Stts = Bind1( Sock_Descr:
+     C                                                Addr_PtrI:
+     C                                                Addr_Len)
+     C**
+     C                   Eval      Status = Bind_Stts
+     ***
+     ** --------------------------------------------------------------------
+     ***  listen                                                      listen
+     ** --------------------------------------------------------------------
+     ***
+     C                   eval      Back_Log = 0100
+     C**
+     C                   eval      Listn_Stts = Listen1( Sock_Descr:
+     C                                                   Back_Log:
+     C                                                   List_Misc)
+     C**
+     C                   Eval      Status = Listn_Stts
+     ***
+     ** --------------------------------------------------------------------
+     ***  accept                                                     accept
+     ** --------------------------------------------------------------------
+     ***
+     C     ACCEPT        TAG
+     ***
+     C                   Eval      Addr_Ptr = %Addr(Sock_AdrI(3))
+     C                   Eval      A_Addr_Len = %Addr(Addr_Len)
+     ***
+     C                   eval      Accpt_Stts = accept1( Sock_Descr:
+     C                                                   Addr_Ptr:
+     C                                                   A_Addr_Len:
+     C                                                   Accpt_Msc)
+     C                   Eval      Status = Accpt_Stts
+
+     ***
+     ** --------------------------------------------------------------------
+     ***  recv                                                         recv
+     ** --------------------------------------------------------------------
+     ***
+     C                   Eval      RBuff_Ptr = %Addr(From_TandA)
+     C                   Eval      RBuff_Len = 343
+     ***
+     C                   Eval      Recv_Stts = Recv1( Accpt_Stts:
+     C                                                RBuff_Ptr:
+     C                                                RBuff_Len)
+     ***
+     C                   Eval      Status = Recv_Stts
+     ***
+     ** --------------------------------------------------------------------
+     ***           Convert input data from Ascii to Ebcdic
+     ***  xlate Ascii-&gt; Ebcdic                                         xlate
+     ** --------------------------------------------------------------------
+     ***
+     C                   Z-add     343           D_Len             5 0
+     C                   Movel     'QEBCDIC     'Table            10
+     C**
+     C                   Call      'QDCXLATE'
+     C                   Parm                    D_Len
+     C                   Parm                    From_Tanda
+     C                   Parm                    Table
+     C**
+     C                   Movel     From_TandA    From_TandF
+     C***                DUMP
+     ***
+     ** --------------------------------------------------------------------
+     ***  Process Data
+     ** --------------------------------------------------------------------
+     ***
+     C     RLGT          IFGT      '0030'
+     ***
+     C                   MOVEL     SYS#          PBSYS#
+     C                   MOVEL     CONO          PBCONO
+     C                   MOVEL     WARE          PBWARE
+     C                   MOVEL     ORDN          PBORDN
+     C                   MOVEL     PROM          PBPROM
+     C                   MOVEL     VOID          PBVOID
+     C                   MOVEL     TRK#          PBTRK#
+     C                   MOVEL     ASVC          PBASVC
+     C                   MOVEL     #PKG          PB#PKG
+     C                   MOVEL     FRT$          PBFRT$
+     C                   MOVEL     NET$          PBNET$
+     C                   MOVE      AWHT          PBAWHT
+     C                   MOVEL     CTG$          PBCTG$
+     C                   MOVEL     SAT$          PBSAT$
+
+     C                   MOVEL     ZONE          PBZONE
+     C                   MOVEL     PTIM          PBPTIM
+     C                   MOVEL     PDAT          PBPDAT
+     C                   MOVEL     OPER          PBOPER
+     C*                  MOVEL     MDAT          PBMDAT
+     C*                  MOVEL     ERR           PBMERR
+     C                   MOVEL     carr          PBfil3
+     C                   WRITE     PbF1
+     C**
+     C                   move      '2'           Pltrtp
+     C                   move      udate         Pltrdt
+     C                   TIME                    PLTRTM
+     C                   MOVEL     Pbcono        Plcono
+     C                   Movel     Pbordn        Plordn
+     C                   move      Pbvoid        PLVoid
+     C                   movel     pbtrk#        pltrno
+     C                   write     ProgLog1
+     C**
+     C     Rlgt          ifgt      '0330'
+     c*** Info from Manual Shipments
+     C                   MOVEL     carr          pmcarr
+     c                   movel     zipc          pmzip
+     c                   movel     mord#         pmordr
+     c                   movel     Mjob#         pmJob#
+     c                   movel     mname         pmname
+     c                   movel     mcont         pmcont
+     c                   movel     madr1         pmadr1
+     c                   movel     madr2         pmadr2
+     c                   movel     mcity         pmcity
+     c                   movel     mstat         pmstat
+     C                   Write     Pmf1
+     C                   End
+     C                   else
+     C**
+     C                   Eval      SBuff_Ptr = %Addr(To_Tanda)
+     C                   Clear                   To_Tand
+     ***
+     C                   Movel     Cono          PGCONO
+     C                   Movel     Ordn          PGORDN
+     C**
+     C     Progkey       Klist
+     C                   Kfld                    PGCONO
+     C                   Kfld                    PGORDN
+     C**
+     C     Progkey       Chain     PROGISTL                           90
+     C**
+     C     *in90         Ifeq      *ON
+     C                   Move      *All'9'       To_Tand
+     C                   End
+     C**
+     C     Pgadr1        Ifeq      *Blanks
+     C     Pgadr2        Andne     *Blanks
+     C                   Move      Pgadr2        Pgadr1
+     C                   Clear                   Pgadr2
+     C                   End
+     C**
+     C**  if 3rd party and no acct#, change to shipper pays
+     C**
+     C     pgpayt        ifeq      3
+     C     pgacct        andeq     *blanks
+     c     pgcono        andne     '0500'
+     C                   move      1             pgpayt
+     C                   end
+     C***
+     C****               Dump
+     C                   move      '1'           Pltrtp
+     C                   move      udate         Pltrdt
+     C                   TIME                    PLTRTM
+     C                   MOVEL     Pgcono        Plcono
+     C                   Movel     Pgordn        Plordn
+     C                   move      *blanks       PLVoid
+     C                   move      *blanks       pltrno
+     ***
+     ** --------------------------------------------------------------------
+     ***  xlate Ebcdic -&gt; Ascii                                        xlate
+     ** --------------------------------------------------------------------
+
+     ***
+     C                   Z-add     407           D_Len             5 0
+     C                   Movel     'QASCII      'Table            10
+     C**
+
+     C                   Call      'QDCXLATE'
+     C                   Parm                    D_Len
+     C                   Parm                    To_Tanda
+
+     C                   Parm                    Table
+     ***
+     ** --------------------------------------------------------------------
+     ***  send                                                         send
+     ** --------------------------------------------------------------------
+     ***
+     C                   Eval      SBuff_Len = 407
+     ***
+     C                   Eval      Send_Stts = Send1( Accpt_Stts:
+     C                                                SBuff_Ptr:
+     C                                                SBuff_Len:
+     C                                                Send_Misc)
+     C**
+     C                   write     ProgLog1
+     C**
+     C                   EndIf
+     ***
+     ** --------------------------------------------------------------------
+     ***  close                                                        close
+     ** --------------------------------------------------------------------
+     ***
+     C                   eval      Close_Stts = Close1( Accpt_Stts:
+     C                                                Close_Misc)
+     ***
+     C                   Eval      Status = Close_Stts
+     ***
+     ** --------------------------------------------------------------------
+     ***  Get next order to process
+     ** --------------------------------------------------------------------
+     C                   GOTO      ACCEPT
+     ** --------------------------------------------------------------------
+     ***
+     ***
+     ** --------------------------------------------------------------------
+     ***  close                                                        close
+     ** --------------------------------------------------------------------
+     ***
+     C                   eval      Close_Stts = Close1( Sock_Descr:
+     C                                                Close_Misc)
+     ***
+     ***
+     ** --------------------------------------------------------------------
+     ***
+     C                   move      *on           *inlr
+
+--------------B08FB2D0B3D311560DD9E371--
+</pre>
+
+
+
+<hr width=600 align=left>
+
+
+
+
+<table cellpadding=5 cellspacing=0 width=600 border=0>
+<tr valign=top><td><font face="arial,helvetica" size=2>
+<A HREF="http://www.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=391547514">view for bookmarking</A><br>
+
+
+<A HREF="http://www.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=391547514&fmt=raw">text only</A>
+</font></td>
+<td><font face="arial,helvetica" size=2>
+<A HREF="http://www.dejanews.com/[ST_rn=qs]/maf_enter.xp?SUB=Re:%20Help:%20TCP/IP%20sockets%20and%20RPG&AN=391547514&DBS=2&continue=http://x15.dejanews.com/%5bST_rn%3dqs%5d/getdoc.xp%3fAN%3d391547514%26CONTEXT%3d922421515.1687486710%26hitnum%3d67">mail this message to a friend</A><br><font size=1>Sponsored by <font color=cc0000>Computer</font>Literacy.com</font>
+</font></td>
+
+<td nowrap align=right>
+
+<font face="arial,helvetica" size=2><b>
+<font color="#999999">post reply</font>&nbsp;&nbsp;&nbsp;
+<b><font color="#003399">&lt;&lt;</font></b> <a href="http://x15.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=391738613&CONTEXT=922421515.1687486710&hitnum=66">prev</a>
+ &#183;
+<a href="http://x15.dejanews.com/[ST_rn=qs]/getdoc.xp?AN=384633955&CONTEXT=922421515.1687486710&hitnum=68">next</a> 
+<b><font color="#ff6600">&gt;&gt;</font></b>
+</b></font></td></tr>
+
+<tr valign=top>
+<td colspan=4><font face="arial,helvetica" size=2>
+<a href="http://www.dejanews.com/[ST_rn=qs]/rg_subng.xp?group=comp.sys.ibm.as400.misc">subscribe</a> to <b><font color=#ff6600>comp.sys.ibm.as400.misc</font></b>
+
+<br><a href="http://x15.dejanews.com/[ST_rn=qs]/dnquery.xp?search=next&DBS=2&LNG=ALL&IS=RPG%20Sockets&svcclass=dnold&ST=QS&offsets=db99p1%0218%01db98p4%021%01db98p5%0212%01db98p6%0212%01db98p7%027&svcclass=dnold&CONTEXT=922421515.1687486710">return</a> to search results</font></td></tr>
+
+</table>
+
+<p>
+
+
+ 
+
+<table border=0 cellpadding=0 cellspacing=0 width=600>
+<tr><td align=center>
+<table border=0 cellpadding=0 cellspacing=0 width=470>
+<tr><td align=center>
+</td>
+</tr></table></td>
+</tr></table>
+
+
+
+
+
+<p>
+<table border=1 cellpadding=2 width=600 cellspacing=0 bordercolor=#000000 bgcolor="#eeeeee">
+<tr align=center>
+<td nowrap valign=middle><font face="arial,helvetica" size=2>
+
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.autoconnect.sitewide&cid=084231456">AutoConnect</a>&nbsp;&#183;&nbsp;
+<a href="http://gp.dejanews.com/gtplacer?site=dn&location=textlink.uswest.sitewide&cid=084231456">Yellow Pages</a>&nbsp;&#183;&nbsp;
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.qwest.sitewide&cid=084231456">5&#162; long distance</a>
+<br>
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.freeshop.sitewide&cid=084231456">Free Stuff</a>&nbsp;&nbsp;&#183;&nbsp;
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.datek.sitewide&cid=084231456">Trade with Datek</a>&nbsp;&nbsp;&#183;&nbsp;
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.necx.sitewide&cid=084231456">GET IT NOW @ NECX</a>
+<br>
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.zdnet.sitewide&cid=084231456">FREE downloads!</a>&nbsp;&#183;&nbsp;
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.bfl.sitewide&cid=084231456">&#60;&#60;Shopping&#62;&#62;</a>&nbsp;&#183;&nbsp;
+<a href="/jump/http://gp.dejanews.com/gtplacer?site=dn&location=textlink.ebay.sitewide&cid=084231456">Auctions & Classifieds</a>
+</td></tr>
+</table>
+
+
+
+<table border=0 cellspacing=0 cellpadding=0 width=600>
+<tr><td height=5><font size=1>&nbsp;</font></td></tr>
+<tr><td bgcolor=#003399 height=2><spacer type=block width=1 height=2></td>
+</tr></table>
+
+<table border=0 cellpadding=3 cellspacing=0 width=600>
+<tr>
+<td bgcolor=#99ccff valign=top align=center nowrap><font face="arial,helvetica" size=2>
+<a href="http://www.dejanews.com/[ST_rn=qs]/">Home</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/communities/home_comm.shtml">Communities</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/mydn.xp">My Deja News</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/home_ps.shtml">Power Search</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/post.xp?NG=comp.sys.ibm.as400.misc">Post</a>
+</font></td></tr></table>
+
+
+
+<table border=0 cellspacing=0 cellpadding=0 width=600>
+<tr><td bgcolor=#003399 height=2><spacer type=block width=1 height=2></td>
+</tr></table>
+
+<font size=0><p></font>
+
+<table border=0 cellspacing=0 cellpadding=0 width=600>
+<tr valign=top>
+<td align=center>
+<font size=0><p></font>
+<small>
+<a href="http://www.dejanews.com/[ST_rn=qs]/corp/">About Deja News</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/corp/adv/">Ad Info</a> &nbsp;&#183;&nbsp;
+<a href="http://www.dejanews.com/[ST_rn=qs]/corp/adv/ad_index.shtml">Our Advertisers</a>
+</small>
+<font size=0><p></font>
+
+<hr width=75%>
+<font size=-1>Copyright &copy; 1995-99 <a href="http://www.dejanews.com/[ST_rn=qs]/corp/">Deja News, Inc.</a> All rights reserved.</font>
+<br>
+<font size=1><a href="http://www.dejanews.com/[ST_rn=qs]/info/policy.shtml">Conditions of use</a> &nbsp;&#183;&nbsp; <a href="http://www.dejanews.com/[ST_rn=qs]/info/privacy.shtml">Site privacy statement</a> reviewed by <a href="http://www.truste.org/">TRUSTe</a></font>
+
+</td></tr></table>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+#!/bin/csh -f
+# Nynex Information Solutions Group, 1989
+#
+# File:         run_noc
+# Version:      1.14
+# Latest Rev:   11/19/90 16:27:26
+# SCCS String:  @(#) run_noc 1.14@(#)
+# Description:  noc startup routine
+#
+# @(#)run_noc	1.14 Copyright 1989 NYNEX Corp. All rights reserved.
+#
+
+umask 000
+
+setenv PROCESS_NAME noc
+source $MOM/bin/flag
+setenv DBX_NOC
+set nocerr = $ERR/nocError.$HOST
+if (-e $nocerr) /bin/rm -f $nocerr
+
+setenv NOCBIN $BIN/nocexec.malloc
+if (! $?LOGOBIN) setenv LOGOBIN $BIN/RunLogo
+
+$MOM/bin/check $PROCESS_NAME
+if ($status != 0) exit
+
+if (! -d $LOGOPERATOR) then
+   mkdir $LOGOPERATOR
+   if ($status != 0) then
+      echo ""
+      echo "Cannot make directory $LOGOPERATOR. Exiting."
+      exit 1
+   endif
+endif
+
+echo "starting noc..."
+echo `date`" start noc"
+if (! $?NOCFLAGS) setenv NOCFLAGS
+if ($?MOMDEBUG) setenv NOCFLAGS "$NOCFLAGS -r -d"
+if (! $?LOGOFLAG1) setenv LOGOFLAG1 "Welcome to the World of NYNEX ALLINK"
+if (! $?LOGOFLAG2) setenv LOGOFLAG2 "Please Wait..."
+
+if ($?DBX_NOC) then
+   dbx $NOCBIN |& mytee /fs/mrfrostie/tmp/dbx.out
+else
+   $LOGOBIN "$LOGOFLAG1" "$LOGOFLAG2" >& $nocerr &
+   $NOCBIN $NOCFLAGS >& $nocerr &
+   tailError noc
+endif
+
+source save.jobs

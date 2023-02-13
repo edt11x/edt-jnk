@@ -1,0 +1,318 @@
+      *---------------------------------------------------------
+      * NJRLIBCPY.SOCKETS
+      * Standard Types
+      * Nick Roux
+      * November 1998
+      *
+      *---------------------------------------------------------
+
+      * Note - Sock Status Struc not implemented yet NJR
+      * Note - readv not implemented yet NJR
+      * Note - Message Header Struc not implemented yet NJR
+      * Note - Select not implemented yet NJR
+
+      /If Not Defined(SOCKETS)
+      /Define         SOCKETS
+      /Else
+      /Eof
+      /EndIf
+
+      *---------------------------------------------------------
+      * General Stuff
+
+      /Copy NJRLIBCPY,TYPES
+
+      *---------------------------------------------------------
+      * Socket Constants
+
+      * Address Family
+     D AF_UNIX         C                   1
+     D AF_INET         C                   2
+     D AF_NS           C                   6
+
+      * Address Type
+     D SOCK_STREAM     C                   1
+     D SOCK_DGRAM      C                   2
+     D SOCK_RAW        C                   3
+     D SOCK_SEQPACKET  C                   5
+
+      * Protocol Family
+     D PF_UNIX         C                   1
+     D PF_INET         C                   2
+     D PF_NS           C                   6
+
+      * Socket level options
+     D SO_BROADCAST    C                   5
+     D SO_DEBUG        C                   10
+     D SO_DONTROUTE    C                   15
+     D SO_ERROR        C                   20
+     D SO_KEEPALIVE    C                   25
+     D SO_LINGER       C                   30
+     D SO_OOBINLINE    C                   35
+     D SO_RCVBUF       C                   40
+     D SO_RCVLOWAT     C                   45
+     D SO_RCVTIMEO     C                   50
+     D SO_REUSEADDR    C                   55
+     D SO_SNDBUF       C                   60
+     D SO_SNDLOWAT     C                   65
+     D SO_SNDTIMEO     C                   70
+     D SO_TYPE         C                   75
+     D SO_USELOOPBACK  C                   80
+
+      * Flags
+     D MSG_DONTROUTE   C                   1
+     D MSG_OOB         C                   4
+     D MSG_PEEK        C                   8
+
+     D SOL_SOCKET      C                   -1
+     D SOMAXCONN       C                   512
+
+     D INADDR_BCAST    C                   x'FFFFFFFF'
+
+      * FCntl Commands
+     D*F_DUPFD         C
+     D*F_GETFL         C
+     D*F_SETFL         C
+     D* FASYNC         C
+     D* O_NONBLOCK     C
+     D* O_NDELAY       C
+     D* FNDELAY        C
+     D*F_GETOWN        C
+     D*F_SETOWN        C
+
+     D MAXHOSTNAMELEN  C                   255
+
+      *---------------------------------------------------------
+      * Socket types
+
+      * Socket Address Types
+     D TSockAddrPtr    S               *
+
+     D S_SockAddr      DS                  Based(TSockAddrPtr)
+     D   SA_Family                         Like(TShort_u)
+     D   SA_Data                     14
+
+     D S_SockAddrIN    DS                  Based(TSockAddrPtr)
+     D   SA_FamilyIN                       Like(TShort_u)
+     D   SA_PortIN                         Like(TShort_u)
+     D   SA_AddrIN                         Like(TInt_u)
+     D   SA_ZeroIN                    8
+
+      * getsockopt
+     D S_Linger        DS                  Based(TNulPtr)
+     D   L_LOnOff                          Like(TInt)
+     D   L_Linger                          Like(TInt)
+
+      * Socket Status Types
+     D TSockStatPtr    S                   Like(TPointer)
+      * Note - Sock Status Struc not implemented yet NJR
+
+      * recvmsg
+     D TMsgHdrPtr      S                   Like(TPointer)
+      * Note - Message Header Struc not implemented yet NJR
+
+
+      * Wait for Connection Request and Make Connection (3-1)
+     DAccept           PR                  Like(TInt) ExtProc('accept')
+     D Sock_Desc                           Like(TInt) Value
+     D Sock_Addr                           Like(TSockAddrPtr) Value
+     D Addr_Len                            Like(TInt) Value
+
+      * Set Local Address for Socket (3-3)
+     DBind             PR                  Like(TInt) ExtProc('bind')
+     D Sock_Desc                           Like(TInt) Value
+     D Local_Addr                          Like(TSockAddrPtr) Value
+     D Addr_Len                            Like(TInt) Value
+
+      * End Socket Connection (3-5)
+     DClose            PR                  Like(TInt) ExtProc('close')
+     D Sock_Desc                           Like(TInt) Value
+
+      * Establich Connection or Destination Address (3-5)
+     DConnect          PR                  Like(TInt) ExtProc('connect')
+     D Sock_Desc                           Like(TInt) Value
+     D Addr_Ptr                            Like(TSockAddrPtr) Value
+     D Addr_Len                            Like(TInt) Value
+
+      * Change Descriptor Attributes (3-9)
+     DFCntl            PR                  Like(TInt) ExtProc('fcntl')
+     D Sock_Desc                           Like(TInt) Value
+     D Sock_Command                        Like(TInt) Value
+
+      * Retreive Status Information about a Descriptor (3-10)
+      * Note - Sock Status Struc not implemented yet NJR
+     DFStat            PR                  Like(TInt) ExtProc('fstat')
+     D Sock_Desc                           Like(TInt) Value
+     D Sock_Stat                           Like(TSockStatPtr) Value
+
+      * Retreive Domain Name (3-11)
+     DGetDomainName    PR                  Like(TInt) ExtProc('getdomainname')
+     D Domain_Nam                          Like(TNulPtr) Value
+     D Domain_Nam_Len                      Like(TInt) Value
+
+      * Retreive Host ID Address (3-12)
+     DGetHostId        PR                  Like(TInt) ExtProc('gethostid')
+
+      * Retreive Host Name (3-12)
+     DGetHostName      PR                  Like(TInt) ExtProc('gethostname')
+     D Host_Name                           Like(TNulPtr) Value
+     D Host_Name_Len                       Like(TInt) Value
+
+      * Retreive Destination Address of Socket (3-13)
+     DGetPeerName      PR                  Like(TInt) ExtProc('getpeername')
+     D Sock_Desc                           Like(TInt) Value
+     D Dest_Addr                           Like(TSockAddrPtr) Value
+     D Addr_Len                            Like(TNulPtr) Value
+
+      * Retreive Local Address of Socket (3-14)
+     DGetSockName      PR                  Like(TInt) ExtProc('getsockname')
+     D Sock_Desc                           Like(TInt) Value
+     D Local_Addr                          Like(TSockAddrPtr) Value
+     D Addr_Len                            Like(TNulPtr) Value
+
+      * Retreive Socket Options (3-16)
+     DGetSockOpt       PR                  Like(TInt) ExtProc('getsockopt')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Level                             Like(TInt) Value
+     D   Option_Name                       Like(TInt) Value
+     D   Option_Value                      Like(TBuffPtr) Value
+     D   Option_Len                        Like(TNulPtr) Value
+
+      * Pass Descriptor Access to Another Job (3-19)
+     DGiveDescriptor   PR                  Like(TInt) ExtProc('givedescriptor')
+     D   Sock_Desc                         Like(TInt) Value
+      * Target_Job should be the internal job descriptor (see QUSRJOBI)
+     D   Target_Job                        Like(TNulPtr) Value
+
+      * Change Descriptor Attributes (3-20)
+     DIOCtl            PR                  Like(TInt) ExtProc('ioctl')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Request                           Like(TLong_u) Value
+
+      * Invite Incomming Connections Requests (3-26)
+     DListen           PR                  Like(TInt) ExtProc('listen')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Back_Log                          Like(TInt) Value
+
+      * Receive data (3-26)
+     DRead             PR                  Like(TInt) ExtProc('read')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(TInt) Value
+
+      * Receive data (3-26)
+     D*ReadV            PR                  Like(TInt) ExtProc('readv')
+      * Note - readv not implemented yet NJR
+
+      * Receive data (3-29)
+     DRecv             PR                  Like(TInt) ExtProc('recv')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(TInt) Value
+     D   Flags                             Like(TInt) Value
+
+      * Receive data (3-31)
+     DRecvFrom         PR                  Like(TInt) ExtProc('recvfrom')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(TInt) Value
+     D   Flags                             Like(TInt) Value
+     D   From_Addr                         Like(TSockAddrPtr) Value
+     D   Addr_Len                          Like(TNulPtr) Value
+
+      * Receive data (3-33)
+     DRecvMsg          PR                  Like(TInt) ExtProc('recvmsg')
+     D   Sock_Desc                         Like(TInt) Value
+     D   MsgHdr                            Like(TMsgHdrPtr) Value
+     D   Flags                             Like(TInt) Value
+
+      * Wait for Events on Multiple Sockets (3-35)
+      * Note - Select not implemented yet NJR
+     D*Select           PR                  Like(TInt) ExtProc('select')
+     D*   Read_Set                          Like(fd_SetPtr) Value
+     D*   Write_Set                         Like(fd_SetPtr) Value
+     D*   Read_Set                          Like(fd_SetPtr) Value
+     D*   TimeVal                           Like(wait_timePtr) Value
+
+      * Send data (3-37)
+     DSend             PR                  Like(TInt) ExtProc('send')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(TInt) Value
+     D   Flags                             Like(Tint) Value
+
+      * Send data (3-37)
+     DSendMsg          PR                  Like(TInt) ExtProc('sendmsg')
+     D   MsgHdr                            Like(TMsgHdrPtr) Value
+     D   Flags                             Like(Tint) Value
+
+      * Send data (3-41)
+     DSendTo           PR                  Like(TInt) ExtProc('sendto')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(TInt) Value
+     D   Flags                             Like(Tint) Value
+     D   Dest_Addr                         Like(TSockAddrPtr) Value
+     D   Addr_Len                          Like(TInt) Value
+
+      * Set Domain Name (3-43)
+     DSetDomainName    PR                  Like(TInt) ExtProc('setdomainame')
+     D   Name                              Like(TNulPtr) Value
+     D   Name_Len                          Like(TInt) Value
+
+      * Set Host ID Address (3-44)
+     DSetHostID        PR                  Like(TInt) ExtProc('sethostid')
+     D   Host_ID                           Like(TInt) Value
+
+      * Set Host Name (3-44)
+     DSetHostName      PR                  Like(TInt) ExtProc('sethostname')
+     D   Name                              Like(TNulPtr) Value
+     D   Name_Len                          Like(TInt) Value
+
+      * Set Socket Option (3-44)
+     DSetSockOpt       PR                  Like(TInt) ExtProc('setsockopt')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Level                             Like(TInt) Value
+     D   Option_Name                       Like(TInt) Value
+     D   Option_Value                      Like(TBuffPtr) Value
+     D   Option_Len                        Like(TInt) Value
+
+      * End Receiving and/or Sending of Data on Socket (3-50)
+     DShutdown         PR                  Like(TInt) ExtProc('shutdown')
+     D   Sock_Desc                         Like(TInt) Value
+     D   How                               Like(TInt) Value
+
+      * Create a Socket (3-50)
+     DSocket           PR                  Like(TInt) ExtProc('socket')
+     D   Addr_Family                       Like(TInt) Value
+     D   Addr_Type                         Like(TInt) Value
+     D   Protocol                          Like(TInt) Value
+
+      * Create a Pair of Socket (3-52)
+     DSocketPair       PR                  Like(TInt) ExtProc('socketpair')
+     D   Addr_Family                       Like(TInt) Value
+     D   Addr_Type                         Like(TInt) Value
+     D   Protocol                          Like(TInt) Value
+     D   Sock_Vector                       Like(TPointer) Value
+
+      * Receive Socket Access from Another Job (3-53)
+     DTakeDescriptor   PR                  Like(TInt) ExtProc('takedescriptor')
+      * Target_Job should be the internal job descriptor (see QUSRJOBI)
+     D   Target_Job                        Like(TNulPtr) Value
+
+      * Send Data (3-54)
+     DWrite            PR                  Like(TInt) ExtProc('write')
+     D   Sock_Desc                         Like(TInt) Value
+     D   Buff_Ptr                          Like(TBuffPtr) Value
+     D   Buff_Len                          Like(size_t) Value
+
+      * Send Data (3-55)
+      * Note - WriteV not implemented yet NJR
+     D*WriteV           PR                  Like(TInt) ExtProc('writev')
+
+      *---------------------------------------------------------
+
+     Dinet_addr        PR                  Like(TInt_u) ExtProc('inet_addr')
+     D   ipdot1                            Like(TPointer) Value
+
+

@@ -1,0 +1,63 @@
+      *---------------------------------------------------------
+      * NJRSRV0001
+      * General Routines
+      * Nick Roux
+      * November 1998
+      *---------------------------------------------------------
+
+      /If Not Defined(NJRSRV0001)
+      /Define         NJRSRV0001
+      /Else
+      /Eof
+      /EndIf
+
+      *---------------------------------------------------------
+      * General Stuff
+
+      /Copy NJRLIBCPY,TYPES
+
+     DcNOT             PR                  Like(TChar)
+     D factor1                             Like(TChar) Value
+
+     DcAND             PR                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     DcOR              PR                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     DcXOR             PR                  Like(TChar)
+     D factor1                             Like(TChar) Value
+     D factor2                             Like(TChar) Value
+
+     DuAND             PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     DuOR              PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     DuXOR             PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     DuNot             PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+
+     DuLShift          PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D shiftcount                          Like(TInt_u) Value
+
+     DuRShift          PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D shiftcount                          Like(TInt_u) Value
+
+     DuMod             PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value
+
+     DuDiv             PR                  Like(TInt_u)
+     D factor1                             Like(TInt_u) Value
+     D factor2                             Like(TInt_u) Value

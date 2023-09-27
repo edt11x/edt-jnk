@@ -1,0 +1,13 @@
+#!/bin/bash
+busctl --list | grep -i org.freedesktop | grep -v activatable
+for i in $(busctl --list | grep -i org.freedesktop | grep -v activatable | awk '{ print $1 }' | awk -F'.' '{ print $3 }')
+do
+    echo "-------------------------------------------------"
+    echo $i
+    busctl introspect org.freedesktop.$i /org/freedesktop/$i | cut -c 1-80 | head
+done
+echo "OK now a Python test"
+echo "-------------------------------------------------"
+python dbus_test.py
+
+

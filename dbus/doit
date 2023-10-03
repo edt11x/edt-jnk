@@ -8,6 +8,6 @@ do
 done
 echo "OK now a Python test"
 echo "-------------------------------------------------"
-python dbus_test.py
+python3 dbus_test.py
 
 

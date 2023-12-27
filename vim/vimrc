@@ -1,7 +1,7 @@
 " Run Pathogen
-" execute pathogen#infect()
-" execute pathogen#helptags()
-" call pathogen#incubate()
+execute pathogen#infect()
+execute pathogen#helptags()
+call pathogen#incubate()
 " We use a vim, we do not care about old functionality
 " prevents vim from emulating the original vi's bugs and limitations
 set nocompatible    " enabled when (g)vimrc is found
@@ -9,7 +9,7 @@ set nocompatible    " enabled when (g)vimrc is found
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 Plug 'VundleVim/Vundle.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'NLKNguyen/papercolor-theme'
@@ -21,7 +21,9 @@ Plug 'dracula/vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'noahfrederick/vim-noctu'
+Plug 'sonph/onehalf', {'rtp': 'vim'}
 call plug#end()            " required
+
 filetype plugin indent on    " required
 
 if has("terminfo") 
@@ -119,6 +121,7 @@ else
     highlight ColorColumn ctermbg=7
 endif
 
+set background=dark
 " colorscheme vividchalk
 " colorscheme xterm16
 " colorscheme liquidcarbon
@@ -127,7 +130,13 @@ endif
 " colorscheme ir_black
 colorscheme gruvbox
 colorscheme badwolf
-colorscheme noctu
+" colorscheme noctu
+
+if has("gui")
+    " set cursorline
+    set termguicolors
+    colorscheme onehalfdark
+endif
 
 " set gfn=-schumacher-clean-medium-r-normal-*-*-130-*-*-c-*-iso646.1991-irv
 " set gfn=-adobe-courier-medium-r-normal-*-*-120-*-*-m-*-iso10646-1

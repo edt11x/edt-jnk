@@ -1,0 +1,3 @@
+set folder="imaps://edt@127.0.0.1"
+set spoolfile="imaps://edt@127.0.0.1/INBOX"
+bind pager G bottom

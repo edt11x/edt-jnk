@@ -1,0 +1,5 @@
+#!/bin/bash
+# "env" is the normal name for the start of a virtual environment
+python --version
+# python -m venv env
+echo "In the terminal do source env/bin/activate"

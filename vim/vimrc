@@ -22,6 +22,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'morhetz/gruvbox'
 Plug 'noahfrederick/vim-noctu'
 Plug 'sonph/onehalf', {'rtp': 'vim'}
+Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 call plug#end()            " required
 
 filetype plugin indent on    " required

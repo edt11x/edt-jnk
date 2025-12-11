@@ -27,4 +27,5 @@ alias cdgen='function _cdgen() { echo -e alias "$1"="\047cd \042$( readlink -f $
 alias screen="/usr/bin/screen -L -Logfile ~/files/logs/screen/screen_`date +%y%m%d_%H.%M.%S`.log"
 alias viw='function _viw() { vim $( find . -name "$1" -type f -print -quit ) ; } ; _viw '
 alias sl="ls"
+alias ppath='echo $PATH | perl -an -F":" -e"print join($/, @F)"'
 

@@ -1,0 +1,30 @@
+# Check to see if ~/.local/bin exists and add it to the PATH if
+# it is not already in there.
+# Add a list of directories
+for i in "$HOME/.local/bin" "$HOME/bin"
+do
+    mkdir -p "$i"
+    if [ -d "$i" ]
+    then  
+        case ":$PATH:" in
+            *":$i:"*) : ;; # do nothing it is in there
+            *) PATH="$PATH:$i" ;;
+        esac
+    fi    
+done
+
+export GIT_CREDENTIAL_HELPER="store --file ${HOME}/.git-credentials"
+export BB_NUMBER_THREADS=6
+export BB_PRESSURE_MAX_CPU=60
+export PARALLEL_MAKE="-j 6"
+set -o vi
+LS_COLORS='di=01;36:';
+export LS_COLORS
+alias cde="cd $HOME/files/home/edt-env"
+alias cdh="cd $HOME/files/home"
+alias cdw='function _cdw() { cd $( dirname $( find . -name "$1" -type f -print -quit )) ; } ; _cdw '
+alias cdgen='function _cdgen() { echo -e alias "$1"="\047cd \042$( readlink -f $2 )\042\047" >> ~/.bashrc ; } ; _cdgen'
+alias screen="/usr/bin/screen -L -Logfile ~/files/logs/screen/screen_`date +%y%m%d_%H.%M.%S`.log"
+alias viw='function _viw() { vim $( find . -name "$1" -type f -print -quit ) ; } ; _viw '
+alias sl="ls"
+

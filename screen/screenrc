@@ -1,0 +1,4 @@
+deflog on
+logfile /home/dev/files/logs/screen/screen-%n-%Y%m%d-%t.log
+defscrollback 10000
+hardstatus alwayslastline "%{= kG}[%H] %{= kw}%-w%{= kR}%n %t%{-}%+w %=%{= kG}%Y-%m-%d %c"

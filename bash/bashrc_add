@@ -1,7 +1,7 @@
 # Check to see if ~/.local/bin exists and add it to the PATH if
 # it is not already in there.
 # Add a list of directories
-for i in "$HOME/.local/bin" "$HOME/bin"
+for i in "$HOME/.local/bin" "$HOME/bin" "/usr/local/cuda/bin"
 do
     mkdir -p "$i"
     if [ -d "$i" ]
